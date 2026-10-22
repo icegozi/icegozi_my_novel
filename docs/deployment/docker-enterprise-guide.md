@@ -136,3 +136,34 @@ Redis runs with `appendonly yes`. In-flight queues and cache state are backed up
 2. **Immutable Read-Only Codebase in Prod**: Production builds do not mount local files, guaranteeing image immutability.
 3. **Hardened HTTP Headers**: Automatic insertion of `X-Frame-Options SAMEORIGIN`, `X-Content-Type-Options nosniff`, and `Referrer-Policy`.
 4. **PHP Information Hiding**: `expose_php = Off` and `server_tokens off` prevent server banner leakage.
+
+---
+
+## 7. Environment Variable Reference & Dual Host/Container Architecture
+
+### Dynamic .env Variable Reference
+
+All Docker Compose parameters can be overridden cleanly from the project root `.env` without modifying repository compose files:
+
+| Variable | Default | Purpose / Scope |
+|---|---|---|
+| `FORWARD_NGINX_PORT` | `8080` | Host port mapped to Nginx container port `80`. Modify if port 8080 is occupied. |
+| `FORWARD_DB_PORT` | `3306` | Host port mapped to MySQL container port `3306` for local IDEs & host tools. |
+| `FORWARD_REDIS_PORT` | `6379` | Host port mapped to Redis container port `6379`. |
+| `DB_DATABASE` | `icegozi_novel` | Initialized database schema in MySQL container & Laravel connection. |
+| `DB_USERNAME` | `novel_user` | Application user provisioned in MySQL container & Laravel connection. |
+| `DB_PASSWORD` | `novel_secret_password` | Application user password in MySQL container & Laravel connection. |
+| `MYSQL_ROOT_PASSWORD` | `root_secret_password` | Administrative root password for MySQL container. |
+| `DOCKER_DB_HOST` | `mysql` | Internal Docker bridge network hostname for the database container. |
+| `DOCKER_REDIS_HOST` | `redis` | Internal Docker bridge network hostname for the Redis container. |
+
+### Dual Host/Container Execution Model
+
+The platform architecture seamlessly allows concurrent execution between host development environments and Docker container environments using a single shared `.env` file:
+
+1. **Host-Side Execution (Native CLI / IDEs)**:
+   - When running native PHP commands (`php artisan migrate`, `php artisan test`) or connecting external database GUI tools (DBeaver, TablePlus), `DB_HOST=127.0.0.1` and `DB_PORT=3306` connect to MySQL through the published host port.
+2. **Container-Side Execution (App & Worker)**:
+   - When running inside Docker containers (`icegozi-novel-app`, `icegozi-novel-worker`), Docker Compose injects all Laravel environment keys via `env_file: .env`.
+   - The `environment:` precedence block automatically maps `DB_HOST: ${DOCKER_DB_HOST:-mysql}` and `REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}` so network traffic is routed internally within `app-network` directly between container IPs.
+

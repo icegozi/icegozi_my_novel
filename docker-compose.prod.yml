@@ -6,12 +6,14 @@ services:
       target: production
     container_name: icegozi-prod-app
     restart: always
+    env_file:
+      - .env
     environment:
       CONTAINER_ROLE: app
       APP_ENV: production
       AUTORUN_MIGRATIONS: "true"
-      DB_HOST: mysql
-      REDIS_HOST: redis
+      DB_HOST: ${DOCKER_DB_HOST:-mysql}
+      REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}
     networks:
       - app-network
     depends_on:
@@ -49,11 +51,13 @@ services:
       target: production
     container_name: icegozi-prod-worker
     restart: always
+    env_file:
+      - .env
     environment:
       CONTAINER_ROLE: worker
       APP_ENV: production
-      DB_HOST: mysql
-      REDIS_HOST: redis
+      DB_HOST: ${DOCKER_DB_HOST:-mysql}
+      REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}
     networks:
       - app-network
     depends_on:
@@ -74,11 +78,13 @@ services:
       target: production
     container_name: icegozi-prod-scheduler
     restart: always
+    env_file:
+      - .env
     environment:
       CONTAINER_ROLE: scheduler
       APP_ENV: production
-      DB_HOST: mysql
-      REDIS_HOST: redis
+      DB_HOST: ${DOCKER_DB_HOST:-mysql}
+      REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}
     networks:
       - app-network
     depends_on:
@@ -86,6 +92,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+
 
   mysql:
     image: mysql:8.0

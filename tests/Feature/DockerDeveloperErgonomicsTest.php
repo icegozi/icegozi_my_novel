@@ -34,4 +34,17 @@ class DockerDeveloperErgonomicsTest extends TestCase
         $this->assertStringContainsString('mysqldump', $content);
         $this->assertStringContainsString('GLB', $content);
     }
+
+    public function test_deployment_guide_documents_env_configuration_matrix(): void
+    {
+        $guidePath = base_path('docs/deployment/docker-enterprise-guide.md');
+        $this->assertFileExists($guidePath);
+
+        $content = file_get_contents($guidePath);
+        $this->assertStringContainsString('FORWARD_NGINX_PORT', $content);
+        $this->assertStringContainsString('FORWARD_DB_PORT', $content);
+        $this->assertStringContainsString('DOCKER_DB_HOST', $content);
+        $this->assertStringContainsString('Dual Host/Container Execution', $content);
+    }
 }
+

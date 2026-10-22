@@ -63,4 +63,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(LegalConsent::class);
     }
+
+    public function novels(): HasMany
+    {
+        return $this->hasMany(Novel::class, 'author_id');
+    }
+
+    public function readingHistories(): HasMany
+    {
+        return $this->hasMany(ReadingHistory::class);
+    }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ChapterComment::class);
+    }
 }

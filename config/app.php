@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Identity Encryption Pepper
+    |--------------------------------------------------------------------------
+    |
+    | Secret pepper used in HMAC-SHA256 calculations for identity numbers (CCCD)
+    | to ensure unique lookup capability while preventing brute-force rainbow table
+    | attacks on 12-digit citizen ID space.
+    |
+    */
+    'identity_pepper' => env('APP_IDENTITY_PEPPER', 'secret-novel3d-identity-pepper-key-2026'),
+
 ];

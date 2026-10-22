@@ -3,9 +3,16 @@
 use App\Http\Controllers\Legal\AuthorRegistrationController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\Reader\CatalogController;
+use App\Http\Controllers\Reader\GenreController;
+use App\Http\Controllers\Reader\HomeController;
+
+// Discovery & Catalog
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/latest', [CatalogController::class, 'latest'])->name('reader.catalog.latest');
+Route::get('/popular', [CatalogController::class, 'popular'])->name('reader.catalog.popular');
+Route::get('/genres', [GenreController::class, 'index'])->name('reader.genres.index');
+Route::get('/genres/{slug}', [GenreController::class, 'show'])->name('reader.genres.show');
 
 Route::get('/login', function () {
     return response('Login Page', 200);

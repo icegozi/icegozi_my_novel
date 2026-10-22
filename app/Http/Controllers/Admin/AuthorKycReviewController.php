@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AuthorKycResultMail;
 use App\Models\AuditLog;
 use App\Models\AuthorProfile;
 use App\Services\IdentityEncryptionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
@@ -115,6 +117,10 @@ class AuthorKycReviewController extends Controller
             'created_at' => now(),
         ]);
 
+        if ($profile->user && $profile->user->email) {
+            Mail::to($profile->user->email)->send(new AuthorKycResultMail($profile, 'verified'));
+        }
+
         return redirect()->route('admin.kyc.index')
             ->with('success', "Hồ sơ định danh của tác giả '{$profile->pen_name}' đã được phê duyệt. Ảnh CCCD đã được xóa vĩnh viễn.");
     }
@@ -160,6 +166,10 @@ class AuthorKycReviewController extends Controller
             'user_agent' => request()->userAgent(),
             'created_at' => now(),
         ]);
+
+        if ($profile->user && $profile->user->email) {
+            Mail::to($profile->user->email)->send(new AuthorKycResultMail($profile, 'rejected', $request->input('rejection_reason')));
+        }
 
         return redirect()->route('admin.kyc.index')
             ->with('warning', "Hồ sơ tác giả '{$profile->pen_name}' đã bị từ chối.");

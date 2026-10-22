@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NovelTakedownNoticeMail;
 use App\Models\AuditLog;
 use App\Models\Chapter;
 use App\Models\Novel;
 use App\Models\Report;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class CopyrightNoticeManagementController extends Controller
@@ -87,6 +89,19 @@ class CopyrightNoticeManagementController extends Controller
             'user_agent' => $request->userAgent(),
             'created_at' => now(),
         ]);
+
+        // Send legal takedown notice email to author under ND 17/2023
+        $novel = null;
+        if ($report->reportable_type === 'Novel') {
+            $novel = Novel::with('author')->find($report->reportable_id);
+        } elseif ($report->reportable_type === 'Chapter') {
+            $chapter = Chapter::with('novel.author')->find($report->reportable_id);
+            $novel = $chapter?->novel;
+        }
+
+        if ($novel && $novel->author && $novel->author->email) {
+            Mail::to($novel->author->email)->send(new NovelTakedownNoticeMail($novel, $report));
+        }
 
         return redirect()->route('admin.copyright.show', $report)
             ->with('warning', 'Đã tạm ẩn tác phẩm và kích hoạt thời hạn 10 ngày làm việc để tác giả nộp Thông Báo Phản Đối.');

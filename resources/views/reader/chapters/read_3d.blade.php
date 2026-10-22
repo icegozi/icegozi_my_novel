@@ -225,5 +225,11 @@
             csrfToken: "{{ csrf_token() }}"
         });
     </script>
+
+    <!-- Reading Progress Tracker Initialization -->
+    <script type="module">
+        import { ReadingProgressTracker } from '/resources/js/reading-progress-tracker.js';
+        new ReadingProgressTracker({{ $chapter->id }}, "{{ route('reader.progress.sync') }}", "{{ csrf_token() }}");
+    </script>
 </body>
 </html>

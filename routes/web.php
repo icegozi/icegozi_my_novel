@@ -24,6 +24,10 @@ Route::get('/truyen/{slug}/chuong/{chapterNumber}', [\App\Http\Controllers\Reade
     ->name('reader.chapters.read');
 Route::post('/api/reader/preferences', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'updatePreferences'])
     ->name('reader.preferences.update');
+Route::post('/api/reader/progress', [\App\Http\Controllers\Reader\ReadingHistoryController::class, 'sync'])
+    ->name('reader.progress.sync');
+Route::get('/api/reader/progress/{chapter}', [\App\Http\Controllers\Reader\ReadingHistoryController::class, 'show'])
+    ->name('reader.progress.show');
 
 // Author e-KYC and digital copyright consent
 Route::middleware('auth')->group(function () {

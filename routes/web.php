@@ -26,4 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/tac-gia/studio-check', function () {
         return response()->json(['status' => 'ok']);
     })->middleware('author.verified')->name('author.studio.check');
+
+    // Author Novel Management (CRUD)
+    Route::middleware('author.verified')->group(function () {
+        Route::resource('/tac-gia/truyen', \App\Http\Controllers\Author\NovelController::class)
+            ->names('author.novels');
+    });
 });

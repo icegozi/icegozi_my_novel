@@ -1,0 +1,74 @@
+/**
+ * Reader Stage & Touch Gesture Isolation CSS
+ */
+
+/* 1. Touch Isolation: Default canvas ignores touch/mouse gestures to preserve natural scrolling */
+.stage-viewport canvas {
+    pointer-events: none;
+    touch-action: pan-y;
+}
+
+.stage-viewport.is-interactive canvas {
+    pointer-events: auto !important;
+    touch-action: none;
+}
+
+/* 2. Reading Themes */
+body.theme-dark {
+    background-color: #020617;
+    color: #e2e8f0;
+}
+body.theme-dark .reader-surface {
+    background-color: #0b0f19;
+    border-color: #1e293b;
+    color: #cbd5e1;
+}
+
+body.theme-sepia {
+    background-color: #f4ecd8;
+    color: #433422;
+}
+body.theme-sepia .reader-surface {
+    background-color: #fbf0d9;
+    border-color: #e6d7be;
+    color: #382d1f;
+}
+body.theme-sepia header {
+    background-color: rgba(244, 236, 216, 0.85);
+    border-color: #decbb0;
+}
+
+body.theme-light {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+body.theme-light .reader-surface {
+    background-color: #ffffff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+/* 3. Dynamic Paragraph Highlight when 3D Model is Triggered */
+.paragraph-highlight-3d {
+    position: relative;
+    border-left: 3px solid #6366f1;
+    padding-left: 1rem !important;
+    transition: all 0.3s ease;
+    border-radius: 0 0.75rem 0.75rem 0;
+}
+body.theme-dark .paragraph-highlight-3d {
+    background-color: rgba(99, 102, 241, 0.08);
+}
+body.theme-sepia .paragraph-highlight-3d {
+    background-color: rgba(180, 83, 9, 0.08);
+    border-left-color: #b45309;
+}
+body.theme-light .paragraph-highlight-3d {
+    background-color: rgba(99, 102, 241, 0.06);
+}
+
+/* 4. Reading Font Size Adjustments */
+.reading-content.size-sm { font-size: 0.95rem; line-height: 1.8; }
+.reading-content.size-base { font-size: 1.125rem; line-height: 1.95; }
+.reading-content.size-lg { font-size: 1.25rem; line-height: 2.05; }
+.reading-content.size-xl { font-size: 1.4rem; line-height: 2.2; }

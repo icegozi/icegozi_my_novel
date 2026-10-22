@@ -57,5 +57,13 @@ Route::middleware('auth')->group(function () {
             ->name('author.novels.3d-assets.store');
         Route::delete('/tac-gia/truyen/{novel}/kho-3d/{asset}', [\App\Http\Controllers\Author\Novel3dAssetController::class, 'destroy'])
             ->name('author.novels.3d-assets.destroy');
+
+        // Chapter 3D Projections Linker API
+        Route::get('/tac-gia/chuong/{chapter}/hieu-ung-3d', [\App\Http\Controllers\Author\Chapter3dProjectionController::class, 'index'])
+            ->name('author.chapters.projections.index');
+        Route::post('/tac-gia/chuong/{chapter}/hieu-ung-3d', [\App\Http\Controllers\Author\Chapter3dProjectionController::class, 'store'])
+            ->name('author.chapters.projections.store');
+        Route::delete('/tac-gia/chuong/{chapter}/hieu-ung-3d/{projection}', [\App\Http\Controllers\Author\Chapter3dProjectionController::class, 'destroy'])
+            ->name('author.chapters.projections.destroy');
     });
 });

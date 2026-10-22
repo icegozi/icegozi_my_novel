@@ -228,6 +228,45 @@ class ZenEditorEngine {
 
         this.statusBadge.className = 'px-3 py-1 rounded-full text-xs font-medium border transition-colors ' + (colors[type] || colors.saved);
     }
+
+    openProjectionModal(paragraphIndex = 0) {
+        const modal = document.getElementById('projection3dModal');
+        const inputIdx = document.getElementById('modal_paragraph_index');
+        if (modal && inputIdx) {
+            inputIdx.value = paragraphIndex;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    closeProjectionModal() {
+        const modal = document.getElementById('projection3dModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    async saveProjection(data) {
+        try {
+            const res = await fetch(`/tac-gia/chuong/${this.chapterId}/hieu-ung-3d`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': this.csrfToken
+                },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                alert('Đã gán mô hình 3D vào đoạn văn thành công!');
+                this.closeProjectionModal();
+            } else {
+                const err = await res.json();
+                alert('Lỗi: ' + (err.message || 'Không thể lưu hiệu ứng 3D'));
+            }
+        } catch (e) {
+            alert('Lỗi kết nối máy chủ');
+        }
+    }
 }
 
 window.ZenEditorEngine = ZenEditorEngine;

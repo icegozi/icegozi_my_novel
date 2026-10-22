@@ -7,22 +7,12 @@ services:
     container_name: icegozi-novel-app
     restart: unless-stopped
     working_dir: /var/www
+    env_file:
+      - .env
     environment:
       CONTAINER_ROLE: app
-      APP_ENV: local
-      APP_DEBUG: "true"
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: icegozi_novel
-      DB_USERNAME: novel_user
-      DB_PASSWORD: novel_secret_password
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      SESSION_DRIVER: redis
-      QUEUE_CONNECTION: redis
-      CACHE_STORE: redis
-      AUTORUN_MIGRATIONS: "false"
+      DB_HOST: ${DOCKER_DB_HOST:-mysql}
+      REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}
     volumes:
       - ./:/var/www
       - /var/www/vendor
@@ -60,15 +50,12 @@ services:
     container_name: icegozi-novel-worker
     restart: unless-stopped
     working_dir: /var/www
+    env_file:
+      - .env
     environment:
       CONTAINER_ROLE: worker
-      APP_ENV: local
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      REDIS_HOST: redis
-      SESSION_DRIVER: redis
-      QUEUE_CONNECTION: redis
-      CACHE_STORE: redis
+      DB_HOST: ${DOCKER_DB_HOST:-mysql}
+      REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}
     volumes:
       - ./:/var/www
       - /var/www/vendor

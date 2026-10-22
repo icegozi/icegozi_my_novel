@@ -76,5 +76,20 @@ class DockerComposeValidationTest extends TestCase
         $this->assertStringContainsString('${DB_PASSWORD:-novel_secret_password}', $content);
         $this->assertStringContainsString('${MYSQL_ROOT_PASSWORD:-root_secret_password}', $content);
     }
+
+    public function test_docker_compose_injects_env_file_with_container_host_overrides(): void
+    {
+        $composePath = base_path('docker-compose.yml');
+        $content = file_get_contents($composePath);
+
+        // Verify env_file injection in app and worker
+        $this->assertStringContainsString('env_file:', $content);
+        $this->assertStringContainsString('- .env', $content);
+
+        // Verify container-specific host overrides
+        $this->assertStringContainsString('DB_HOST: ${DOCKER_DB_HOST:-mysql}', $content);
+        $this->assertStringContainsString('REDIS_HOST: ${DOCKER_REDIS_HOST:-redis}', $content);
+    }
 }
+
 

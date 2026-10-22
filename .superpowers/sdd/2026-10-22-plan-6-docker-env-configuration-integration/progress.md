@@ -17,3 +17,14 @@ Pre-flight: all shared interfaces aligned, self-consistency verified clean.
   - `.env.example` (documented forward ports and mysql credentials)
   - `.env.docker.example` (documented forward ports)
 
+## Task 2: Implement env_file: .env Injection and Dual Host/Container Routing
+- Status: COMPLETED
+- Tests: `tests/Feature/DockerComposeValidationTest.php` (All 6 passed, 37 assertions)
+- Live Verification:
+  - Host CLI (`php artisan db:show`) connects cleanly via `127.0.0.1:3306`
+  - Container (`docker compose exec app php artisan db:show`) connects cleanly via internal `mysql:3306`
+- Artifacts:
+  - `docker-compose.yml` (`env_file: - .env`, `DB_HOST: ${DOCKER_DB_HOST:-mysql}`)
+  - `.env` (configured with `FORWARD_*`, `DOCKER_*`, synchronized database credentials)
+
+

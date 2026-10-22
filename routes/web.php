@@ -15,9 +15,18 @@ Route::get('/genres', [GenreController::class, 'index'])->name('reader.genres.in
 Route::get('/genres/{slug}', [GenreController::class, 'show'])->name('reader.genres.show');
 Route::get('/search', [\App\Http\Controllers\Reader\SearchController::class, 'index'])->name('reader.search');
 
-Route::get('/login', function () {
-    return response('Login Page', 200);
-})->name('login');
+use App\Http\Controllers\Auth\AuthController;
+
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Legal terms and copyright policy
 Route::get('/dieu-khoan-va-ban-quyen', [AuthorRegistrationController::class, 'termsAndCopyrightPolicy'])

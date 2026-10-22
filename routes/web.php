@@ -54,8 +54,22 @@ Route::post('/api/reader/progress', [\App\Http\Controllers\Reader\ReadingHistory
 Route::get('/api/reader/progress/{chapter}', [\App\Http\Controllers\Reader\ReadingHistoryController::class, 'show'])
     ->name('reader.progress.show');
 
-// Author e-KYC and digital copyright consent
+// Authenticated Reader Area
 Route::middleware('auth')->group(function () {
+    Route::get('/library', [\App\Http\Controllers\Reader\UserLibraryController::class, 'library'])->name('reader.library');
+    Route::get('/history', [\App\Http\Controllers\Reader\UserLibraryController::class, 'history'])->name('reader.history');
+    Route::get('/bookmarks', [\App\Http\Controllers\Reader\UserLibraryController::class, 'bookmarks'])->name('reader.bookmarks');
+    Route::post('/api/bookmarks/toggle', [\App\Http\Controllers\Reader\UserLibraryController::class, 'toggleBookmark'])->name('reader.bookmarks.toggle');
+
+    Route::get('/notifications', [\App\Http\Controllers\Reader\UserProfileController::class, 'notifications'])->name('reader.notifications');
+    Route::get('/profile', [\App\Http\Controllers\Reader\UserProfileController::class, 'profile'])->name('reader.profile');
+    Route::post('/profile', [\App\Http\Controllers\Reader\UserProfileController::class, 'updateProfile'])->name('reader.profile.update');
+    Route::get('/settings', [\App\Http\Controllers\Reader\UserProfileController::class, 'settings'])->name('reader.settings');
+    Route::post('/settings', [\App\Http\Controllers\Reader\UserProfileController::class, 'updateSettings'])->name('reader.settings.update');
+    Route::get('/settings/security', [\App\Http\Controllers\Reader\UserProfileController::class, 'security'])->name('reader.settings.security');
+    Route::post('/settings/security', [\App\Http\Controllers\Reader\UserProfileController::class, 'updateSecurity'])->name('reader.settings.security.update');
+
+    // Author e-KYC and digital copyright consent
     Route::get('/tac-gia/dang-ky-dinh-danh', [AuthorRegistrationController::class, 'create'])
         ->name('author.kyc');
     Route::post('/tac-gia/dang-ky-dinh-danh', [AuthorRegistrationController::class, 'store'])

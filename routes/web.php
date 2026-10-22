@@ -15,6 +15,15 @@ Route::get('/login', function () {
 Route::get('/dieu-khoan-va-ban-quyen', [AuthorRegistrationController::class, 'termsAndCopyrightPolicy'])
     ->name('legal.terms');
 
+// Reader Novel & Chapter Routes
+Route::get('/truyen/{slug}', [\App\Http\Controllers\Reader\NovelViewController::class, 'show'])
+    ->name('reader.novels.show');
+Route::get('/truyen/{slug}/phong-trung-bay-3d', [\App\Http\Controllers\Reader\NovelViewController::class, 'exhibition'])
+    ->name('reader.novels.exhibition');
+Route::get('/truyen/{slug}/chuong/{chapterNumber}', function ($slug, $chapterNumber) {
+    return "Chapter {$chapterNumber} of {$slug}";
+})->name('reader.chapters.read');
+
 // Author e-KYC and digital copyright consent
 Route::middleware('auth')->group(function () {
     Route::get('/tac-gia/dang-ky-dinh-danh', [AuthorRegistrationController::class, 'create'])

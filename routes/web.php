@@ -34,6 +34,8 @@ Route::get('/truyen/{slug}', [\App\Http\Controllers\Reader\NovelViewController::
     ->name('reader.novels.show');
 Route::get('/truyen/{slug}/phong-trung-bay-3d', [\App\Http\Controllers\Reader\NovelViewController::class, 'exhibition'])
     ->name('reader.novels.exhibition');
+Route::get('/stories/{slug}/read/{chapterNumber}', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'read'])
+    ->name('reader.stories.read');
 Route::get('/truyen/{slug}/chuong/{chapterNumber}', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'read'])
     ->name('reader.chapters.read');
 Route::post('/api/reader/preferences', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'updatePreferences'])

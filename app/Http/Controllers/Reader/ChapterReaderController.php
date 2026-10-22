@@ -60,7 +60,12 @@ class ChapterReaderController extends Controller
             ->orderBy('chapter_number')
             ->first();
 
-        return view('reader.chapters.read_3d', compact('novel', 'chapter', 'previousChapter', 'nextChapter'));
+        $allChapters = Chapter::where('novel_id', $novel->id)
+            ->where('status', 'published')
+            ->orderBy('chapter_number')
+            ->get(['id', 'chapter_number', 'title', 'slug']);
+
+        return view('reader.chapters.read_3d', compact('novel', 'chapter', 'previousChapter', 'nextChapter', 'allChapters'));
     }
 
     /**

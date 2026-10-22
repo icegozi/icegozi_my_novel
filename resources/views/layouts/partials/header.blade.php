@@ -18,16 +18,16 @@
 
             <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 sepia:text-sepia-muted" aria-label="Menu chính">
-                <a href="/" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('/') ? 'text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-slate-800/60' : '' }}">
+                <a href="/" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('/') ? 'text-indigo-600 dark:text-indigo-400 sepia:text-amber-900 font-bold bg-indigo-50 dark:bg-slate-800/60 sepia:bg-sepia-200' : '' }}">
                     Trang Chủ
                 </a>
-                <a href="/genres" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('genres*') ? 'text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-slate-800/60' : '' }}">
+                <a href="/genres" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('genres*') ? 'text-indigo-600 dark:text-indigo-400 sepia:text-amber-900 font-bold bg-indigo-50 dark:bg-slate-800/60 sepia:bg-sepia-200' : '' }}">
                     Thể Loại
                 </a>
-                <a href="/latest" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('latest*') ? 'text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-slate-800/60' : '' }}">
+                <a href="/latest" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('latest*') ? 'text-indigo-600 dark:text-indigo-400 sepia:text-amber-900 font-bold bg-indigo-50 dark:bg-slate-800/60 sepia:bg-sepia-200' : '' }}">
                     Mới Cập Nhật
                 </a>
-                <a href="/popular" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('popular*') ? 'text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-slate-800/60' : '' }}">
+                <a href="/popular" class="px-3 py-2 rounded-lg hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 transition {{ request()->is('popular*') ? 'text-indigo-600 dark:text-indigo-400 sepia:text-amber-900 font-bold bg-indigo-50 dark:bg-slate-800/60 sepia:bg-sepia-200' : '' }}">
                     Bảng Xếp Hạng
                 </a>
             </nav>
@@ -143,7 +143,7 @@
                     <a href="/login" class="px-3.5 py-2 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-200 sepia:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                         Đăng Nhập
                     </a>
-                    <a href="/register" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-500/20 transition">
+                    <a href="/register" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white shadow-md shadow-indigo-500/20 sepia:shadow-amber-900/25 transition">
                         Đăng Ký
                     </a>
                 </div>

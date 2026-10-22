@@ -36,7 +36,7 @@
                 >
                 <button
                     type="submit"
-                    class="absolute right-2 top-2 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition"
+                    class="absolute right-2 top-2 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white text-xs font-bold transition"
                 >
                     Tìm
                 </button>
@@ -47,7 +47,7 @@
         <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
             <a
                 href="/"
-                class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+                class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white text-xs font-bold shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
             >
                 <span>🏠</span> Trở Về Trang Chủ
             </a>

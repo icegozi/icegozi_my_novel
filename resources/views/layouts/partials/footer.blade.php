@@ -4,7 +4,7 @@
             <!-- Brand Column -->
             <div class="space-y-4 md:col-span-1">
                 <a href="/" class="flex items-center gap-3">
-                    <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white text-sm shadow-md">
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 sepia:from-amber-800 sepia:to-amber-950 flex items-center justify-center font-bold text-white text-sm shadow-md">
                         3D
                     </span>
                     <span class="font-heading font-black text-lg tracking-wider text-slate-900 dark:text-white sepia:text-sepia-text">

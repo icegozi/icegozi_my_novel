@@ -101,7 +101,7 @@
 
             <button
                 type="submit"
-                class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5"
+                class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-all transform hover:-translate-y-0.5"
             >
                 Tạo Tài Khoản
             </button>

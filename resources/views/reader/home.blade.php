@@ -89,7 +89,7 @@
                             @if ($featured->chapters->isNotEmpty())
                                 <a
                                     href="/stories/{{ $featured->slug }}/read/{{ $featured->chapters->first()->chapter_number }}"
-                                    class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+                                    class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white text-xs font-bold shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
                                 >
                                     <span>📖</span> Đọc Ngay (Chương 1)
                                 </a>

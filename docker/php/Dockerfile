@@ -43,7 +43,9 @@ RUN apk add --no-cache \
     libzip \
     libpq \
     oniguruma \
-    fcgi
+    fcgi \
+    netcat-openbsd \
+    supervisor
 
 # Install build dependencies and compile PHP extensions
 RUN apk add --no-cache --virtual .build-deps \
@@ -78,10 +80,18 @@ RUN addgroup -g 1000 appuser && \
 
 WORKDIR /var/www
 
-# Copy PHP configs
+# Copy PHP and Supervisor configs
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/99-enterprise-php.ini
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
+# Copy entrypoint and healthcheck scripts
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY docker/healthcheck.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # ==========================================
 # Stage 4: Production Image

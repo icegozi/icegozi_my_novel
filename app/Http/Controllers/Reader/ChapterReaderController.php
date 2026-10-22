@@ -62,4 +62,25 @@ class ChapterReaderController extends Controller
 
         return view('reader.chapters.read_3d', compact('novel', 'chapter', 'previousChapter', 'nextChapter'));
     }
+
+    /**
+     * Update user reader preferences (Theme, font size, Zen mode).
+     */
+    public function updatePreferences(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            'theme' => ['required', 'in:dark,sepia,light'],
+            'font_size' => ['required', 'in:sm,base,lg,xl'],
+            'mode' => ['nullable', 'in:3d,zen'],
+        ]);
+
+        session([
+            'reader_preferences' => $validated,
+        ]);
+
+        return response()->json([
+            'status' => 'ok',
+            'preferences' => $validated,
+        ]);
+    }
 }

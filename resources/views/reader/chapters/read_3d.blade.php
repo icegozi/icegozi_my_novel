@@ -213,5 +213,17 @@
             }
         });
     </script>
+
+    <!-- Zen Toolbar Partial -->
+    @include('reader.chapters.partials.zen_toolbar')
+
+    <!-- Preferences Initialization -->
+    <script type="module">
+        import { ReaderPreferences } from '/resources/js/reader-preferences.js';
+        new ReaderPreferences({
+            apiEndpoint: "{{ route('reader.preferences.update') }}",
+            csrfToken: "{{ csrf_token() }}"
+        });
+    </script>
 </body>
 </html>

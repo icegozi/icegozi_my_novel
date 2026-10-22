@@ -22,6 +22,8 @@ Route::get('/truyen/{slug}/phong-trung-bay-3d', [\App\Http\Controllers\Reader\No
     ->name('reader.novels.exhibition');
 Route::get('/truyen/{slug}/chuong/{chapterNumber}', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'read'])
     ->name('reader.chapters.read');
+Route::post('/api/reader/preferences', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'updatePreferences'])
+    ->name('reader.preferences.update');
 
 // Author e-KYC and digital copyright consent
 Route::middleware('auth')->group(function () {

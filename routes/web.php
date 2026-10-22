@@ -49,5 +49,13 @@ Route::middleware('auth')->group(function () {
             ->name('author.novels.bulk-chapters.preview');
         Route::post('/tac-gia/truyen/{novel}/tach-chuong/luu', [\App\Http\Controllers\Author\BulkChapterController::class, 'store'])
             ->name('author.novels.bulk-chapters.store');
+
+        // 3D Asset Gallery & Upload
+        Route::get('/tac-gia/truyen/{novel}/kho-3d', [\App\Http\Controllers\Author\Novel3dAssetController::class, 'index'])
+            ->name('author.novels.3d-assets.index');
+        Route::post('/tac-gia/truyen/{novel}/kho-3d', [\App\Http\Controllers\Author\Novel3dAssetController::class, 'store'])
+            ->name('author.novels.3d-assets.store');
+        Route::delete('/tac-gia/truyen/{novel}/kho-3d/{asset}', [\App\Http\Controllers\Author\Novel3dAssetController::class, 'destroy'])
+            ->name('author.novels.3d-assets.destroy');
     });
 });

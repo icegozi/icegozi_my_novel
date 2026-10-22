@@ -79,9 +79,7 @@
                 <h1 class="text-2xl md:text-3xl font-extrabold text-white mt-1">{{ $chapter->title }}</h1>
             </div>
 
-            <div class="prose prose-invert prose-slate max-w-none font-reader text-base md:text-lg text-slate-300 leading-relaxed space-y-4">
-                {!! $chapter->content !!}
-            </div>
+            @include('admin.moderation.partials.content_preview', ['content' => $chapter->content])
         </article>
     </main>
 

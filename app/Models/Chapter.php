@@ -18,6 +18,8 @@ class Chapter extends Model
         'slug',
         'content',
         'word_count',
+        'revision',
+        'client_uuid',
         'status',
         'scheduled_at',
         'published_at',
@@ -29,6 +31,7 @@ class Chapter extends Model
         return [
             'chapter_number' => 'decimal:2',
             'word_count' => 'integer',
+            'revision' => 'integer',
             'view_count' => 'integer',
             'scheduled_at' => 'datetime',
             'published_at' => 'datetime',

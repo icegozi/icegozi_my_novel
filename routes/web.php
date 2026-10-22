@@ -31,5 +31,15 @@ Route::middleware('auth')->group(function () {
     Route::middleware('author.verified')->group(function () {
         Route::resource('/tac-gia/truyen', \App\Http\Controllers\Author\NovelController::class)
             ->names('author.novels');
+
+        // Zen Editor routes
+        Route::get('/tac-gia/truyen/{truyen}/chuong/them-moi', [\App\Http\Controllers\Author\ChapterEditorController::class, 'create'])
+            ->name('author.chapters.create');
+        Route::get('/tac-gia/truyen/{truyen}/chuong/{chuong}/soan-thao', [\App\Http\Controllers\Author\ChapterEditorController::class, 'edit'])
+            ->name('author.chapters.edit');
+
+        // Autosave API endpoint
+        Route::post('/api/author/chapters/autosave', [\App\Http\Controllers\Author\ChapterEditorController::class, 'autosave'])
+            ->name('author.chapters.autosave');
     });
 });

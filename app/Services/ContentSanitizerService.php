@@ -35,6 +35,14 @@ class ContentSanitizerService
     }
 
     /**
+     * Alias for sanitize.
+     */
+    public function clean(string $content): string
+    {
+        return $this->sanitize($content);
+    }
+
+    /**
      * Accurately count words for Vietnamese and multilingual text.
      *
      * @param string $content

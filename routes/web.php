@@ -41,5 +41,13 @@ Route::middleware('auth')->group(function () {
         // Autosave API endpoint
         Route::post('/api/author/chapters/autosave', [\App\Http\Controllers\Author\ChapterEditorController::class, 'autosave'])
             ->name('author.chapters.autosave');
+
+        // Bulk chapter splitter routes
+        Route::get('/tac-gia/truyen/{novel}/tach-chuong', [\App\Http\Controllers\Author\BulkChapterController::class, 'create'])
+            ->name('author.novels.bulk-chapters.create');
+        Route::post('/tac-gia/truyen/{novel}/tach-chuong/xem-truoc', [\App\Http\Controllers\Author\BulkChapterController::class, 'preview'])
+            ->name('author.novels.bulk-chapters.preview');
+        Route::post('/tac-gia/truyen/{novel}/tach-chuong/luu', [\App\Http\Controllers\Author\BulkChapterController::class, 'store'])
+            ->name('author.novels.bulk-chapters.store');
     });
 });

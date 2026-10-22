@@ -28,6 +28,8 @@ Route::post('/bao-cao-vi-pham', [\App\Http\Controllers\Legal\PublicReportControl
     ->name('legal.reports.store');
 
 // Reader Novel & Chapter Routes
+Route::get('/stories/{slug}', [\App\Http\Controllers\Reader\NovelViewController::class, 'show'])
+    ->name('reader.stories.show');
 Route::get('/truyen/{slug}', [\App\Http\Controllers\Reader\NovelViewController::class, 'show'])
     ->name('reader.novels.show');
 Route::get('/truyen/{slug}/phong-trung-bay-3d', [\App\Http\Controllers\Reader\NovelViewController::class, 'exhibition'])

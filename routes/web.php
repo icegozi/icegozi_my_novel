@@ -14,6 +14,10 @@ Route::get('/login', function () {
 // Legal terms and copyright policy
 Route::get('/dieu-khoan-va-ban-quyen', [AuthorRegistrationController::class, 'termsAndCopyrightPolicy'])
     ->name('legal.terms');
+Route::get('/bao-cao-vi-pham', [\App\Http\Controllers\Legal\PublicReportController::class, 'create'])
+    ->name('legal.reports.create');
+Route::post('/bao-cao-vi-pham', [\App\Http\Controllers\Legal\PublicReportController::class, 'store'])
+    ->name('legal.reports.store');
 
 // Reader Novel & Chapter Routes
 Route::get('/truyen/{slug}', [\App\Http\Controllers\Reader\NovelViewController::class, 'show'])
@@ -81,6 +85,12 @@ Route::middleware('auth')->group(function () {
             ->name('author.chapters.projections.destroy');
     });
 
+    // Author Counter-Notice routes
+    Route::get('/tac-gia/phan-doi-khieu-nai/{report}', [\App\Http\Controllers\Author\CounterNoticeController::class, 'create'])
+        ->name('author.counter-notice.create');
+    Route::post('/tac-gia/phan-doi-khieu-nai/{report}', [\App\Http\Controllers\Author\CounterNoticeController::class, 'store'])
+        ->name('author.counter-notice.store');
+
     // Admin & Moderator Content Moderation Routes
     Route::middleware('admin.mod')->prefix('/admin/kiem-duyet')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'queue'])
@@ -95,6 +105,20 @@ Route::middleware('auth')->group(function () {
             ->name('admin.moderation.novels.approve');
         Route::post('/truyen/{novel}/tu-choi', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'rejectNovel'])
             ->name('admin.moderation.novels.reject');
+    });
+
+    // Admin Copyright Management Routes (ND 17/2023)
+    Route::middleware('admin.mod')->prefix('/admin/ban-quyen')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\CopyrightNoticeManagementController::class, 'index'])
+            ->name('admin.copyright.index');
+        Route::get('/{report}', [\App\Http\Controllers\Admin\CopyrightNoticeManagementController::class, 'show'])
+            ->name('admin.copyright.show');
+        Route::post('/{report}/tam-an', [\App\Http\Controllers\Admin\CopyrightNoticeManagementController::class, 'temporaryTakedown'])
+            ->name('admin.copyright.takedown');
+        Route::post('/{report}/khoi-phuc', [\App\Http\Controllers\Admin\CopyrightNoticeManagementController::class, 'restore'])
+            ->name('admin.copyright.restore');
+        Route::post('/{report}/bac-don', [\App\Http\Controllers\Admin\CopyrightNoticeManagementController::class, 'dismiss'])
+            ->name('admin.copyright.dismiss');
     });
 });
 

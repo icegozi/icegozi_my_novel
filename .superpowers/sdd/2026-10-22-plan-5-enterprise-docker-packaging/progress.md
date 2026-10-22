@@ -20,3 +20,12 @@ Pre-flight: all shared interfaces aligned, self-consistency verified clean.
   - `docker/php/www.conf` (appuser non-root, dynamic pool, status/ping endpoints)
   - `.dockerignore` (production exclusion list)
 
+## Task 2: Nginx Reverse Proxy with 3D/GLB Asset Tuning & Security Headers
+- Status: COMPLETED
+- Tests: `tests/Feature/DockerNginxConfigTest.php` (All passed, 15 assertions)
+- Artifacts:
+  - `docker/nginx/Dockerfile` (Alpine 1.27, curl healthcheck)
+  - `docker/nginx/nginx.conf` (GLB/GLTF MIME types, gzip compression for binary/json 3D assets, 4096 worker connections)
+  - `docker/nginx/default.conf` (64MB body size, FastCGI buffers, security headers, /up proxy)
+
+

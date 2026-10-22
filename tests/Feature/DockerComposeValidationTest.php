@@ -59,4 +59,22 @@ class DockerComposeValidationTest extends TestCase
         $this->assertStringContainsString('CACHE_STORE=redis', $content);
         $this->assertStringContainsString('QUEUE_CONNECTION=redis', $content);
     }
+
+    public function test_docker_compose_supports_dynamic_port_and_credential_interpolation(): void
+    {
+        $composePath = base_path('docker-compose.yml');
+        $content = file_get_contents($composePath);
+
+        // Verify dynamic port mappings with fallbacks
+        $this->assertStringContainsString('${FORWARD_NGINX_PORT:-8080}:80', $content);
+        $this->assertStringContainsString('${FORWARD_DB_PORT:-3306}:3306', $content);
+        $this->assertStringContainsString('${FORWARD_REDIS_PORT:-6379}:6379', $content);
+
+        // Verify MySQL credentials driven by .env variables
+        $this->assertStringContainsString('${DB_DATABASE:-icegozi_novel}', $content);
+        $this->assertStringContainsString('${DB_USERNAME:-novel_user}', $content);
+        $this->assertStringContainsString('${DB_PASSWORD:-novel_secret_password}', $content);
+        $this->assertStringContainsString('${MYSQL_ROOT_PASSWORD:-root_secret_password}', $content);
+    }
 }
+

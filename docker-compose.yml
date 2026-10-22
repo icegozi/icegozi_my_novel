@@ -42,7 +42,7 @@ services:
     container_name: icegozi-novel-web
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "${FORWARD_NGINX_PORT:-8080}:80"
     volumes:
       - ./:/var/www:ro
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -86,12 +86,12 @@ services:
     container_name: icegozi-novel-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root_secret_password
-      MYSQL_DATABASE: icegozi_novel
-      MYSQL_USER: novel_user
-      MYSQL_PASSWORD: novel_secret_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_secret_password}
+      MYSQL_DATABASE: ${DB_DATABASE:-icegozi_novel}
+      MYSQL_USER: ${DB_USERNAME:-novel_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-novel_secret_password}
     ports:
-      - "3306:3306"
+      - "${FORWARD_DB_PORT:-3306}:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
@@ -109,7 +109,7 @@ services:
     container_name: icegozi-novel-redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     networks:
@@ -119,6 +119,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+
 
 networks:
   app-network:

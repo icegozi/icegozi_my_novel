@@ -83,4 +83,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(ChapterComment::class);
     }
+
+    public function auditLogs(): HasMany
+    {
+        return $this->hasMany(AuditLog::class);
+    }
+
+    public function reportsSubmitted(): HasMany
+    {
+        return $this->hasMany(Report::class, 'reporter_id');
+    }
+
+    public function reportsResolved(): HasMany
+    {
+        return $this->hasMany(Report::class, 'resolved_by');
+    }
 }

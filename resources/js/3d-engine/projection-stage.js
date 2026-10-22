@@ -1,5 +1,6 @@
 import { ParticleSystem } from './particle-system.js';
 import { ModelCache } from './model-cache.js';
+import { WebGLCapabilityDetector } from './webgl-fallback.js';
 
 /**
  * ProjectionStage - Three.js WebGL Interactive 3D Hologram Projection Stage
@@ -8,6 +9,7 @@ import { ModelCache } from './model-cache.js';
  * - Automatic BoundingBox centering and optimal camera distance
  * - DRACOLoader decompressed glTF parsing & ModelCache memory caching
  * - Dynamic atmospheric particle system
+ * - WebGL context lost graceful recovery & 2D fallback for low-end hardware
  */
 export class ProjectionStage {
     constructor(containerElement, options = {}) {
@@ -28,6 +30,7 @@ export class ProjectionStage {
         this.animFrameId = null;
 
         this.isInteractive = false;
+        this.isContextLost = false;
         this.particleSystem = new ParticleSystem();
         this.modelCache = new ModelCache();
 
@@ -35,8 +38,12 @@ export class ProjectionStage {
     }
 
     init() {
-        if (!this.container || typeof THREE === 'undefined') {
-            console.warn('[ProjectionStage] Container element or THREE library not available.');
+        if (!this.container) return;
+
+        // Check WebGL availability
+        if (!WebGLCapabilityDetector.isWebGLAvailable() || typeof THREE === 'undefined') {
+            console.warn('[ProjectionStage] WebGL is not available, falling back to 2D.');
+            WebGLCapabilityDetector.render2dFallback(this.container, 'Đài Chiếu Cụ Hóa', null, 'Trình duyệt hoặc thiết bị không hỗ trợ WebGL.');
             return;
         }
 
@@ -61,6 +68,13 @@ export class ProjectionStage {
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         this.container.appendChild(this.renderer.domElement);
+
+        // Attach WebGL context lost detection: webglcontextlost handler
+        WebGLCapabilityDetector.attachContextLostHandler(
+            this.renderer.domElement,
+            (e) => this.handleContextLost(e),
+            (e) => this.handleContextRestored(e)
+        );
 
         // 4. Touch isolation: default pointer-events none
         this.setInteractive(this.options.interactive);
@@ -215,6 +229,27 @@ export class ProjectionStage {
         if (this.renderer && this.scene && this.camera) {
             this.renderer.render(this.scene, this.camera);
         }
+    }
+
+    handleContextLost(event) {
+        this.isContextLost = true;
+        if (this.animFrameId) {
+            cancelAnimationFrame(this.animFrameId);
+            this.animFrameId = null;
+        }
+        const modelName = this.currentModel?.name || 'Mô Hình 3D';
+        WebGLCapabilityDetector.render2dFallback(
+            this.container,
+            modelName,
+            null,
+            'Trình điều khiển đồ họa bị gián đoạn. Đã chuyển sang chế độ 2D an toàn.'
+        );
+    }
+
+    handleContextRestored(event) {
+        this.isContextLost = false;
+        console.info('[ProjectionStage] Re-initializing WebGL scene after context restore...');
+        this.init();
     }
 
     destroy() {

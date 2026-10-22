@@ -132,8 +132,12 @@ FROM base AS development
 # Install Composer CLI in development image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Copy pre-installed vendor from composer-builder for out-of-the-box readiness
+COPY --chown=appuser:www-data --from=composer-builder /app/vendor /var/www/vendor
+
 USER appuser
 
 EXPOSE 9000
 
 CMD ["php-fpm"]
+

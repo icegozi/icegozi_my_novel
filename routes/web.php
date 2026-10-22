@@ -13,6 +13,7 @@ Route::get('/latest', [CatalogController::class, 'latest'])->name('reader.catalo
 Route::get('/popular', [CatalogController::class, 'popular'])->name('reader.catalog.popular');
 Route::get('/genres', [GenreController::class, 'index'])->name('reader.genres.index');
 Route::get('/genres/{slug}', [GenreController::class, 'show'])->name('reader.genres.show');
+Route::get('/search', [\App\Http\Controllers\Reader\SearchController::class, 'index'])->name('reader.search');
 
 Route::get('/login', function () {
     return response('Login Page', 200);

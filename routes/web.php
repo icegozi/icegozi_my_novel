@@ -134,5 +134,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/{profile}/tu-choi', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'reject'])
             ->name('admin.kyc.reject');
     });
+
+    // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)
+    Route::middleware('admin.mod')->prefix('/admin/nhat-ky-an-ninh')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\AuditLogExplorerController::class, 'index'])
+            ->name('admin.audit-logs.index');
+        Route::get('/xuat-du-lieu', [\App\Http\Controllers\Admin\AuditLogExplorerController::class, 'export'])
+            ->name('admin.audit-logs.export');
+    });
 });
 

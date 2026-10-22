@@ -80,4 +80,21 @@ Route::middleware('auth')->group(function () {
         Route::delete('/tac-gia/chuong/{chapter}/hieu-ung-3d/{projection}', [\App\Http\Controllers\Author\Chapter3dProjectionController::class, 'destroy'])
             ->name('author.chapters.projections.destroy');
     });
+
+    // Admin & Moderator Content Moderation Routes
+    Route::middleware('admin.mod')->prefix('/admin/kiem-duyet')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'queue'])
+            ->name('admin.moderation.queue');
+        Route::get('/chuong/{chapter}', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'reviewChapter'])
+            ->name('admin.moderation.chapters.review');
+        Route::post('/chuong/{chapter}/phe-duyet', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'approveChapter'])
+            ->name('admin.moderation.chapters.approve');
+        Route::post('/chuong/{chapter}/tu-choi', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'rejectChapter'])
+            ->name('admin.moderation.chapters.reject');
+        Route::post('/truyen/{novel}/phe-duyet', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'approveNovel'])
+            ->name('admin.moderation.novels.approve');
+        Route::post('/truyen/{novel}/tu-choi', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'rejectNovel'])
+            ->name('admin.moderation.novels.reject');
+    });
 });
+

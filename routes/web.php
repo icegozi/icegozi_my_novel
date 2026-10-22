@@ -120,5 +120,19 @@ Route::middleware('auth')->group(function () {
         Route::post('/{report}/bac-don', [\App\Http\Controllers\Admin\CopyrightNoticeManagementController::class, 'dismiss'])
             ->name('admin.copyright.dismiss');
     });
+
+    // Admin Author e-KYC Review Routes (ND 13/2023 & ND 147/2024)
+    Route::middleware('admin.mod')->prefix('/admin/dinh-danh-tac-gia')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'index'])
+            ->name('admin.kyc.index');
+        Route::get('/{profile}', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'show'])
+            ->name('admin.kyc.show');
+        Route::get('/{profile}/tai-lieu/{side}', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'document'])
+            ->name('admin.kyc.document');
+        Route::post('/{profile}/duyet', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'approve'])
+            ->name('admin.kyc.approve');
+        Route::post('/{profile}/tu-choi', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'reject'])
+            ->name('admin.kyc.reject');
+    });
 });
 

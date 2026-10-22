@@ -1,6 +1,6 @@
 # Complete Story Reading Platform UI Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Build a complete, responsive, and production-quality story and comic reading web platform with comprehensive discovery, chapter reading, authentication, library management, and user settings.
 
@@ -45,7 +45,7 @@
 - Consumes: Tailwind CSS framework, Bunny/Google Fonts CDN (`Plus Jakarta Sans`, `Cinzel`, `Merriweather`, `Inter`).
 - Produces: `layouts.reader` Blade component with customizable slots, `<x-reader-layout>`, semantic color tokens (`--color-bg`, `--color-surface`, `--color-primary`, `--color-accent`), and client-side `theme-manager.js`.
 
-- [ ] **Step 1: Write the failing test for layout rendering and theme tags**
+- [x] **Step 1: Write the failing test for layout rendering and theme tags**
 
 ```php
 // tests/Feature/LayoutAndThemeTest.php
@@ -65,12 +65,12 @@ class LayoutAndThemeTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter LayoutAndThemeTest`
 Expected: FAIL with missing view or assertions failing on default welcome page.
 
-- [ ] **Step 3: Implement design tokens and master layout**
+- [x] **Step 3: Implement design tokens and master layout**
 
 1. Extend `tailwind.config.js` with fonts (`sans`: Plus Jakarta Sans, `novel`: Merriweather, `heading`: Cinzel, `mono`: JetBrains Mono) and semantic reader palette (`surface`, `sepia`, `accent-amber`, `brand-violet`).
 2. Add CSS custom properties in `resources/css/app.css` for light, dark, and sepia themes.
@@ -79,12 +79,12 @@ Expected: FAIL with missing view or assertions failing on default welcome page.
 5. Implement `resources/views/layouts/partials/footer.blade.php` with category directories and copyright notices.
 6. Create `resources/js/theme-manager.js` to manage dark/light/sepia modes and synchronize with `localStorage`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter LayoutAndThemeTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tailwind.config.js resources/css/app.css resources/views/layouts resources/js/theme-manager.js tests/Feature/LayoutAndThemeTest.php
@@ -105,7 +105,7 @@ git commit -m "feat(design-system): implement design tokens, typography, and rea
 - Consumes: `App\Models\Novel`, `App\Models\Chapter`, `App\Models\Genre`, `App\Models\User`.
 - Produces: 8+ rich novels across Tiên Hiệp, Huyền Huyễn, Đô Thị, Khoa Huyễn, Kiếm Hiệp, and a Comic/Manga titled "Võ Thần Tái Sinh (Webtoon)" with illustrated panel data, ratings, views, and bookmark statistics.
 
-- [ ] **Step 1: Write the failing test for catalog seed data**
+- [x] **Step 1: Write the failing test for catalog seed data**
 
 ```php
 // tests/Feature/CatalogSeedDataTest.php
@@ -130,22 +130,22 @@ class CatalogSeedDataTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter CatalogSeedDataTest`
 Expected: FAIL with `assertNotNull failed` for comic novel slug.
 
-- [ ] **Step 3: Implement `ComicAndNovelShowcaseSeeder` and register in `DatabaseSeeder`**
+- [x] **Step 3: Implement `ComicAndNovelShowcaseSeeder` and register in `DatabaseSeeder`**
 
 1. Create `database/seeders/ComicAndNovelShowcaseSeeder.php` populating realistic Vietnamese literature metadata, multi-genre associations, multiple chapters with realistic story paragraphs, and a full comic chapter containing 8 high-resolution SVG/webp comic panels.
 2. Link into `DatabaseSeeder.php` alongside `NovelPlatformSeeder.php`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter CatalogSeedDataTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add database/seeders tests/Feature/CatalogSeedDataTest.php
@@ -177,7 +177,7 @@ git commit -m "feat(seeders): populate realistic story and comic showcase record
   - `GET /genres` -> `GenreController@index` -> `reader.genres.index`
   - `GET /genres/{slug}` -> `GenreController@show` -> `reader.genres.show`
 
-- [ ] **Step 1: Write failing test for discovery routes**
+- [x] **Step 1: Write failing test for discovery routes**
 
 ```php
 // tests/Feature/DiscoveryPagesTest.php
@@ -202,12 +202,12 @@ class DiscoveryPagesTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter DiscoveryPagesTest`
 Expected: FAIL with 404 or missing route.
 
-- [ ] **Step 3: Implement controllers, views, and routes**
+- [x] **Step 3: Implement controllers, views, and routes**
 
 1. `HomeController`: Fetches featured stories, trending stories, latest chapter updates, genre badges, and continue-reading history if authenticated.
 2. `CatalogController`: Provides `/latest` (ordered by chapter published_at) and `/popular` (ordered by view_count and rating_avg) with pagination.
@@ -215,12 +215,12 @@ Expected: FAIL with 404 or missing route.
 4. Build responsive, editorial Blade views using `layouts.reader`, story cards with hover depth, rating badges, word count metadata, and zero layout shift.
 5. Register routes in `routes/web.php`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter DiscoveryPagesTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/Http/Controllers/Reader/ resources/views/reader/ routes/web.php tests/Feature/DiscoveryPagesTest.php
@@ -241,7 +241,7 @@ git commit -m "feat(discovery): implement home, latest, popular, and genre catal
 - Consumes: Query parameters `q` (keyword), `genre` (slug), `status` (all/completed/ongoing), `sort` (relevance/latest/views/rating).
 - Produces: `GET /search` -> `SearchController@index` -> `reader.search`.
 
-- [ ] **Step 1: Write failing test for search functionality**
+- [x] **Step 1: Write failing test for search functionality**
 
 ```php
 // tests/Feature/SearchPageTest.php
@@ -268,23 +268,23 @@ class SearchPageTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter SearchPageTest`
 Expected: FAIL with 404.
 
-- [ ] **Step 3: Implement SearchController and `reader/search.blade.php`**
+- [x] **Step 3: Implement SearchController and `reader/search.blade.php`**
 
 1. `SearchController@index`: Query builder filtering by title/synopsis, genre slug, age rating, copyright status, sorting, and pagination (12 items per page).
 2. `reader/search.blade.php`: Clean filter sidebar / top bar, search input with clear button, active filter tags, responsive story card grid, and helpful no-results empty state with recommendations.
 3. Add quick search modal shortcut (`Cmd+K` / `Ctrl+K`) integration in header.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter SearchPageTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/Http/Controllers/Reader/SearchController.php resources/views/reader/search.blade.php routes/web.php tests/Feature/SearchPageTest.php
@@ -307,7 +307,7 @@ git commit -m "feat(search): implement search and faceted filtering page"
   - `GET /stories/{slug}` and `GET /truyen/{slug}` rendering unified, polished story detail page.
   - Returns chapter list with sorting (newest/oldest) and read status indicators.
 
-- [ ] **Step 1: Write failing test for `/stories/{slug}` route alias and content**
+- [x] **Step 1: Write failing test for `/stories/{slug}` route alias and content**
 
 ```php
 // tests/Feature/StoryDetailRouteTest.php
@@ -338,12 +338,12 @@ class StoryDetailRouteTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter StoryDetailRouteTest`
 Expected: FAIL with 404 for `/stories/{slug}`.
 
-- [ ] **Step 3: Update `NovelViewController.php`, `routes/web.php`, and `show.blade.php`**
+- [x] **Step 3: Update `NovelViewController.php`, `routes/web.php`, and `show.blade.php`**
 
 1. Register `Route::get('/stories/{slug}', [NovelViewController::class, 'show'])->name('reader.stories.show')`.
 2. Update `show.blade.php` to inherit `layouts.reader`, featuring:
@@ -353,12 +353,12 @@ Expected: FAIL with 404 for `/stories/{slug}`.
    - Interactive Chapter List with fast search, sort order toggle (cũ nhất / mới nhất), and direct read action.
    - 3D Interactive Exhibition entry button if 3D assets exist.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter StoryDetailRouteTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/Http/Controllers/Reader/NovelViewController.php resources/views/reader/novels/show.blade.php routes/web.php tests/Feature/StoryDetailRouteTest.php
@@ -384,7 +384,7 @@ git commit -m "feat(story-detail): polish story detail view with /stories/{slug}
   - Text story reader: font size (14px-24px), font family (Serif/Sans), line height (1.4-2.2), width constraints, theme switcher (Light, Dark, Sepia), Prev/Next chapter navigation, Table of Contents drawer, bookmark button, keyboard handlers.
   - Comic reader: continuous vertical scrolling panel mode, image zoom, image loading skeletons, responsive image sizing.
 
-- [ ] **Step 1: Write failing test for the unified reading experience**
+- [x] **Step 1: Write failing test for the unified reading experience**
 
 ```php
 // tests/Feature/ChapterReaderExperienceTest.php
@@ -413,12 +413,12 @@ class ChapterReaderExperienceTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter ChapterReaderExperienceTest`
 Expected: FAIL with 404 for `/stories/{slug}/read/{chapter}`.
 
-- [ ] **Step 3: Implement controller enhancements, reader view, and `reader-controls.js`**
+- [x] **Step 3: Implement controller enhancements, reader view, and `reader-controls.js`**
 
 1. Register `/stories/{slug}/read/{chapter}` in `routes/web.php` routing to `ChapterReaderController::read`.
 2. Create `resources/views/reader/chapters/reader.blade.php` incorporating:
@@ -430,12 +430,12 @@ Expected: FAIL with 404 for `/stories/{slug}/read/{chapter}`.
    - Preserved 3D interactive stage trigger if projections exist.
 3. Implement `resources/js/reader-controls.js` managing settings, keyboard shortcuts (`ArrowLeft` for Prev, `ArrowRight` for Next, `t` for Theme, `Esc` for Drawers), and local/remote progress sync.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter ChapterReaderExperienceTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/Http/Controllers/Reader/ChapterReaderController.php resources/views/reader/chapters/ resources/js/reader-controls.js routes/web.php tests/Feature/ChapterReaderExperienceTest.php
@@ -463,7 +463,7 @@ git commit -m "feat(reader): implement complete text and comic reading experienc
   - `GET /forgot-password`, `POST /forgot-password`
   - `GET /reset-password/{token}`, `POST /reset-password`
 
-- [ ] **Step 1: Write failing test for authentication flow**
+- [x] **Step 1: Write failing test for authentication flow**
 
 ```php
 // tests/Feature/AuthenticationFlowTest.php
@@ -511,12 +511,12 @@ class AuthenticationFlowTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter AuthenticationFlowTest`
 Expected: FAIL with login returning plain string or 404 for register.
 
-- [ ] **Step 3: Implement `AuthController` and auth views**
+- [x] **Step 3: Implement `AuthController` and auth views**
 
 1. Create `AuthController` with `showLogin`, `login`, `showRegister`, `register`, `showForgotPassword`, `sendResetLink`, `showResetPassword`, `resetPassword`, and `logout`.
 2. Build accessible, elegant Blade views for each auth screen with:
@@ -527,12 +527,12 @@ Expected: FAIL with login returning plain string or 404 for register.
    - Top error summary alert with role="alert" and inline field errors.
 3. Update `routes/web.php` replacing the stub `/login` route with full auth routes.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter AuthenticationFlowTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/Http/Controllers/Auth/ resources/views/auth/ routes/web.php tests/Feature/AuthenticationFlowTest.php
@@ -568,7 +568,7 @@ git commit -m "feat(auth): implement login, register, forgot-password, and reset
   - `GET /settings`, `POST /settings` -> `UserProfileController@settings`
   - `GET /settings/security`, `POST /settings/security` -> `UserProfileController@security`
 
-- [ ] **Step 1: Write failing test for user area routes**
+- [x] **Step 1: Write failing test for user area routes**
 
 ```php
 // tests/Feature/UserAreaRoutesTest.php
@@ -598,12 +598,12 @@ class UserAreaRoutesTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter UserAreaRoutesTest`
 Expected: FAIL with 404.
 
-- [ ] **Step 3: Implement controllers, views, and routes**
+- [x] **Step 3: Implement controllers, views, and routes**
 
 1. `UserLibraryController`:
    - `library`: Stories saved in personal reading lists with reading status filters.
@@ -617,12 +617,12 @@ Expected: FAIL with 404.
    - `notifications`: Activity alerts (new chapters, system notifications).
 3. Connect all routes in `routes/web.php` with `auth` middleware (redirecting unauthenticated guests to `/login`).
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter UserAreaRoutesTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/Http/Controllers/Reader/User* resources/views/reader/user/ routes/web.php tests/Feature/UserAreaRoutesTest.php
@@ -643,7 +643,7 @@ git commit -m "feat(user-area): implement library, history, bookmarks, profile, 
 - Consumes: Any invalid URL.
 - Produces: Branded 404 page with navigation recovery, proper semantic headers, WCAG 2.1 AA compliant contrast and focus indicators.
 
-- [ ] **Step 1: Write failing test for 404 page**
+- [x] **Step 1: Write failing test for 404 page**
 
 ```php
 // tests/Feature/NotFoundAndAccessibilityTest.php
@@ -663,12 +663,12 @@ class NotFoundAndAccessibilityTest extends TestCase
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `php artisan test --filter NotFoundAndAccessibilityTest`
 Expected: FAIL with default Laravel 404 page or missing text.
 
-- [ ] **Step 3: Create `resources/views/errors/404.blade.php` and run Web Design Guidelines checks**
+- [x] **Step 3: Create `resources/views/errors/404.blade.php` and run Web Design Guidelines checks**
 
 1. Build `resources/views/errors/404.blade.php` matching the brand aesthetic with book-themed illustration, search bar, and direct links to Home, Catalog, and Library.
 2. Audit all Blade views against Web Design Guidelines:
@@ -680,12 +680,12 @@ Expected: FAIL with default Laravel 404 page or missing text.
    - Check `text-wrap: balance` on headers.
    - Check `tabular-nums` on word counts and timestamps.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `php artisan test --filter NotFoundAndAccessibilityTest`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add resources/views/errors/404.blade.php tests/Feature/NotFoundAndAccessibilityTest.php
@@ -701,21 +701,21 @@ git commit -m "feat(quality): add branded 404 page and web interface guidelines 
 - Test: Full PHPUnit test suite (`php artisan test`)
 - Build: `npm run build`
 
-- [ ] **Step 1: Run full PHPUnit suite**
+- [x] **Step 1: Run full PHPUnit suite**
 
 Run: `php artisan test`
 Expected: All tests pass (original 112 + new route and feature tests = 120+ passing tests).
 
-- [ ] **Step 2: Run production Vite build**
+- [x] **Step 2: Run production Vite build**
 
 Run: `npm run build`
 Expected: Exit code 0, CSS and JS bundled cleanly in `public/build`.
 
-- [ ] **Step 3: Visual inspection via browser subagent or local HTTP rendering check**
+- [x] **Step 3: Visual inspection via browser subagent or local HTTP rendering check**
 
 Inspect rendered pages at mobile (375px), tablet (768px), and desktop (1280px) viewports to verify aesthetic quality, typography hierarchy, zero horizontal overflow, and correct dark/sepia/light theme switching.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add -A

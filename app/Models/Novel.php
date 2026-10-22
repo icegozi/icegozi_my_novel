@@ -76,4 +76,9 @@ class Novel extends Model
     {
         return $this->hasMany(Bookmark::class);
     }
+
+    public function assets3d(): HasMany
+    {
+        return $this->hasMany(Novel3dAsset::class);
+    }
 }

@@ -49,4 +49,9 @@ class Chapter extends Model
     {
         return $this->hasMany(ChapterComment::class);
     }
+
+    public function projections3d(): HasMany
+    {
+        return $this->hasMany(Chapter3dProjection::class);
+    }
 }

@@ -1,0 +1,144 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: production
+    container_name: icegozi-prod-app
+    restart: always
+    environment:
+      CONTAINER_ROLE: app
+      APP_ENV: production
+      AUTORUN_MIGRATIONS: "true"
+      DB_HOST: mysql
+      REDIS_HOST: redis
+    networks:
+      - app-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: icegozi-prod-web
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: production
+    container_name: icegozi-prod-worker
+    restart: always
+    environment:
+      CONTAINER_ROLE: worker
+      APP_ENV: production
+      DB_HOST: mysql
+      REDIS_HOST: redis
+    networks:
+      - app-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1024M
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: production
+    container_name: icegozi-prod-scheduler
+    restart: always
+    environment:
+      CONTAINER_ROLE: scheduler
+      APP_ENV: production
+      DB_HOST: mysql
+      REDIS_HOST: redis
+    networks:
+      - app-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.0
+    container_name: icegozi-prod-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-prod_root_change_me}
+      MYSQL_DATABASE: ${DB_DATABASE:-icegozi_novel}
+      MYSQL_USER: ${DB_USERNAME:-novel_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-prod_password_change_me}
+    volumes:
+      - db_prod_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+
+  redis:
+    image: redis:7-alpine
+    container_name: icegozi-prod-redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_prod_data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1024M
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_prod_data:
+    driver: local
+  redis_prod_data:
+    driver: local

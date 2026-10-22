@@ -15,4 +15,12 @@ class LayoutAndThemeTest extends TestCase
         $response->assertSee('Plus+Jakarta+Sans', false);
         $response->assertSee('theme-manager', false);
     }
+
+    public function test_reader_layout_defaults_to_sepia_theme(): void
+    {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('class="sepia"', false);
+        $response->assertSee('content="#f5efe6"', false);
+    }
 }

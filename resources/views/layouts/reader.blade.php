@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi" class="sepia">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#0b0f19">
+    <meta name="theme-color" content="#f5efe6">
 
     <meta name="theme-manager" content="active">
     <title>{{ $title ?? 'Novel Engine - Nền Tảng Đọc Tiểu Thuyết & Comic 3D' }}</title>
@@ -20,7 +20,7 @@
     <!-- Client Theme Init (blocking to prevent flash of wrong theme) -->
     <script>
         (function() {
-            var theme = localStorage.getItem('novel_reader_theme') || 'dark';
+            var theme = localStorage.getItem('novel_reader_theme') || 'sepia';
             document.documentElement.className = theme;
         })();
     </script>
@@ -28,7 +28,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="min-h-screen flex flex-col font-sans antialiased text-slate-900 dark:text-slate-100 sepia:text-sepia-text bg-slate-50 dark:bg-[#0b0f19] sepia:bg-[#f5efe6] transition-colors">
+<body class="min-h-screen flex flex-col font-sans antialiased text-slate-900 dark:text-slate-100 sepia:text-sepia-text bg-[#f5efe6] dark:bg-[#0b0f19] sepia:bg-[#f5efe6] transition-colors">
     <!-- Accessibility Skip Link -->
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-xl">
         Chuyển đến nội dung chính

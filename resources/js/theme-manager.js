@@ -11,10 +11,7 @@
         if (saved && VALID_THEMES.includes(saved)) {
             return saved;
         }
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
-        }
-        return 'dark'; // Default platform aesthetic is editorial dark
+        return 'sepia'; // Default platform aesthetic is warm parchment / sepia
     }
 
     function applyTheme(theme) {
@@ -48,8 +45,8 @@
 
     window.toggleReaderTheme = function () {
         const current = getPreferredTheme();
-        const nextMap = { dark: 'sepia', sepia: 'light', light: 'dark' };
-        applyTheme(nextMap[current] || 'dark');
+        const nextMap = { sepia: 'dark', dark: 'light', light: 'sepia' };
+        applyTheme(nextMap[current] || 'sepia');
     };
 
     // Initialize immediately to prevent flash of wrong theme

@@ -4,6 +4,19 @@
 
 @layer base {
     :root {
+        --color-bg: #f5efe6;
+        --color-surface: #fdfbf7;
+        --color-surface-muted: #eae1d2;
+        --color-border: #e2d5c2;
+        --color-text: #2d2216;
+        --color-text-muted: #725e49;
+        --color-primary: #92400e;
+        --color-primary-hover: #b45309;
+        --color-accent: #d97706;
+        color-scheme: light;
+    }
+
+    html.light {
         --color-bg: #f8fafc;
         --color-surface: #ffffff;
         --color-surface-muted: #f1f5f9;

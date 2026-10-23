@@ -8,9 +8,7 @@
 
     <meta name="theme-manager" content="active">
     <title>{{ $title ?? 'Novel Engine - Nền Tảng Đọc Tiểu Thuyết & Comic 3D' }}</title>
-    @if(isset($metaDescription))
-        <meta name="description" content="{{ $metaDescription }}">
-    @endif
+    <meta name="description" content="{{ $metaDescription ?? 'Novel Engine - Nền tảng đọc tiểu thuyết trực tuyến và trải nghiệm không gian 3D tương tác sống động.' }}">
 
     <!-- Google Fonts with Vietnamese diacritics support -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

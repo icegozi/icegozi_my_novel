@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         <!-- Logo & Brand -->
         <div class="flex items-center gap-6 shrink-0">
-            <a href="/" class="flex items-center gap-3 group focus:outline-none">
+            <a href="/" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-xl">
                 <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-600 flex items-center justify-center font-extrabold text-white text-base shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
                     3D
                 </span>
@@ -51,7 +51,7 @@
                     autocomplete="off"
                     class="w-full pl-10 pr-12 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-slate-50 dark:bg-slate-800/60 sepia:bg-sepia-100 text-slate-900 dark:text-slate-100 sepia:text-sepia-text placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                 >
-                <kbd class="hidden md:inline-flex absolute right-2.5 top-2.5 px-1.5 py-0.5 text-[10px] font-mono font-medium text-slate-400 dark:text-slate-500 bg-slate-200/50 dark:bg-slate-700/50 rounded border border-slate-300 dark:border-slate-600">
+                <kbd class="hidden md:inline-flex absolute right-2.5 top-2.5 px-1.5 py-0.5 text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 bg-slate-200 dark:bg-slate-700 rounded border border-slate-300 dark:border-slate-600">
                     ⌘K
                 </kbd>
             </form>

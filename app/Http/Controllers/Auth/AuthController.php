@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -105,10 +106,21 @@ class AuthController extends Controller
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
+        $resetRecord = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$resetRecord || !Hash::check($request->token, $resetRecord->token)) {
+            throw ValidationException::withMessages([
+                'email' => ['Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.'],
+            ]);
+        }
+
         $user = User::where('email', $request->email)->first();
         if ($user) {
             $user->password = Hash::make($request->password);
             $user->save();
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
         }
 
         return redirect('/login')->with('success', 'Mật khẩu của bạn đã được cập nhật thành công. Vui lòng đăng nhập lại.');

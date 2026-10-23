@@ -27,10 +27,12 @@
    - Ingest the current architectural state, core invariants, and recently learned lessons.
    - Confirm current git status before initiating edits.
 2. **In-flight Execution:**
+   - Always invoke `sequentialthinking` (`sequential-thinking` MCP server) on every task to plan and reason systematically through requirements and edge cases.
    - Always adhere to TDD (Red -> Green -> Refactor).
    - If a new framework quirk or bug pattern is solved, immediately document it in Section 3 of [`.agents/session_memory.md`](file:///.agents/session_memory.md).
 3. **Session Handoff (Post-flight):**
    - Execute verification test suite (`php artisan test`).
+   - Execute visual & interactive browser verification using `playwright` and `chrome-devtools-mcp` tools before concluding to ensure zero frontend regression.
    - Append completed milestone commits to Section 4 of [`.agents/session_memory.md`](file:///.agents/session_memory.md).
 
 ---

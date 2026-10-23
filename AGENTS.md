@@ -49,6 +49,10 @@
    - All `<img>` tags **MUST** specify explicit `width` and `height` attributes to prevent Cumulative Layout Shift (CLS).
 6. **CSS Transitions:**
    - Templates and stylesheets **MUST NOT** use `transition-all`. Specify explicit transitions (e.g., `transition-colors`, `transition-opacity`, `transition-transform`).
+7. **Mandatory MCP Sequential Thinking:**
+   - You **MUST** invoke the `sequential-thinking` MCP tool (`sequentialthinking`) on **every task** before code modification and during execution to analyze constraints, map edge cases, and reason step-by-step.
+8. **Mandatory Playwright & Chrome Pre-Handoff Verification:**
+   - Before handing off any task or milestone to the user, you **MUST** execute live browser testing using `playwright` and/or `chrome-devtools-mcp` tools (navigating, interacting with controls, capturing visual screenshots, and inspecting console errors) to guarantee 100% flawless user experience.
 
 ---
 

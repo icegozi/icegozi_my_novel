@@ -85,4 +85,16 @@ class WordHighlighterServiceTest extends TestCase
 
         $this->assertStringContainsString('<mark class="bg-rose-500/30 text-rose-300 font-semibold px-1 rounded border border-rose-500/50" title="Từ khóa nhạy cảm">ma túy</mark>', $result);
     }
+
+    public function test_does_not_corrupt_injected_mark_attributes_when_keyword_matches_tag_attribute(): void
+    {
+        $html = '<p>Có hành vi bạo lực và hoa rose tuyệt đẹp.</p>';
+        $words = ['bạo lực', 'rose'];
+
+        $result = $this->highlighter->highlight($html, $words);
+
+        // The class attribute must remain pristine: bg-rose-500/30, not bg-<mark...>rose</mark>-500/30
+        $this->assertStringContainsString('class="bg-rose-500/30 text-rose-300 font-semibold px-1 rounded border border-rose-500/50"', $result);
+        $this->assertStringNotContainsString('bg-<mark', $result);
+    }
 }

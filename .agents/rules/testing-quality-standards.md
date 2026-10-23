@@ -49,3 +49,18 @@
 2. **Global Pre-Commit Verification:**
    - Before finishing any feature or branch, you **MUST** run the full test suite (`php artisan test`) and confirm 0 failures across all 170+ tests.
    - You **MUST** execute `npm run build` to verify there are 0 Vite compilation errors.
+
+---
+
+## 4. Mandatory MCP Tooling & Browser QA Verification
+
+1. **MCP Sequential Thinking Protocol:**
+   - For **every task**, you **MUST** invoke `sequentialthinking` (`sequential-thinking` MCP server) before starting code changes and during critical decision points.
+   - Use it to systematically unpack assumptions, list affected components, plan test scenarios, and trace side effects.
+2. **Playwright & Chrome Browser Pre-Handoff Quality Gate:**
+   - Before any task or pull request handoff, you **MUST** perform active browser checks using `playwright` and/or `chrome-devtools-mcp`.
+   - The browser check **MUST** include:
+     - Navigating to the relevant live URL (with `php artisan serve` running in the background).
+     - Exercising the primary UI interactions (e.g. clicking buttons, toggling themes, adjusting responsive layouts).
+     - Inspecting browser console messages to verify zero unhandled JavaScript errors.
+     - Capturing visual screenshots (`browser_take_screenshot` / `take_screenshot`) as verifiable proof of quality.

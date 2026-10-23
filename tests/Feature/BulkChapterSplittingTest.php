@@ -96,4 +96,36 @@ TEXT;
         $this->novel->refresh();
         $this->assertEquals(2, $this->novel->total_chapters);
     }
+
+    public function test_bulk_splitting_handles_existing_chapters_without_collision(): void
+    {
+        // Pre-create Chapter 1
+        \App\Models\Chapter::create([
+            'novel_id' => $this->novel->id,
+            'chapter_number' => 1,
+            'title' => 'Chương 1: Tiền truyện',
+            'slug' => 'chuong-1-tien-truyen',
+            'content' => 'Nội dung chương 1 cũ.',
+            'word_count' => 10,
+            'status' => 'published',
+            'revision' => 1,
+        ]);
+
+        $payload = <<<TEXT
+Chương 1: Khởi nguyên mới
+Nội dung chương một mới dán.
+
+Chương 2: Đột phá mới
+Nội dung chương hai mới dán.
+TEXT;
+
+        $response = $this->actingAs($this->author)
+            ->post(route('author.novels.bulk-chapters.store', $this->novel), [
+                'raw_text' => $payload,
+            ]);
+
+        $response->assertRedirect(route('author.novels.index'));
+        $this->novel->refresh();
+        $this->assertEquals(3, $this->novel->chapters()->count());
+    }
 }

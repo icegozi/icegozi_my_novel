@@ -40,6 +40,10 @@
    - Headings must follow strict order (`h1` -> `h2` -> `h3`).
    - Every `<img>` tag must include explicit `width` and `height` integer attributes to eliminate Cumulative Layout Shift (CLS).
    - Zero `transition-all` policy: always specify target properties (e.g. `transition-colors`, `transition-opacity`).
+5. **Mandatory MCP Sequential Thinking:**
+   - For every task, Gemini must invoke `sequentialthinking` (`sequential-thinking` MCP tool) before code edits and throughout execution to map edge cases and constraints.
+6. **Mandatory Playwright & Chrome Browser Pre-Handoff Check:**
+   - Prior to concluding any task or handoff, Gemini must verify the live application using `playwright` and/or `chrome-devtools-mcp` tools, test interactions, confirm zero JS console errors, and capture screenshot evidence.
 
 ---
 
@@ -57,6 +61,10 @@
 | 8 | **Modal Drawer Trapping** | Screen readers don't recognize slide-out table of contents as a modal dialog. | Missing ARIA dialog semantics on drawer container. | Add `role="dialog" aria-modal="true" aria-label="Mục Lục Tác Phẩm" class="... overscroll-contain"`. |
 | 9 | **Touch Target Sizing** | Inline chapter links flag touch target warnings (< 24px). | Hyperlinks nested inside tight flex columns had default inline line-height. | Add `py-0.5 min-h-[24px] flex items-center` to chapter links. |
 | 10 | **Color Contrast (Sepia/Dark)** | Muted metadata text (`text-slate-400`) fails 4.5:1 contrast against light/sepia backgrounds. | Insufficient luminosity difference. | Upgrade to `text-slate-500 dark:text-slate-400 sepia:text-sepia-muted`. |
+| 11 | **Password Reset Token Verification** | Password reset accepted arbitrary tokens without checking database record. | Missing verification against hashed tokens in `password_reset_tokens` table. | Query `password_reset_tokens` by email and verify with `Hash::check($token, $record->token)`. |
+| 12 | **Bulk Chapter Unique Collision** | Splitting chapters into existing chapter numbers caused 500 SQLSTATE[23000] crash. | SQLite UNIQUE index on `(novel_id, chapter_number)`. | Detect collisions upfront and offset incoming chapter numbers starting from `(max_existing + 1.0)`. |
+| 13 | **Single-Pass Keyword Highlighting** | Highlighting multiple keywords in loops corrupted `<mark class="...">` attributes. | Later replacement passes matched class names (e.g. `bg-rose-500/20`). | Use unified regex alternation `/(word1|word2|...)/ui` in a single pass with preg_replace_callback. |
+| 14 | **Mailable Queuing Architecture** | Transactional emails dispatched synchronously, causing HTTP latency spikes. | Missing `ShouldQueue` contract on Mailable classes. | Implement `Illuminate\Contracts\Queue\ShouldQueue` on all legal/KYC mailables. |
 
 ---
 
@@ -71,7 +79,7 @@
 | 2026-10-22 | Docker Packaging & Environment Setup | `e35791c`, `3e36125` | 134 passed (100%) |
 | 2026-10-23 | UI Consistency, Modals & Sepia Theme | `68c3409`, `60bc729` | 158 passed (100%) |
 | 2026-10-23 | Accessibility & SEO Guidelines Remediation | `c738344`..`679b8d0` | 172 passed (100%) |
-| 2026-10-23 | Gemini Session Memory & Rules Standardization | (Current Session) | Target: 175+ passed |
+| 2026-10-23 | Senior Code Review Patches (C1-C2, I1-I4) & Playwright Verification | Applied & Verified | 179 passed (100%) |
 
 ---
 

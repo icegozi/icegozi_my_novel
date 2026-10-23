@@ -12,8 +12,14 @@ class ChapterReaderController extends Controller
     /**
      * Display chapter text in 3D Interactive Stage reader mode.
      */
-    public function read(string $slug, float $chapterNumber): View
+    public function read(string $slug, mixed $chapterNumber): View
     {
+        if (!is_numeric($chapterNumber)) {
+            abort(404);
+        }
+
+        $chapterNumber = (float) $chapterNumber;
+
         $novel = Novel::where('slug', $slug)
             ->with(['author.authorProfile', 'assets3d'])
             ->first();

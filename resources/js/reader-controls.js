@@ -95,13 +95,16 @@
 
         if (zenToggleBtn) {
             zenToggleBtn.addEventListener('click', function () {
+                if (window.Novel3D && window.Novel3D.activePreferences) {
+                    return; // ReaderPreferences manages this with backend synchronization
+                }
                 const isZen = document.body.classList.toggle('zen-mode');
                 if (zenIcon) zenIcon.textContent = isZen ? '✕' : '🧘';
                 if (zenLabel) zenLabel.textContent = isZen ? 'Thoát Zen Mode' : 'Chế Độ Tinh Gọn';
                 localStorage.setItem('reader_zen_mode_active', isZen ? '1' : '0');
             });
 
-            if (localStorage.getItem('reader_zen_mode_active') === '1') {
+            if (localStorage.getItem('reader_zen_mode_active') === '1' && !(window.Novel3D && window.Novel3D.activePreferences)) {
                 document.body.classList.add('zen-mode');
                 if (zenIcon) zenIcon.textContent = '✕';
                 if (zenLabel) zenLabel.textContent = 'Thoát Zen Mode';
@@ -174,12 +177,16 @@
             if (settings) settings.classList.add('hidden');
 
             if (document.body.classList.contains('zen-mode')) {
-                document.body.classList.remove('zen-mode');
-                const zenIcon = document.getElementById('zen-icon');
-                const zenLabel = document.getElementById('zen-label');
-                if (zenIcon) zenIcon.textContent = '🧘';
-                if (zenLabel) zenLabel.textContent = 'Chế Độ Tinh Gọn';
-                localStorage.setItem('reader_zen_mode_active', '0');
+                if (window.Novel3D && window.Novel3D.activePreferences) {
+                    window.Novel3D.activePreferences.setMode('3d');
+                } else {
+                    document.body.classList.remove('zen-mode');
+                    const zenIcon = document.getElementById('zen-icon');
+                    const zenLabel = document.getElementById('zen-label');
+                    if (zenIcon) zenIcon.textContent = '🧘';
+                    if (zenLabel) zenLabel.textContent = 'Chế Độ Tinh Gọn';
+                    localStorage.setItem('reader_zen_mode_active', '0');
+                }
             }
         }
     });
@@ -199,14 +206,20 @@
         progressBar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
     }, { passive: true });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    let controlsInitialized = false;
+    function startControls() {
+        if (controlsInitialized) return;
+        controlsInitialized = true;
         applySettings();
         initZenToolbar();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        startControls();
     });
 
     // Immediate attempt if DOM already ready
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
-        applySettings();
-        initZenToolbar();
+        startControls();
     }
 })();

@@ -100,7 +100,7 @@ class LegalNotificationMailTest extends TestCase
             'resolution_notes' => 'Tạm ẩn tác phẩm để đối soát.',
         ]);
 
-        Mail::assertSent(NovelTakedownNoticeMail::class, function (NovelTakedownNoticeMail $mail) {
+        Mail::assertQueued(NovelTakedownNoticeMail::class, function (NovelTakedownNoticeMail $mail) {
             return $mail->hasTo('author@novelplatform.vn') &&
                    $mail->novel->id === $this->novel->id &&
                    $mail->report->id === $this->report->id;
@@ -113,7 +113,7 @@ class LegalNotificationMailTest extends TestCase
 
         $this->actingAs($this->admin)->post(route('admin.kyc.approve', $this->profile));
 
-        Mail::assertSent(AuthorKycResultMail::class, function (AuthorKycResultMail $mail) {
+        Mail::assertQueued(AuthorKycResultMail::class, function (AuthorKycResultMail $mail) {
             return $mail->hasTo('author@novelplatform.vn') &&
                    $mail->status === 'verified';
         });
@@ -122,7 +122,7 @@ class LegalNotificationMailTest extends TestCase
             'rejection_reason' => 'Thông tin không rõ ràng.',
         ]);
 
-        Mail::assertSent(AuthorKycResultMail::class, function (AuthorKycResultMail $mail) {
+        Mail::assertQueued(AuthorKycResultMail::class, function (AuthorKycResultMail $mail) {
             return $mail->hasTo('author@novelplatform.vn') &&
                    $mail->status === 'rejected' &&
                    $mail->reason === 'Thông tin không rõ ràng.';

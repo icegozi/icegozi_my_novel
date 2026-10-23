@@ -58,13 +58,25 @@ class BulkChapterController extends Controller
         }
 
         DB::transaction(function () use ($parsed, $novel, $sanitizer) {
+            $existingNumbers = $novel->chapters()->pluck('chapter_number')->map(fn($n) => (float)$n)->all();
+            $maxNumber = (float) ($novel->chapters()->max('chapter_number') ?? 0);
+
             foreach ($parsed as $item) {
+                $targetNumber = $item['chapter_number'];
+                if (in_array($targetNumber, $existingNumbers, true)) {
+                    $maxNumber += 1.0;
+                    $targetNumber = $maxNumber;
+                } else {
+                    $maxNumber = max($maxNumber, $targetNumber);
+                }
+                $existingNumbers[] = $targetNumber;
+
                 $cleanContent = $sanitizer->clean($item['content']);
                 $wordCount = $sanitizer->countWords($cleanContent);
 
                 Chapter::create([
                     'novel_id' => $novel->id,
-                    'chapter_number' => $item['chapter_number'],
+                    'chapter_number' => $targetNumber,
                     'title' => $item['title'],
                     'slug' => Str::slug($item['title']) . '-' . uniqid(),
                     'content' => $cleanContent,

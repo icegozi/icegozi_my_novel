@@ -47,4 +47,42 @@ class AuthenticationFlowTest extends TestCase
         $this->get('/forgot-password')->assertStatus(200)->assertSee('Khôi Phục Mật Khẩu');
         $this->get('/reset-password/sample-token')->assertStatus(200)->assertSee('Đặt Lại Mật Khẩu');
     }
+
+    public function test_reset_password_rejects_invalid_token_and_accepts_valid_token(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'victim@example.com',
+            'password' => bcrypt('oldpassword123'),
+        ]);
+
+        // Attempt reset with invalid/fake token
+        $response = $this->post('/reset-password', [
+            'token' => 'invalid-token-123',
+            'email' => 'victim@example.com',
+            'password' => 'NewPassword123!',
+            'password_confirmation' => 'NewPassword123!',
+        ]);
+
+        $response->assertSessionHasErrors('email');
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('oldpassword123', $user->fresh()->password));
+
+        // Insert valid token record
+        \Illuminate\Support\Facades\DB::table('password_reset_tokens')->insert([
+            'email' => 'victim@example.com',
+            'token' => \Illuminate\Support\Facades\Hash::make('secret-valid-token'),
+            'created_at' => now(),
+        ]);
+
+        // Reset with valid token
+        $validResponse = $this->post('/reset-password', [
+            'token' => 'secret-valid-token',
+            'email' => 'victim@example.com',
+            'password' => 'NewPassword123!',
+            'password_confirmation' => 'NewPassword123!',
+        ]);
+
+        $validResponse->assertRedirect('/login');
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('NewPassword123!', $user->fresh()->password));
+        $this->assertDatabaseMissing('password_reset_tokens', ['email' => 'victim@example.com']);
+    }
 }

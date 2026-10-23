@@ -127,6 +127,7 @@ export class ReaderPreferences {
         const zenIcon = document.getElementById('zen-icon');
 
         if (this.preferences.mode === 'zen') {
+            document.body.classList.add('zen-mode');
             stageAside?.classList.add('hidden');
             if (article) {
                 article.classList.remove('lg:col-span-7');
@@ -135,6 +136,7 @@ export class ReaderPreferences {
             if (zenLabel) zenLabel.textContent = 'Bật Đài 3D';
             if (zenIcon) zenIcon.textContent = '✨';
         } else {
+            document.body.classList.remove('zen-mode');
             stageAside?.classList.remove('hidden');
             if (article) {
                 article.classList.remove('lg:col-span-12', 'max-w-3xl', 'mx-auto');

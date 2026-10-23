@@ -391,7 +391,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const { ReaderPreferences, ReadingProgressTracker } = window.Novel3D || {};
             if (ReaderPreferences) {
-                new ReaderPreferences({
+                window.Novel3D = window.Novel3D || {};
+                window.Novel3D.activePreferences = new ReaderPreferences({
                     apiEndpoint: "{{ route('reader.preferences.update') }}",
                     csrfToken: "{{ csrf_token() }}"
                 });

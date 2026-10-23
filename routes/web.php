@@ -44,9 +44,9 @@ Route::get('/truyen/{slug}', [\App\Http\Controllers\Reader\NovelViewController::
 Route::get('/truyen/{slug}/phong-trung-bay-3d', [\App\Http\Controllers\Reader\NovelViewController::class, 'exhibition'])
     ->name('reader.novels.exhibition');
 Route::get('/stories/{slug}/read/{chapterNumber}', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'read'])
-    ->name('reader.stories.read');
+    ->name('reader.stories.read')->where('chapterNumber', '[0-9]+(\.[0-9]+)?');
 Route::get('/truyen/{slug}/chuong/{chapterNumber}', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'read'])
-    ->name('reader.chapters.read');
+    ->name('reader.chapters.read')->where('chapterNumber', '[0-9]+(\.[0-9]+)?');
 Route::post('/api/reader/preferences', [\App\Http\Controllers\Reader\ChapterReaderController::class, 'updatePreferences'])
     ->name('reader.preferences.update');
 Route::post('/api/reader/progress', [\App\Http\Controllers\Reader\ReadingHistoryController::class, 'sync'])

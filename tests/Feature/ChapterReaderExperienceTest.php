@@ -22,4 +22,16 @@ class ChapterReaderExperienceTest extends TestCase
         $response->assertSee('reader-controls.js', false);
         $response->assertSee('theme-sepia', false);
     }
+
+    public function test_non_numeric_chapter_returns_404_not_found(): void
+    {
+        $this->seed();
+        $novel = Novel::where('status', 'published')->first();
+
+        $response = $this->get("/stories/{$novel->slug}/read/invalid-chapter-abc");
+        $response->assertStatus(404);
+
+        $response2 = $this->get("/truyen/{$novel->slug}/chuong/invalid-chapter-abc");
+        $response2->assertStatus(404);
+    }
 }

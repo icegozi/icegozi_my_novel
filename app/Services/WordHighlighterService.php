@@ -66,30 +66,17 @@ class WordHighlighterService
                     continue;
                 }
 
-                foreach ($patterns as $pattern) {
-                    $pattern = trim($pattern);
-                    if ($pattern === '') {
-                        continue;
-                    }
+                $validPatterns = array_filter(array_map('trim', $patterns), fn($p) => $p !== '');
+                if (!empty($validPatterns)) {
+                    $quoted = array_map(fn($p) => preg_quote($p, '/'), $validPatterns);
+                    $regex = '/(' . implode('|', $quoted) . ')/iu';
 
-                    // ReDoS protection check
-                    if ($this->isUnsafeRegex($pattern)) {
-                        // Safe fallback: match as literal string only
-                        $quoted = preg_quote($pattern, '/');
-                    } else {
-                        $quoted = preg_quote($pattern, '/');
-                    }
-
-                    $regex = '/' . $quoted . '/iu';
-
-                    $token = preg_replace(
+                    $tokens[$index] = preg_replace(
                         $regex,
                         '<mark class="bg-rose-500/30 text-rose-300 font-semibold px-1 rounded border border-rose-500/50" title="Từ khóa nhạy cảm">$0</mark>',
                         $token
                     );
                 }
-
-                $tokens[$index] = $token;
             }
         } finally {
             if ($oldBacktrack !== false) {

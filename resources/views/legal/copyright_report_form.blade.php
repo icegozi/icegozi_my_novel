@@ -43,16 +43,16 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Loại đối tượng:</label>
-                    <select name="reportable_type" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800">
+                    <label for="reportable_type" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Loại đối tượng:</label>
+                    <select id="reportable_type" name="reportable_type" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800">
                         <option value="Novel" selected>Tác phẩm / Bộ tiểu thuyết</option>
                         <option value="Chapter">Chương truyện cụ thể</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Mã định danh (ID tác phẩm / chương):</label>
-                    <input type="number" name="reportable_id" value="{{ $novel?->id ?? old('reportable_id', '') }}" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800" placeholder="VD: 12">
+                    <label for="reportable_id" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Mã định danh (ID tác phẩm / chương):</label>
+                    <input type="number" id="reportable_id" name="reportable_id" value="{{ $novel?->id ?? old('reportable_id', '') }}" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800" placeholder="VD: 12">
                 </div>
             </div>
 
@@ -78,8 +78,8 @@
             </div>
 
             <div>
-                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Phân loại vi phạm:</label>
-                <select name="violation_category" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800">
+                <label for="reason" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Phân loại vi phạm:</label>
+                <select id="reason" name="violation_category" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800">
                     <option value="copyright_infringement" selected>Xâm phạm quyền tác giả (sao chép, đạo văn không phép)</option>
                     <option value="defamation">Bôi nhọ, xúc phạm uy tín, danh dự</option>
                     <option value="pornography">Nội dung khiêu dâm, vi phạm thuần phong mỹ tục</option>
@@ -90,7 +90,7 @@
 
             <div>
                 <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Mô tả hành vi xâm phạm và đối chiếu tác phẩm gốc:</label>
-                <textarea name="description" rows="4" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 leading-relaxed" placeholder="Nêu rõ các đoạn trích, chương hồi, hoặc tài liệu chứng minh quyền tác giả..."></textarea>
+                <textarea name="description" rows="4" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs text-slate-900 dark:text-slate-200 sepia:text-sepia-text focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 leading-relaxed" placeholder="Nêu rõ các đoạn trích, chương hồi, hoặc tài liệu chứng minh quyền tác giả…"></textarea>
             </div>
 
             <div>
@@ -103,7 +103,7 @@
             <a href="{{ route('legal.terms') }}" class="text-xs text-slate-600 dark:text-slate-400 sepia:text-sepia-muted hover:text-indigo-600 dark:hover:text-white sepia:hover:text-sepia-text flex items-center gap-1.5 transition-colors">
                 <span aria-hidden="true">&larr;</span> Xem Quy chế bản quyền
             </a>
-            <button type="submit" class="px-6 py-3 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 sepia:bg-rose-800 sepia:hover:bg-rose-700 text-white shadow-lg shadow-rose-600/25 transition-all">
+            <button type="submit" class="px-6 py-3 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 sepia:bg-rose-800 sepia:hover:bg-rose-700 text-white shadow-lg shadow-rose-600/25 transition-colors">
                 Nộp Yêu Cầu Xử Lý Bản Quyền
             </button>
         </div>

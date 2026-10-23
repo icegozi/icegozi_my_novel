@@ -27,7 +27,7 @@
                 <div id="bookmark-card-{{ $bm->novel->id }}" class="group flex flex-col space-y-2 relative">
                     <div class="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-book border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-slate-800 transition-transform duration-300 group-hover:scale-105 group-hover:shadow-glow">
                         <a href="/stories/{{ $bm->novel->slug }}" class="block w-full h-full">
-                            <img src="{{ $bm->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=300&q=80' }}" alt="{{ $bm->novel->title }}" class="w-full h-full object-cover" loading="lazy">
+                            <img src="{{ $bm->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=300&q=80' }}" alt="{{ $bm->novel->title }}" width="300" height="400" class="w-full h-full object-cover" loading="lazy">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </a>
                         <span class="absolute bottom-2 right-2 text-[10px] font-bold text-amber-400 bg-black/70 px-1.5 py-0.5 rounded pointer-events-none">
@@ -35,7 +35,7 @@
                         </span>
                         <button type="button" 
                                 onclick="removeBookmark({{ $bm->novel->id }})" 
-                                class="absolute top-2 right-2 p-1.5 rounded-lg bg-black/60 hover:bg-rose-600 text-white opacity-0 group-hover:opacity-100 transition-all duration-200 shadow z-10"
+                                class="absolute top-2 right-2 p-1.5 rounded-lg bg-black/60 hover:bg-rose-600 text-white opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 transition-all duration-200 shadow z-10"
                                 title="Bỏ lưu khỏi Tủ Sách"
                                 aria-label="Bỏ lưu">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

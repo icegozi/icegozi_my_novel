@@ -26,7 +26,7 @@
             @if ($history->novel && $history->lastChapter)
                 <div id="history-item-{{ $history->id }}" class="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900/40 sepia:bg-sepia-50 flex items-center justify-between gap-4 hover:border-indigo-500/40 transition">
                     <div class="flex items-center gap-4 min-w-0">
-                        <img src="{{ $history->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=150&q=80' }}" alt="{{ $history->novel->title }}" class="w-14 h-20 rounded-xl object-cover shrink-0">
+                        <img src="{{ $history->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=150&q=80' }}" alt="{{ $history->novel->title }}" width="56" height="80" class="w-14 h-20 rounded-xl object-cover shrink-0">
                         <div class="min-w-0 space-y-1">
                             <a href="/stories/{{ $history->novel->slug }}" class="font-bold text-sm text-slate-900 dark:text-white sepia:text-sepia-text truncate block hover:text-indigo-600 transition">
                                 {{ $history->novel->title }}
@@ -46,7 +46,7 @@
                         </a>
                         <button type="button" 
                                 onclick="deleteHistory({{ $history->id }})" 
-                                class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 sepia:border-sepia-border text-slate-500 hover:text-rose-600 hover:border-rose-300 dark:hover:border-rose-900/50 text-xs font-semibold transition flex items-center gap-1"
+                                class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 sepia:border-sepia-border text-slate-500 hover:text-rose-600 hover:border-rose-300 dark:hover:border-rose-900/50 text-xs font-semibold transition flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                                 title="Xóa khỏi lịch sử đọc"
                                 aria-label="Xóa khỏi lịch sử">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

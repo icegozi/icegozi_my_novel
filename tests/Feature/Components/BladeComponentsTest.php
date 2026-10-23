@@ -44,4 +44,51 @@ class BladeComponentsTest extends TestCase
         $card->assertSee('hover:-translate-y-1');
         $card->assertSee('shadow-glow');
     }
+
+    public function test_rating_renders_stars_with_accessible_aria_label(): void
+    {
+        $rating = $this->blade('<x-rating :score="4.5" :max="5" />');
+        $rating->assertSee('aria-label="Đánh giá 4.5 trên 5 sao"', false);
+        $rating->assertSee('4.5');
+    }
+
+    public function test_novel_card_renders_with_aspect_ratio_and_13_plus_badge(): void
+    {
+        $novel = (object)[
+            'id' => 1,
+            'title' => 'Vương Quốc Hư Ảo',
+            'slug' => 'vuong-quoc-hu-ao',
+            'cover_image' => '/covers/sample.webp',
+            'author_name' => 'IceGozi',
+            'rating' => 4.9,
+            'age_rating' => 13,
+            'views_count' => 12500,
+            'chapters_count' => 120,
+        ];
+
+        $view = $this->blade('<x-novel-card :novel="$novel" />', ['novel' => $novel]);
+        $view->assertSee('Vương Quốc Hư Ảo');
+        $view->assertSee('IceGozi');
+        $view->assertSee('aspect-[3/4]', false);
+        $view->assertSee('13+');
+    }
+
+    public function test_modal_renders_with_dialog_semantics_and_backdrop(): void
+    {
+        $modal = $this->blade('<x-modal name="testModal" title="Tiêu đề Modal"><p>Nội dung</p></x-modal>');
+        $modal->assertSee('role="dialog"', false);
+        $modal->assertSee('aria-modal="true"', false);
+        $modal->assertSee('Tiêu đề Modal');
+        $modal->assertSee('x-show="testModal"', false);
+    }
+
+    public function test_input_renders_with_label_and_error(): void
+    {
+        $input = $this->blade('<x-input label="Tên người dùng" name="username" error="Tên không hợp lệ" />');
+        $input->assertSee('Tên người dùng');
+        $input->assertSee('name="username"', false);
+        $input->assertSee('Tên không hợp lệ');
+        $input->assertSee('border-rose-500');
+    }
 }
+

@@ -93,7 +93,7 @@
                     class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 border border-slate-700 flex items-center gap-1.5 transition"
                     aria-label="Xem mục lục toàn bộ chương"
                 >
-                    <span>📑</span>
+                    <span aria-hidden="true">📑</span>
                     <span class="hidden md:inline">Mục Lục</span>
                 </button>
 
@@ -102,7 +102,7 @@
                     type="button"
                     onclick="document.getElementById('settings-drawer').classList.toggle('hidden')"
                     class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 border border-slate-700 flex items-center gap-1.5 transition"
-                    aria-label="Cài đặt cỡ chữ và giao diện đọc"
+                    aria-label="Aa Cỡ Chữ - Cài đặt giao diện đọc"
                 >
                     <span>Aa</span>
                     <span class="hidden md:inline">Cỡ Chữ</span>
@@ -111,7 +111,7 @@
                 @if ($novel->assets3d->isNotEmpty())
                     <button type="button" id="toggle-stage-interactive"
                         class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-indigo-400 border border-slate-700 flex items-center gap-1.5 transition">
-                        <span>🔄</span>
+                        <span aria-hidden="true">🔄</span>
                         <span id="interactive-btn-label">Tương tác 360°</span>
                     </button>
                 @endif
@@ -120,7 +120,7 @@
     </header>
 
     <!-- Table of Contents Slide-Out Drawer -->
-    <div id="toc-drawer" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-start">
+    <div id="toc-drawer" role="dialog" aria-modal="true" aria-label="Mục Lục Tác Phẩm" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-start overscroll-contain">
         <div class="w-80 sm:w-96 bg-slate-900 border-r border-slate-800 h-full p-6 flex flex-col justify-between shadow-2xl">
             <div class="space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">

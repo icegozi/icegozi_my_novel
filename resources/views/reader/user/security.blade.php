@@ -29,6 +29,7 @@
 
         <form action="/settings/security" method="POST" class="space-y-4">
             @csrf
+            <input type="text" name="username" value="{{ auth()->user()?->email ?? '' }}" autocomplete="username" class="sr-only" tabindex="-1" aria-hidden="true">
 
             <div>
                 <label for="current_password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1">

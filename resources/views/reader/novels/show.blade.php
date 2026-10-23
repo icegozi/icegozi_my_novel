@@ -79,7 +79,7 @@
 
                     <!-- Synopsis -->
                     <div class="pt-2">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Tóm Tắt Tác Phẩm</h3>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Tóm Tắt Tác Phẩm</h2>
                         <div class="text-sm text-slate-700 dark:text-slate-300 sepia:text-sepia-text leading-relaxed whitespace-pre-line bg-white/50 dark:bg-slate-900/40 sepia:bg-sepia-50 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border">
                             {{ $novel->synopsis }}
                         </div>
@@ -161,7 +161,7 @@
                 @foreach ($novel->assets3d as $asset)
                     <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900/40 sepia:bg-sepia-50 flex items-center gap-4">
                         <div class="w-14 h-14 rounded-xl bg-indigo-500/10 flex items-center justify-center text-xl shrink-0">
-                            🗡️
+                            <span aria-hidden="true">🗡️</span>
                         </div>
                         <div class="min-w-0">
                             <h4 class="font-bold text-xs text-slate-900 dark:text-white sepia:text-sepia-text truncate">{{ $asset->name }}</h4>

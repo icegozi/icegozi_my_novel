@@ -9,9 +9,9 @@
 
     <!-- Font Size Controls -->
     <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs">
-        <button type="button" id="btn-font-decrease" aria-label="Giảm kích thước phông chữ" class="px-2.5 py-1 text-slate-300 hover:text-white font-bold transition touch-manipulation rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">A-</button>
+        <button type="button" id="btn-font-decrease" aria-label="A- Giảm kích thước phông chữ" class="px-2.5 py-1 text-slate-300 hover:text-white font-bold transition touch-manipulation rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">A-</button>
         <span id="font-size-label" class="px-1 text-[11px] text-slate-400 font-mono tabular-nums">100%</span>
-        <button type="button" id="btn-font-increase" aria-label="Tăng kích thước phông chữ" class="px-2.5 py-1 text-slate-300 hover:text-white font-bold transition touch-manipulation rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">A+</button>
+        <button type="button" id="btn-font-increase" aria-label="A+ Tăng kích thước phông chữ" class="px-2.5 py-1 text-slate-300 hover:text-white font-bold transition touch-manipulation rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">A+</button>
     </div>
 
     <!-- 1-Click Zen Mode Switcher -->

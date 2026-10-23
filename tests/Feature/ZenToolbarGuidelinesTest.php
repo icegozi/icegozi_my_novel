@@ -8,14 +8,14 @@ class ZenToolbarGuidelinesTest extends TestCase
 {
     public function test_zen_toolbar_has_accessible_labels_and_numeric_classes(): void
     {
-        $view = $this->blade("@include('reader.chapters.partials.zen_toolbar')");
+        $rendered = view('reader.chapters.partials.zen_toolbar')->render();
 
-        $view->assertSee('aria-label="Chuyển sang giao diện tối"', false);
-        $view->assertSee('aria-label="Chuyển sang giao diện giấy cổ"', false);
-        $view->assertSee('aria-label="Chuyển sang giao diện sáng"', false);
-        $view->assertSee('aria-label="Giảm kích thước phông chữ"', false);
-        $view->assertSee('aria-label="Tăng kích thước phông chữ"', false);
-        $view->assertSee('tabular-nums', false);
-        $view->assertSee('aria-hidden="true"', false);
+        $this->assertStringContainsString('aria-label="Chuyển sang giao diện tối"', $rendered);
+        $this->assertStringContainsString('aria-label="Chuyển sang giao diện giấy cổ"', $rendered);
+        $this->assertStringContainsString('aria-label="Chuyển sang giao diện sáng"', $rendered);
+        $this->assertStringContainsString('aria-label="A- Giảm kích thước phông chữ"', $rendered);
+        $this->assertStringContainsString('aria-label="A+ Tăng kích thước phông chữ"', $rendered);
+        $this->assertStringContainsString('tabular-nums', $rendered);
+        $this->assertStringContainsString('aria-hidden="true"', $rendered);
     }
 }

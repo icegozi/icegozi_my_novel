@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thẩm Định Nội Dung: Chương {{ (float)$chapter->chapter_number }} - {{ $chapter->novel?->title }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;900&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <style>
@@ -37,19 +37,22 @@
             <div class="flex items-center gap-3">
                 <form x-ref="approveForm" action="{{ route('admin.moderation.chapters.approve', $chapter) }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit"
+                    <x-button type="submit"
+                            size="sm"
                             title="Alt + A"
-                            class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-1.5">
+                            class="!bg-emerald-600 hover:!bg-emerald-500 text-white shadow-emerald-600/30">
                         <span>✓ Duyệt (Alt+A)</span>
-                    </button>
+                    </x-button>
                 </form>
 
-                <button type="button"
+                <x-button type="button"
+                        variant="ghost"
+                        size="sm"
                         title="Alt + R"
                         @click="rejectModal = true"
-                        class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition-all flex items-center gap-1.5">
+                        class="!bg-rose-500/10 hover:!bg-rose-500/20 !text-rose-400 border border-rose-500/30">
                     <span>✕ Từ Chối (Alt+R)</span>
-                </button>
+                </x-button>
             </div>
         </div>
     </header>
@@ -61,9 +64,11 @@
                 <div class="text-slate-400">
                     Tác giả: <strong class="text-indigo-400">{{ $chapter->novel?->author?->authorProfile?->pen_name ?? $chapter->novel?->author?->name }}</strong>
                 </div>
-                <div class="text-slate-400">
-                    Độ tuổi: <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">{{ $chapter->novel?->age_rating }}</span>
-                    Bản quyền: <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">{{ $chapter->novel?->copyright_type }}</span>
+                <div class="text-slate-400 flex items-center gap-2">
+                    <span>Độ tuổi:</span>
+                    <x-badge :variant="'age' . (int)$chapter->novel?->age_rating" size="xs">{{ $chapter->novel?->age_rating }}+</x-badge>
+                    <span>Bản quyền:</span>
+                    <x-badge variant="brand" size="xs">{{ $chapter->novel?->copyright_type }}</x-badge>
                 </div>
             </div>
             <div class="space-y-1 text-right">
@@ -84,43 +89,27 @@
     </main>
 
     <!-- Reject Modal -->
-    <div x-show="rejectModal"
-         x-cloak
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-         @keydown.escape.window="rejectModal = false">
-        <div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4"
-             @click.away="rejectModal = false">
-            <div class="flex items-center justify-between">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <span class="text-rose-500">⚠️</span>
-                    <span>Từ Chối Phê Duyệt Chương Truyện</span>
-                </h3>
-                <button @click="rejectModal = false" class="text-slate-400 hover:text-white">&times;</button>
+    <x-modal name="rejectModal" title="Từ Chối Phê Duyệt Chương Truyện">
+        <form action="{{ route('admin.moderation.chapters.reject', $chapter) }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Lý do từ chối:</label>
+                <textarea name="rejection_reason"
+                          x-model="rejectReason"
+                          rows="4"
+                          required
+                          class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-rose-500 leading-relaxed"></textarea>
             </div>
 
-            <form action="{{ route('admin.moderation.chapters.reject', $chapter) }}" method="POST" class="space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Lý do từ chối:</label>
-                    <textarea name="rejection_reason"
-                              x-model="rejectReason"
-                              rows="4"
-                              required
-                              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-rose-500 leading-relaxed"></textarea>
-                </div>
-
-                <div class="flex items-center justify-end gap-3 pt-2">
-                    <button type="button" @click="rejectModal = false"
-                            class="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200">
-                        Hủy
-                    </button>
-                    <button type="submit"
-                            class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/30 transition-all">
-                        Xác Nhận Từ Chối
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <x-button type="button" @click="rejectModal = false" variant="ghost" size="sm">
+                    Hủy
+                </x-button>
+                <x-button type="submit" variant="danger" size="sm">
+                    Xác Nhận Từ Chối
+                </x-button>
+            </div>
+        </form>
+    </x-modal>
 </body>
 </html>

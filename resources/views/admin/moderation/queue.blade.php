@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hàng Đợi Kiểm Duyệt Nội Dung - Quản Trị Hệ Thống</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -43,9 +43,9 @@
                     <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-amber-400 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/25">3D</span>
                     <span class="font-heading font-bold text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-indigo-300">NOVEL ADMIN</span>
                 </a>
-                <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                <x-badge variant="amber" size="sm">
                     Cổng Kiểm Duyệt • NĐ 147/2024 & NĐ 17/2023
-                </span>
+                </x-badge>
             </div>
             <div class="flex items-center gap-4 text-xs text-slate-400">
                 <span>Nhân viên: <strong class="text-slate-200">{{ auth()->user()?->name ?? 'Moderator' }}</strong> ({{ auth()->user()?->role ?? 'moderator' }})</span>
@@ -58,15 +58,13 @@
     <main class="max-w-7xl mx-auto px-6 py-8">
         <!-- Flash notifications -->
         @if(session('success'))
-            <div class="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-3">
-                <span class="text-xl">✅</span>
-                <span>{{ session('success') }}</span>
+            <div class="mb-6">
+                <x-alert type="success">{{ session('success') }}</x-alert>
             </div>
         @endif
         @if(session('warning'))
-            <div class="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm flex items-center gap-3">
-                <span class="text-xl">⚠️</span>
-                <span>{{ session('warning') }}</span>
+            <div class="mb-6">
+                <x-alert type="warning">{{ session('warning') }}</x-alert>
             </div>
         @endif
 
@@ -206,58 +204,42 @@
         </section>
 
         <!-- Rejection Reason Modal -->
-        <div x-show="rejectModal"
-             x-cloak
-             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-             @keydown.escape.window="rejectModal = false">
-            <div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4"
-                 @click.away="rejectModal = false">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <span class="text-rose-500">⚠️</span>
-                        <span>Từ Chối Phê Duyệt: <span class="text-slate-300 font-semibold" x-text="rejectItemTitle"></span></span>
-                    </h3>
-                    <button @click="rejectModal = false" class="text-slate-400 hover:text-white">&times;</button>
+        <x-modal name="rejectModal" title="Từ Chối Phê Duyệt">
+            <p class="text-xs text-slate-400 mb-4">
+                Vui lòng chọn lý do từ chối mẫu hoặc nhập nội dung cụ thể để gửi thông báo hướng dẫn tác giả khắc phục.
+            </p>
+
+            <form :action="rejectUrl" method="POST" class="space-y-4">
+                @csrf
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Lý do mẫu:</label>
+                    <select @change="rejectReason = $event.target.value"
+                            class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-rose-500">
+                        <template x-for="preset in presetReasons" :key="preset">
+                            <option :value="preset" x-text="preset"></option>
+                        </template>
+                    </select>
                 </div>
 
-                <p class="text-xs text-slate-400">
-                    Vui lòng chọn lý do từ chối mẫu hoặc nhập nội dung cụ thể để gửi thông báo hướng dẫn tác giả khắc phục.
-                </p>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Chi tiết giải trình từ chối:</label>
+                    <textarea name="rejection_reason"
+                              x-model="rejectReason"
+                              rows="4"
+                              required
+                              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-rose-500 leading-relaxed"></textarea>
+                </div>
 
-                <form :action="rejectUrl" method="POST" class="space-y-4">
-                    @csrf
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Lý do mẫu:</label>
-                        <select @change="rejectReason = $event.target.value"
-                                class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-rose-500">
-                            <template x-for="preset in presetReasons" :key="preset">
-                                <option :value="preset" x-text="preset"></option>
-                            </template>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Chi tiết giải trình từ chối:</label>
-                        <textarea name="rejection_reason"
-                                  x-model="rejectReason"
-                                  rows="4"
-                                  required
-                                  class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-rose-500 leading-relaxed"></textarea>
-                    </div>
-
-                    <div class="flex items-center justify-end gap-3 pt-2">
-                        <button type="button" @click="rejectModal = false"
-                                class="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200">
-                            Hủy bỏ
-                        </button>
-                        <button type="submit"
-                                class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/30 transition-all">
-                            Xác Nhận Từ Chối
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <x-button type="button" @click="rejectModal = false" variant="ghost" size="sm">
+                        Hủy bỏ
+                    </x-button>
+                    <x-button type="submit" variant="danger" size="sm">
+                        Xác Nhận Từ Chối
+                    </x-button>
+                </div>
+            </form>
+        </x-modal>
     </main>
 </body>
 </html>

@@ -36,7 +36,7 @@
                         </span>
                         <button type="button" 
                                 onclick="removeBookmark({{ $bm->novel->id }})" 
-                                class="absolute top-2 right-2 p-1.5 rounded-lg bg-black/60 hover:bg-rose-600 text-white opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 transition-all duration-200 shadow z-10"
+                                class="absolute top-2 right-2 p-1.5 rounded-lg bg-black/60 hover:bg-rose-600 text-white opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 transition-opacity transition-colors duration-200 shadow z-10"
                                 title="Bỏ lưu khỏi Tủ Sách"
                                 aria-label="Bỏ lưu">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,7 +62,7 @@
             @endif
         @empty
             <div class="col-span-full py-16 text-center space-y-3 text-slate-500">
-                <span class="text-4xl block">📚</span>
+                <span class="text-4xl block" aria-hidden="true">📚</span>
                 <p class="text-sm font-semibold">Tủ sách của bạn hiện đang trống</p>
                 <p class="text-xs">Hãy nhấn vào nút “Lưu Vào Tủ Sách” khi xem các tác phẩm yêu thích để theo dõi tại đây.</p>
                 <a href="/popular" class="inline-block mt-2 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-500 transition">

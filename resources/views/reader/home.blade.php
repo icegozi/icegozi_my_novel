@@ -138,7 +138,7 @@
                     @foreach ($continueReading as $history)
                         @if ($history->novel && $history->lastChapter)
                             <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900/60 sepia:bg-sepia-50 shadow-sm flex items-center gap-4 hover:border-indigo-500/50 transition">
-                                <img src="{{ $history->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=150&q=80' }}" alt="{{ $history->novel->title }}" class="w-14 h-20 object-cover rounded-xl shrink-0">
+                                <img src="{{ $history->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=150&q=80' }}" alt="{{ $history->novel->title }}" width="56" height="80" class="w-14 h-20 object-cover rounded-xl shrink-0">
                                 <div class="flex-1 min-w-0 space-y-1">
                                     <h4 class="font-bold text-xs truncate text-slate-900 dark:text-white sepia:text-sepia-text">{{ $history->novel->title }}</h4>
                                     <p class="text-[11px] text-slate-500 truncate">{{ $history->lastChapter->title }}</p>
@@ -192,15 +192,15 @@
                 @foreach ($latestChapters as $chapter)
                     <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900/40 sepia:bg-sepia-50 shadow-sm flex items-center justify-between gap-4 hover:border-slate-400 dark:hover:border-slate-700 transition">
                         <div class="flex items-center gap-3 min-w-0">
-                            <img src="{{ $chapter->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=100&q=80' }}" alt="{{ $chapter->novel->title }}" class="w-12 h-16 rounded-lg object-cover shrink-0">
+                            <img src="{{ $chapter->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=100&q=80' }}" alt="{{ $chapter->novel->title }}" width="48" height="64" class="w-12 h-16 rounded-lg object-cover shrink-0">
                             <div class="min-w-0 space-y-1">
-                                <a href="/stories/{{ $chapter->novel->slug }}" class="font-bold text-xs truncate block text-slate-900 dark:text-white sepia:text-sepia-text hover:text-indigo-600 transition">
+                                <a href="/stories/{{ $chapter->novel->slug }}" class="font-bold text-xs truncate block py-0.5 min-h-[24px] flex items-center text-slate-900 dark:text-white sepia:text-sepia-text hover:text-indigo-600 transition-colors">
                                     {{ $chapter->novel->title }}
                                 </a>
-                                <a href="/stories/{{ $chapter->novel->slug }}/read/{{ $chapter->chapter_number }}" class="text-[11px] text-indigo-600 dark:text-indigo-400 font-semibold truncate block hover:underline">
+                                <a href="/stories/{{ $chapter->novel->slug }}/read/{{ $chapter->chapter_number }}" class="text-[11px] text-indigo-600 dark:text-indigo-400 font-semibold truncate block py-0.5 min-h-[24px] flex items-center hover:underline">
                                     {{ $chapter->title }}
                                 </a>
-                                <span class="text-[10px] text-slate-400 block">
+                                <span class="text-[10px] text-slate-500 dark:text-slate-400 sepia:text-sepia-muted block">
                                     {{ $chapter->novel->genres->first()->name ?? 'Truyện' }} • {{ $chapter->published_at?->diffForHumans() ?? 'Vừa xong' }}
                                 </span>
                             </div>

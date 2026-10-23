@@ -67,7 +67,7 @@
                     <button
                         type="button"
                         onclick="togglePasswordVisibility('password', this)"
-                        class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-0.5"
                         aria-label="Ẩn hiện mật khẩu"
                     >
                         👁️
@@ -84,7 +84,7 @@
 
             <button
                 type="submit"
-                class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-all transform hover:-translate-y-0.5"
+                class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-transform transition-colors transform hover:-translate-y-0.5"
             >
                 Đăng Nhập
             </button>

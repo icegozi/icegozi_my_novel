@@ -50,3 +50,39 @@ window.showToast = function (message, type = 'info') {
         setTimeout(() => toast.remove(), 300);
     }, 3500);
 };
+
+// Header Search Shortcut: Ctrl+K / Cmd+K
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        const searchInput = document.getElementById('header-search-input') || document.getElementById('search-page-input');
+        if (searchInput) {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+    }
+});
+
+// Dropdown & Mobile Nav outside-click dismissal
+document.addEventListener('click', (e) => {
+    const userContainer = document.getElementById('user-menu-container');
+    const userDropdown = document.getElementById('user-dropdown');
+    if (userContainer && userDropdown && !userContainer.contains(e.target)) {
+        userDropdown.classList.add('hidden');
+    }
+
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav && mobileToggle && !mobileNav.contains(e.target) && !mobileToggle.contains(e.target)) {
+        mobileNav.classList.add('hidden');
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const userDropdown = document.getElementById('user-dropdown');
+        const mobileNav = document.getElementById('mobile-nav');
+        if (userDropdown) userDropdown.classList.add('hidden');
+        if (mobileNav) mobileNav.classList.add('hidden');
+    }
+});

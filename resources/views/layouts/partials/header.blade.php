@@ -98,10 +98,11 @@
                     <button
                         type="button"
                         id="user-menu-button"
+                        aria-label="Menu tài khoản cá nhân"
                         aria-expanded="false"
                         aria-haspopup="true"
                         onclick="document.getElementById('user-dropdown').classList.toggle('hidden')"
-                        class="flex items-center gap-2 p-1 rounded-xl hover:ring-2 hover:ring-indigo-500 focus:outline-none transition"
+                        class="flex items-center gap-2 p-1 rounded-xl hover:ring-2 hover:ring-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition"
                     >
                         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-bold text-xs flex items-center justify-center uppercase shadow-sm">
                             {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
@@ -154,7 +155,7 @@
                 type="button"
                 id="mobile-menu-toggle"
                 onclick="document.getElementById('mobile-nav').classList.toggle('hidden')"
-                class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus:outline-none"
+                class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 aria-label="Mở danh mục điều hướng"
             >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

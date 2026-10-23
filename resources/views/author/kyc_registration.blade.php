@@ -42,7 +42,7 @@
     @if($errors->any())
         <div class="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-xs sm:text-sm">
             <h4 class="font-bold text-rose-900 dark:text-rose-300 flex items-center gap-2">
-                <span>❌</span> Vui lòng kiểm tra lại các thông tin sau:
+                <span aria-hidden="true">❌</span> Vui lòng kiểm tra lại các thông tin sau:
             </h4>
             <ul class="list-disc list-inside mt-2 space-y-1 text-xs">
                 @foreach($errors->all() as $error)
@@ -59,15 +59,15 @@
             </h3>
             @if($profile->verification_status === 'pending')
                 <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 sepia:text-amber-950 text-xs font-semibold border border-amber-500/30">
-                    ⏳ Đang chờ thẩm định e-KYC (Dự kiến trong 24 giờ làm việc)
+                    <span aria-hidden="true">⏳</span> Đang chờ thẩm định e-KYC (Dự kiến trong 24 giờ làm việc)
                 </span>
             @elseif($profile->verification_status === 'verified')
                 <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 sepia:text-emerald-950 text-xs font-semibold border border-emerald-500/30">
-                    🛡️ Đã xác thực định danh tác giả (Hồ sơ hợp lệ)
+                    <span aria-hidden="true">🛡️</span> Đã xác thực định danh tác giả (Hồ sơ hợp lệ)
                 </span>
             @elseif($profile->verification_status === 'rejected')
                 <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-rose-500/15 text-rose-800 dark:text-rose-300 sepia:text-rose-950 text-xs font-semibold border border-rose-500/30">
-                    ❌ Hồ sơ bị từ chối: {{ $profile->rejection_reason ?? 'Vui lòng kiểm tra lại ảnh Căn Cước Công Dân' }}
+                    <span aria-hidden="true">❌</span> Hồ sơ bị từ chối: {{ $profile->rejection_reason ?? 'Vui lòng kiểm tra lại ảnh Căn Cước Công Dân' }}
                 </span>
             @endif
         </div>
@@ -88,37 +88,37 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="pen_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Bút danh hiển thị <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" name="pen_name" value="{{ old('pen_name', $profile?->pen_name ?? '') }}" required placeholder="VD: Lão Trư, Cổ Long" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <input type="text" id="pen_name" name="pen_name" value="{{ old('pen_name', $profile?->pen_name ?? '') }}" required placeholder="VD: Lão Trư, Cổ Long" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="legal_full_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Họ và tên thật (trên Căn Cước Công Dân) <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" name="legal_full_name" value="{{ old('legal_full_name', $profile?->legal_full_name ?? '') }}" required placeholder="VD: NGUYỄN VĂN AN" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <input type="text" id="legal_full_name" name="legal_full_name" value="{{ old('legal_full_name', $profile?->legal_full_name ?? '') }}" required placeholder="VD: NGUYỄN VĂN AN" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="identity_number" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Số Căn Cước Công Dân (12 số) <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" name="identity_number" value="{{ old('identity_number') }}" required maxlength="12" placeholder="001200001234" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <input type="text" id="identity_number" name="identity_number" value="{{ old('identity_number') }}" required maxlength="12" placeholder="001200001234" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="phone" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Số điện thoại chính chủ (NĐ 147) <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" name="phone" value="{{ old('phone', $user?->phone ?? '') }}" required placeholder="0987654321" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <input type="text" id="phone" name="phone" value="{{ old('phone', $user?->phone ?? '') }}" required placeholder="0987654321" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="identity_issued_date" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Ngày cấp Căn Cước Công Dân
                     </label>
-                    <input type="date" name="identity_issued_date" value="{{ old('identity_issued_date', $profile?->identity_issued_date?->format('Y-m-d') ?? '') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <input type="date" id="identity_issued_date" name="identity_issued_date" value="{{ old('identity_issued_date', $profile?->identity_issued_date?->format('Y-m-d') ?? '') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
             </div>
         </div>
@@ -134,16 +134,16 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-100/60 border border-slate-200 dark:border-slate-800 sepia:border-sepia-border">
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="identity_front_image" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Ảnh mặt trước Căn Cước Công Dân <span class="text-rose-500">*</span>
                     </label>
-                    <input type="file" name="identity_front_image" accept="image/*" required class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/10 dark:file:bg-indigo-500/20 sepia:file:bg-amber-900/20 file:text-indigo-700 dark:file:text-indigo-400 sepia:file:text-amber-900 hover:file:opacity-80 transition-all">
+                    <input type="file" id="identity_front_image" name="identity_front_image" accept="image/*" required class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/10 dark:file:bg-indigo-500/20 sepia:file:bg-amber-900/20 file:text-indigo-700 dark:file:text-indigo-400 sepia:file:text-amber-900 hover:file:opacity-80 transition-opacity">
                 </div>
                 <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-100/60 border border-slate-200 dark:border-slate-800 sepia:border-sepia-border">
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
+                    <label for="identity_back_image" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">
                         Ảnh mặt sau Căn Cước Công Dân <span class="text-rose-500">*</span>
                     </label>
-                    <input type="file" name="identity_back_image" accept="image/*" required class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/10 dark:file:bg-indigo-500/20 sepia:file:bg-amber-900/20 file:text-indigo-700 dark:file:text-indigo-400 sepia:file:text-amber-900 hover:file:opacity-80 transition-all">
+                    <input type="file" id="identity_back_image" name="identity_back_image" accept="image/*" required class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/10 dark:file:bg-indigo-500/20 sepia:file:bg-amber-900/20 file:text-indigo-700 dark:file:text-indigo-400 sepia:file:text-amber-900 hover:file:opacity-80 transition-opacity">
                 </div>
             </div>
         </div>
@@ -159,16 +159,16 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Mã số thuế cá nhân</label>
-                    <input type="text" name="tax_code" value="{{ old('tax_code', $profile?->tax_code ?? '') }}" placeholder="MST nhận nhuận bút" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <label for="tax_code" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Mã số thuế cá nhân</label>
+                    <input type="text" id="tax_code" name="tax_code" value="{{ old('tax_code', $profile?->tax_code ?? '') }}" placeholder="MST nhận nhuận bút" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Số tài khoản ngân hàng</label>
-                    <input type="text" name="bank_account_number" value="{{ old('bank_account_number', $profile?->bank_account_number ?? '') }}" placeholder="Số TK ngân hàng" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <label for="bank_account_number" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Số tài khoản ngân hàng</label>
+                    <input type="text" id="bank_account_number" name="bank_account_number" value="{{ old('bank_account_number', $profile?->bank_account_number ?? '') }}" placeholder="Số TK ngân hàng" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Tên ngân hàng</label>
-                    <input type="text" name="bank_name" value="{{ old('bank_name', $profile?->bank_name ?? '') }}" placeholder="VD: Vietcombank, MB" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
+                    <label for="bank_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 sepia:text-sepia-text mb-1.5">Tên ngân hàng</label>
+                    <input type="text" id="bank_name" name="bank_name" value="{{ old('bank_name', $profile?->bank_name ?? '') }}" placeholder="VD: Vietcombank, MB" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-input border border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-slate-900 dark:text-slate-100 sepia:text-sepia-text text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 sepia:focus:ring-amber-800 transition-colors">
                 </div>
             </div>
         </div>
@@ -192,9 +192,9 @@
 
         <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <span class="text-xs text-slate-500 dark:text-slate-400 sepia:text-sepia-muted flex items-center gap-1.5">
-                <span>🔒</span> Dữ liệu định danh được mã hóa AES-256 an toàn.
+                <span aria-hidden="true">🔒</span> Dữ liệu định danh được mã hóa AES-256 an toàn.
             </span>
-            <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 shadow-md sepia:shadow-amber-900/20 transition-all flex items-center justify-center gap-2">
+            <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 shadow-md sepia:shadow-amber-900/20 transition-colors shadow-md flex items-center justify-center gap-2">
                 <span>Ký Số & Nộp Hồ Sơ Định Danh</span>
                 <span aria-hidden="true">&rarr;</span>
             </button>

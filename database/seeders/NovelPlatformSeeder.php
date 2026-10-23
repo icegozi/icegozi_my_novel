@@ -109,7 +109,7 @@ class NovelPlatformSeeder extends Seeder
                 'author_id' => $author->id,
                 'title' => 'Cửu Châu Thần Ma Lục 3D',
                 'synopsis' => 'Kiệt tác tu chân với hệ thống hình chiếu 3D sống động bám sát từng đoạn văn khi độc giả cuộn màn hình.',
-                'cover_image' => 'covers/cuuchau.webp',
+                'cover_image' => '/images/covers/tien-hiep.webp',
                 'status' => 'published',
                 'age_rating' => '16_plus',
                 'copyright_type' => 'original',

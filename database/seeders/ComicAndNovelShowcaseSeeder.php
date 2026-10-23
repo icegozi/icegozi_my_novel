@@ -32,7 +32,7 @@ class ComicAndNovelShowcaseSeeder extends Seeder
                 'author_id' => $author->id,
                 'title' => 'Võ Thần Tái Sinh (Webtoon)',
                 'synopsis' => "Đỉnh phong Võ Thần bị thập đại tông môn vây hãm tại Đoạn Hồn Nhai. Sau khi tự bạo đan điền, linh hồn trùng sinh về thời niên thiếu 16 tuổi trong một gia tộc suy tàn ở biên cảnh.\nVới ký ức kiếp trước và vạn quyển tuyệt học, hắn từng bước quét ngang cường địch, thức tỉnh võ hồn cửu phẩm!",
-                'cover_image' => 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+                'cover_image' => '/images/covers/comic-webtoon.webp',
                 'status' => 'published',
                 'age_rating' => '16_plus',
                 'copyright_type' => 'original',
@@ -56,10 +56,10 @@ class ComicAndNovelShowcaseSeeder extends Seeder
                 'title' => 'Chương 1: Trùng Sinh Đoạn Hồn Nhai (Bản Vẽ Độc Quyền)',
                 'slug' => 'chuong-1-trung-sinh-doan-hon-nhai',
                 'content' => '<div class="comic-stream space-y-4">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80" alt="Panel 1 - Đoạn Hồn Nhai sấm chớp" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="eager">
-                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1000&q=80" alt="Panel 2 - Võ thần tự bạo kim đan" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="lazy">
-                    <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1000&q=80" alt="Panel 3 - Thức tỉnh trong thạch thất" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="lazy">
-                    <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=1000&q=80" alt="Panel 4 - Cửu phẩm Võ Hồn bừng sáng" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="lazy">
+                    <img src="/images/comics/panel-1.webp" alt="Panel 1 - Đoạn Hồn Nhai sấm chớp" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="eager">
+                    <img src="/images/comics/panel-2.webp" alt="Panel 2 - Võ thần tự bạo kim đan" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="lazy">
+                    <img src="/images/comics/panel-3.webp" alt="Panel 3 - Thức tỉnh trong thạch thất" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="lazy">
+                    <img src="/images/comics/panel-1.webp" alt="Panel 4 - Cửu phẩm Võ Hồn bừng sáng" class="w-full rounded-2xl shadow-lg border border-slate-800" loading="lazy">
                 </div>',
                 'word_count' => 850,
                 'status' => 'published',
@@ -75,7 +75,7 @@ class ComicAndNovelShowcaseSeeder extends Seeder
                 'author_id' => $author->id,
                 'title' => 'Vạn Cổ Chí Tôn',
                 'synopsis' => "Mười lăm năm trước, Cửu Châu Phong Thần Bảng chấn động thiên địa. Diệp Thần thân là Đệ Nhất Kiếm Đế, bị tri kỷ phản bội hãm hại trong Luân Hồi Cổ Điện.\nMười lăm năm sau, linh hồn thức tỉnh trong thân xác một thiếu niên phế tài của Diệp gia. Một thanh rỉ sét cổ kiếm, một trái tim bất khuất, nghịch chuyển càn khôn tái lập trật tự vạn cổ!",
-                'cover_image' => 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+                'cover_image' => '/images/covers/tien-hiep.webp',
                 'status' => 'published',
                 'age_rating' => '13_plus',
                 'copyright_type' => 'original',
@@ -124,7 +124,7 @@ class ComicAndNovelShowcaseSeeder extends Seeder
                 'author_id' => $author->id,
                 'title' => 'Linh Vũ Thiên Hạ',
                 'synopsis' => 'Thế giới nơi cường giả vi tôn, Linh sư khống chế thiên địa linh khí, Vũ giả rèn luyện thân thể bất hoại. Thiếu niên mang trong mình song tu thể chất ngàn năm khó gặp, một bước đạp nát thiên khung.',
-                'cover_image' => 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+                'cover_image' => '/images/covers/huyen-huyen.webp',
                 'status' => 'published',
                 'age_rating' => '16_plus',
                 'copyright_type' => 'original',
@@ -159,7 +159,7 @@ class ComicAndNovelShowcaseSeeder extends Seeder
                 'author_id' => $author->id,
                 'title' => 'Kỷ Nguyên Tinh Thần 3000',
                 'synopsis' => 'Năm 3000, Trái Đất bước vào kỷ nguyên liên hành tinh. Loài người mở ra các cổng không gian đến các thiên hà xa xôi, đồng thời đánh thức tiềm năng cơ giáp lượng tử của cơ thể.',
-                'cover_image' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80',
+                'cover_image' => '/images/covers/khoa-huyen.webp',
                 'status' => 'published',
                 'age_rating' => 'all',
                 'copyright_type' => 'original',
@@ -194,7 +194,7 @@ class ComicAndNovelShowcaseSeeder extends Seeder
                 'author_id' => $author->id,
                 'title' => 'Thần Y Hạ Sơn',
                 'synopsis' => 'Thiếu niên theo sư phụ ẩn dật nơi núi sâu mười tám năm ròng, y thuật thông thiên, võ đạo trác tuyệt. Xuống núi thực hiện bảy tờ hôn ước, quấy đảo thương trường đô thị.',
-                'cover_image' => 'https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=600&q=80',
+                'cover_image' => '/images/covers/do-thi.webp',
                 'status' => 'published',
                 'age_rating' => '16_plus',
                 'copyright_type' => 'original',

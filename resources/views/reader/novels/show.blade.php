@@ -92,7 +92,7 @@
                                 href="/stories/{{ $novel->slug }}/read/{{ $novel->chapters->first()->chapter_number }}"
                                 class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
                             >
-                                <span>📖</span> Đọc Từ Đầu ({{ $novel->chapters->first()->title }})
+                                <span aria-hidden="true">📖</span> Đọc Từ Đầu ({{ $novel->chapters->first()->title }})
                             </a>
                         @endif
 
@@ -103,7 +103,7 @@
                             onclick="toggleStoryBookmark({{ $novel->id }})"
                             class="px-5 py-3 rounded-xl border {{ !empty($isBookmarked) ? 'border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text' }} text-xs font-bold transition flex items-center gap-2"
                         >
-                            <span>🔖</span> <span id="bookmark-btn-label">{{ !empty($isBookmarked) ? 'Đã Lưu Vào Tủ Sách' : 'Lưu Vào Tủ Sách' }}</span>
+                            <span aria-hidden="true">🔖</span> <span id="bookmark-btn-label">{{ !empty($isBookmarked) ? 'Đã Lưu Vào Tủ Sách' : 'Lưu Vào Tủ Sách' }}</span>
                         </button>
 
                         <!-- Share Button -->
@@ -114,7 +114,7 @@
                             class="px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text text-xs font-bold transition flex items-center gap-1.5"
                             title="Chia sẻ tác phẩm"
                         >
-                            <span>🔗</span> <span>Chia Sẻ</span>
+                            <span aria-hidden="true">🔗</span> <span>Chia Sẻ</span>
                         </button>
 
                         <!-- Rating Trigger Button -->
@@ -125,7 +125,7 @@
                             class="px-4 py-3 rounded-xl border border-amber-400/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 text-xs font-bold transition flex items-center gap-1.5"
                             title="Đánh giá tác phẩm"
                         >
-                            <span>★</span> <span>Đánh Giá</span>
+                            <span aria-hidden="true">★</span> <span>Đánh Giá</span>
                         </button>
 
                         @if ($novel->assets3d->isNotEmpty())
@@ -133,7 +133,7 @@
                                 href="{{ route('reader.novels.exhibition', $novel->slug) }}"
                                 class="px-5 py-3 rounded-xl bg-purple-600/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30 hover:bg-purple-600/20 text-xs font-bold transition flex items-center gap-2"
                             >
-                                <span>✨</span> Phòng Trưng Bày 3D ({{ $novel->assets3d->count() }} mô hình)
+                                <span aria-hidden="true">✨</span> Phòng Trưng Bày 3D ({{ $novel->assets3d->count() }} mô hình)
                             </a>
                         @endif
                     </div>
@@ -199,6 +199,7 @@
                 <input
                     type="search"
                     id="chapter-filter-input"
+                    aria-label="Lọc danh sách chương"
                     placeholder="Lọc số chương, tên chương…"
                     class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900 sepia:bg-sepia-50 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     oninput="filterChapterRows(this.value)"
@@ -244,14 +245,15 @@
                     <button
                         type="button"
                         @click="selectedRating = star"
-                        class="text-2xl transition transform hover:scale-125 focus:outline-none"
+                        :aria-label="'Đánh giá ' + star + ' sao'"
+                        class="text-2xl transition transform hover:scale-125 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg p-1"
                         :class="star <= selectedRating ? 'text-amber-400' : 'text-slate-600'"
                     >★</button>
                 </template>
             </div>
             <div>
                 <label for="rating-comment" class="block text-xs font-semibold text-slate-300 sepia:text-sepia-text mb-1">Cảm nghĩ của bạn (Tùy chọn):</label>
-                <textarea id="rating-comment" rows="3" placeholder="Viết vài dòng chia sẻ về truyện..." class="w-full rounded-xl bg-slate-950/60 sepia:bg-sepia-100 border border-slate-800 sepia:border-sepia-border px-3 py-2 text-xs text-white sepia:text-sepia-text placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                <textarea id="rating-comment" rows="3" placeholder="Viết vài dòng chia sẻ về truyện…" class="w-full rounded-xl bg-slate-950/60 sepia:bg-sepia-100 border border-slate-800 sepia:border-sepia-border px-3 py-2 text-xs text-white sepia:text-sepia-text placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" @click="ratingModal = false" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white">Hủy</button>

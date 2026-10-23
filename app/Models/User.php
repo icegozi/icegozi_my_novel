@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -20,7 +22,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'phone_verified_at',
         'password',
+        'role',
+        'status',
+        'avatar_url',
     ];
 
     /**
@@ -42,7 +49,53 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function authorProfile(): HasOne
+    {
+        return $this->hasOne(AuthorProfile::class);
+    }
+
+    public function legalConsents(): HasMany
+    {
+        return $this->hasMany(LegalConsent::class);
+    }
+
+    public function novels(): HasMany
+    {
+        return $this->hasMany(Novel::class, 'author_id');
+    }
+
+    public function readingHistories(): HasMany
+    {
+        return $this->hasMany(ReadingHistory::class);
+    }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ChapterComment::class);
+    }
+
+    public function auditLogs(): HasMany
+    {
+        return $this->hasMany(AuditLog::class);
+    }
+
+    public function reportsSubmitted(): HasMany
+    {
+        return $this->hasMany(Report::class, 'reporter_id');
+    }
+
+    public function reportsResolved(): HasMany
+    {
+        return $this->hasMany(Report::class, 'resolved_by');
     }
 }

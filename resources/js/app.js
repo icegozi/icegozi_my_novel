@@ -1,6 +1,10 @@
 import './bootstrap';
 import './theme-manager.js';
 import './zen-editor.js';
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+Alpine.start();
 import { ProjectionStage } from './3d-engine/projection-stage.js';
 import { ParticleSystem } from './3d-engine/particle-system.js';
 import { ModelCache } from './3d-engine/model-cache.js';

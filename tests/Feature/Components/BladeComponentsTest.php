@@ -12,6 +12,8 @@ class BladeComponentsTest extends TestCase
         $btn->assertSee('Khám Phá');
         $btn->assertSee('bg-indigo-600');
         $btn->assertSee('focus-visible:ring-2');
+        $btn->assertSee('motion-reduce:transform-none');
+        $btn->assertSee('transition-[color,background-color,border-color,box-shadow,transform]');
 
         $link = $this->blade('<x-button href="/doc-truyen" variant="ghost">Đọc Ngay</x-button>');
         $link->assertSee('<a', false);
@@ -27,14 +29,18 @@ class BladeComponentsTest extends TestCase
         $dotBadge = $this->blade('<x-badge variant="emerald" dot>Hoàn thành</x-badge>');
         $dotBadge->assertSee('Hoàn thành');
         $dotBadge->assertSee('rounded-full');
+        $dotBadge->assertSee('aria-hidden="true"', false);
+        $dotBadge->assertSee('motion-reduce:animate-none');
     }
 
     public function test_alert_renders_with_accessibility_role_and_dismiss_button(): void
     {
         $alert = $this->blade('<x-alert type="error">Có lỗi xảy ra!</x-alert>');
         $alert->assertSee('role="alert"', false);
+        $alert->assertSee('aria-live="polite"', false);
         $alert->assertSee('Có lỗi xảy ra!');
         $alert->assertSee('aria-label="Đóng thông báo"', false);
+        $alert->assertSee('<span aria-hidden="true">✕</span>', false);
     }
 
     public function test_card_renders_with_glassmorphism_and_optional_hover(): void
@@ -42,6 +48,8 @@ class BladeComponentsTest extends TestCase
         $card = $this->blade('<x-card hover glow><p>Nội dung thẻ</p></x-card>');
         $card->assertSee('Nội dung thẻ');
         $card->assertSee('hover:-translate-y-1');
+        $card->assertSee('motion-reduce:transform-none');
+        $card->assertSee('transition-[transform,border-color,box-shadow]');
         $card->assertSee('shadow-glow');
     }
 
@@ -49,6 +57,8 @@ class BladeComponentsTest extends TestCase
     {
         $rating = $this->blade('<x-rating :score="4.5" :max="5" />');
         $rating->assertSee('aria-label="Đánh giá 4.5 trên 5 sao"', false);
+        $rating->assertSee('aria-hidden="true"', false);
+        $rating->assertSee('tabular-nums');
         $rating->assertSee('4.5');
     }
 
@@ -70,6 +80,10 @@ class BladeComponentsTest extends TestCase
         $view->assertSee('Vương Quốc Hư Ảo');
         $view->assertSee('IceGozi');
         $view->assertSee('aspect-[3/4]', false);
+        $view->assertSee('width="300"', false);
+        $view->assertSee('height="400"', false);
+        $view->assertSee('min-w-0');
+        $view->assertSee('Xem chi&nbsp;tiết&nbsp;→', false);
         $view->assertSee('13+');
     }
 
@@ -78,6 +92,8 @@ class BladeComponentsTest extends TestCase
         $modal = $this->blade('<x-modal name="testModal" title="Tiêu đề Modal"><p>Nội dung</p></x-modal>');
         $modal->assertSee('role="dialog"', false);
         $modal->assertSee('aria-modal="true"', false);
+        $modal->assertSee('overscroll-contain');
+        $modal->assertSee('<span aria-hidden="true">✕</span>', false);
         $modal->assertSee('Tiêu đề Modal');
         $modal->assertSee('x-show="testModal"', false);
     }
@@ -87,6 +103,10 @@ class BladeComponentsTest extends TestCase
         $input = $this->blade('<x-input label="Tên người dùng" name="username" error="Tên không hợp lệ" />');
         $input->assertSee('Tên người dùng');
         $input->assertSee('name="username"', false);
+        $input->assertSee('aria-invalid="true"', false);
+        $input->assertSee('aria-describedby="username-error"', false);
+        $input->assertSee('id="username-error"', false);
+        $input->assertSee('role="alert"', false);
         $input->assertSee('Tên không hợp lệ');
         $input->assertSee('border-rose-500');
     }

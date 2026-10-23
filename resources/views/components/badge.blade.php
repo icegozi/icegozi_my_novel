@@ -29,7 +29,7 @@ $classes = $baseClasses . ' ' . ($sizes[$size] ?? $sizes['sm']) . ' ' . ($varian
 
 <span {{ $attributes->merge(['class' => $classes]) }}>
     @if($dot)
-        <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80 animate-pulse"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80 animate-pulse motion-reduce:animate-none" aria-hidden="true"></span>
     @endif
     {{ $slot }}
 </span>

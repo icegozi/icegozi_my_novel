@@ -8,13 +8,15 @@ $novelSlug = $novel->slug ?? ($novel->id ?? '#');
 $novelUrl = Route::has('reader.novels.show') ? route('reader.novels.show', $novelSlug) : url('/truyen/' . $novelSlug);
 @endphp
 
-<div {{ $attributes->merge(['class' => 'group relative flex flex-col bg-slate-900/40 sepia:bg-sepia-50/60 rounded-2xl p-3 border border-slate-800/80 sepia:border-sepia-border hover:border-indigo-500/50 sepia:hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow']) }}>
+<div {{ $attributes->merge(['class' => 'group relative flex flex-col bg-slate-900/40 sepia:bg-sepia-50/60 rounded-2xl p-3 border border-slate-800/80 sepia:border-sepia-border hover:border-indigo-500/50 sepia:hover:border-amber-500/50 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 motion-reduce:transform-none hover:shadow-glow']) }}>
     <!-- Book Cover 3:4 Aspect Ratio -->
     <a href="{{ $novelUrl }}" class="relative block aspect-[3/4] w-full overflow-hidden rounded-xl bg-slate-950 shadow-book">
         <img src="{{ $novel->cover_image ?? '/images/default_cover.webp' }}"
              alt="{{ $novel->title }}"
+             width="300"
+             height="400"
              loading="lazy"
-             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none">
 
         <!-- Age rating badge overlay -->
         @if(!empty($novel->age_rating))
@@ -32,12 +34,12 @@ $novelUrl = Route::has('reader.novels.show') ? route('reader.novels.show', $nove
         @endif
 
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-            <span class="text-xs font-semibold text-white">Xem chi tiết &rarr;</span>
+            <span class="text-xs font-semibold text-white">Xem chi&nbsp;tiết&nbsp;→</span>
         </div>
     </a>
 
     <!-- Meta & Title -->
-    <div class="mt-3 flex flex-col flex-1">
+    <div class="mt-3 flex flex-col flex-1 min-w-0">
         <a href="{{ $novelUrl }}" class="font-heading font-bold text-sm text-white sepia:text-sepia-text group-hover:text-indigo-400 sepia:group-hover:text-amber-800 transition-colors line-clamp-2 text-balance leading-snug">
             {{ $novel->title }}
         </a>

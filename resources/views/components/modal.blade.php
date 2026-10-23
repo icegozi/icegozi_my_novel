@@ -18,7 +18,7 @@ $widthClass = $maxWidths[$maxWidth] ?? $maxWidths['md'];
 <div x-cloak
      x-show="{{ $name }}"
      @keydown.escape.window="{{ $name }} = false"
-     class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0 flex items-center justify-center"
+     class="fixed inset-0 z-50 overflow-y-auto overscroll-contain px-4 py-6 sm:px-0 flex items-center justify-center"
      role="dialog"
      aria-modal="true">
 
@@ -46,7 +46,7 @@ $widthClass = $maxWidths[$maxWidth] ?? $maxWidths['md'];
         @if($title)
             <div class="flex items-center justify-between pb-4 border-b border-slate-800 sepia:border-sepia-border mb-4">
                 <h3 class="font-heading font-bold text-lg text-white sepia:text-sepia-text">{{ $title }}</h3>
-                <button type="button" @click="{{ $name }} = false" class="text-slate-400 hover:text-white p-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" aria-label="Đóng cửa sổ">✕</button>
+                <button type="button" @click="{{ $name }} = false" class="text-slate-400 hover:text-white p-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" aria-label="Đóng cửa sổ"><span aria-hidden="true">✕</span></button>
             </div>
         @endif
 

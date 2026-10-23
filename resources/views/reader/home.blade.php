@@ -39,9 +39,9 @@
                     <!-- Right: Story Details & CTAs -->
                     <div class="lg:col-span-7 space-y-6">
                         <div class="flex flex-wrap items-center gap-2">
-                            <span class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30">
+                            <x-badge variant="brand" size="sm">
                                 Truyện Đề Cử Hôm Nay
-                            </span>
+                            </x-badge>
 
                             @foreach ($featured->genres->take(3) as $genre)
                                 <a href="/genres/{{ $genre->slug }}" class="px-3 py-1 rounded-full text-xs font-medium bg-slate-200/60 dark:bg-slate-800/60 sepia:bg-sepia-200 text-slate-700 dark:text-slate-300 sepia:text-sepia-text hover:bg-indigo-500/20 transition">
@@ -49,9 +49,9 @@
                                 </a>
                             @endforeach
 
-                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                            <x-badge :variant="'age' . (int)$featured->age_rating" size="xs">
                                 {{ strtoupper($featured->age_rating) }}
-                            </span>
+                            </x-badge>
                         </div>
 
                         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-black text-slate-900 dark:text-white sepia:text-sepia-text tracking-tight text-balance">
@@ -87,28 +87,32 @@
                         <!-- Actions -->
                         <div class="flex flex-wrap items-center gap-3 pt-2">
                             @if ($featured->chapters->isNotEmpty())
-                                <a
+                                <x-button
                                     href="/stories/{{ $featured->slug }}/read/{{ $featured->chapters->first()->chapter_number }}"
-                                    class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 text-white text-xs font-bold shadow-lg shadow-indigo-500/25 sepia:shadow-amber-900/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+                                    variant="primary"
+                                    size="md"
                                 >
                                     <span>📖</span> Đọc Ngay (Chương 1)
-                                </a>
+                                </x-button>
                             @endif
 
-                            <a
+                            <x-button
                                 href="/stories/{{ $featured->slug }}"
-                                class="px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800/80 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text text-xs font-bold transition"
+                                variant="secondary"
+                                size="md"
                             >
                                 Chi Tiết Tác Phẩm
-                            </a>
+                            </x-button>
 
                             @if ($featured->assets3d->isNotEmpty())
-                                <a
+                                <x-button
                                     href="/truyen/{{ $featured->slug }}/phong-trung-bay-3d"
-                                    class="px-5 py-3 rounded-xl bg-purple-600/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30 hover:bg-purple-600/20 text-xs font-bold transition flex items-center gap-1.5"
+                                    variant="ghost"
+                                    size="md"
+                                    class="!bg-purple-600/10 dark:!bg-purple-500/20 !text-purple-600 dark:!text-purple-300 border border-purple-500/30 hover:!bg-purple-600/20"
                                 >
                                     <span>✨</span> Phòng Trưng Bày 3D
-                                </a>
+                                </x-button>
                             @endif
                         </div>
                     </div>
@@ -165,34 +169,7 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
                 @foreach ($trendingNovels as $novel)
-                    <div class="group flex flex-col space-y-2">
-                        <a href="/stories/{{ $novel->slug }}" class="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-book border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-slate-800 transition-transform duration-300 group-hover:scale-105 group-hover:shadow-glow">
-                            <img src="{{ $novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=300&q=80' }}" alt="{{ $novel->title }}" class="w-full h-full object-cover" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            
-                            @if ($novel->genres->isNotEmpty())
-                                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur text-[10px] font-bold text-white">
-                                    {{ $novel->genres->first()->name }}
-                                </span>
-                            @endif
-
-                            <span class="absolute bottom-2 right-2 text-[10px] font-bold text-amber-400 bg-black/70 px-1.5 py-0.5 rounded">
-                                ★ {{ number_format($novel->rating_avg, 1) }}
-                            </span>
-                        </a>
-
-                        <div class="space-y-1">
-                            <a href="/stories/{{ $novel->slug }}" class="font-bold text-xs line-clamp-1 text-slate-900 dark:text-white sepia:text-sepia-text group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
-                                {{ $novel->title }}
-                            </a>
-                            <p class="text-[11px] text-slate-500 truncate">
-                                {{ $novel->author->name ?? 'Tác giả' }}
-                            </p>
-                            <p class="text-[10px] text-slate-400">
-                                {{ number_format($novel->view_count) }} lượt đọc
-                            </p>
-                        </div>
-                    </div>
+                    <x-novel-card :novel="$novel" />
                 @endforeach
             </div>
         </section>

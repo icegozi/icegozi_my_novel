@@ -47,8 +47,8 @@ $novelUrl = Route::has('reader.novels.show') ? route('reader.novels.show', $nove
         </p>
 
         <div class="mt-auto pt-2.5 flex items-center justify-between text-xs text-slate-400 sepia:text-sepia-muted">
-            <x-rating :score="$novel->rating ?? 5.0" size="xs" />
-            <span class="text-[11px] font-medium">{{ $novel->chapters_count ?? 0 }} chương</span>
+            <x-rating :score="$novel->rating ?? ($novel->rating_avg ?? 5.0)" size="xs" />
+            <span class="text-[11px] font-medium">{{ $novel->chapters_count ?? ($novel->total_chapters ?? 0) }} chương</span>
         </div>
     </div>
 </div>

@@ -39,19 +39,13 @@
     <main id="main-content" class="flex-1 focus:outline-none" tabindex="-1">
         @if (session('success'))
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-between" role="alert">
-                    <span>{{ session('success') }}</span>
-                    <button type="button" onclick="this.parentElement.remove()" class="p-1 hover:opacity-75" aria-label="Đóng thông báo">✕</button>
-                </div>
+                <x-alert type="success">{{ session('success') }}</x-alert>
             </div>
         @endif
 
         @if (session('error'))
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center justify-between" role="alert">
-                    <span>{{ session('error') }}</span>
-                    <button type="button" onclick="this.parentElement.remove()" class="p-1 hover:opacity-75" aria-label="Đóng thông báo">✕</button>
-                </div>
+                <x-alert type="error">{{ session('error') }}</x-alert>
             </div>
         @endif
 

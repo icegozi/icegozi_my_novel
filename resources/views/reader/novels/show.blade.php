@@ -1,7 +1,7 @@
 @extends('layouts.reader')
 
 @section('content')
-<div class="space-y-12 pb-16">
+<div class="space-y-12 pb-16" x-data="{ ratingModal: false, selectedRating: 5 }">
     <!-- Novel Hero Banner -->
     <div class="relative overflow-hidden border-b border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-gradient-to-b from-indigo-950/20 via-transparent to-transparent py-10 lg:py-14">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -101,9 +101,31 @@
                             type="button"
                             id="btn-bookmark-toggle"
                             onclick="toggleStoryBookmark({{ $novel->id }})"
-                            class="px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text text-xs font-bold transition flex items-center gap-2"
+                            class="px-5 py-3 rounded-xl border {{ !empty($isBookmarked) ? 'border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text' }} text-xs font-bold transition flex items-center gap-2"
                         >
-                            <span>🔖</span> <span id="bookmark-btn-label">Lưu Vào Tủ Sách</span>
+                            <span>🔖</span> <span id="bookmark-btn-label">{{ !empty($isBookmarked) ? 'Đã Lưu Vào Tủ Sách' : 'Lưu Vào Tủ Sách' }}</span>
+                        </button>
+
+                        <!-- Share Button -->
+                        <button
+                            type="button"
+                            id="btn-share-novel"
+                            onclick="shareStory()"
+                            class="px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text text-xs font-bold transition flex items-center gap-1.5"
+                            title="Chia sẻ tác phẩm"
+                        >
+                            <span>🔗</span> <span>Chia Sẻ</span>
+                        </button>
+
+                        <!-- Rating Trigger Button -->
+                        <button
+                            type="button"
+                            id="btn-rate-novel"
+                            @click="ratingModal = true"
+                            class="px-4 py-3 rounded-xl border border-amber-400/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 text-xs font-bold transition flex items-center gap-1.5"
+                            title="Đánh giá tác phẩm"
+                        >
+                            <span>★</span> <span>Đánh Giá</span>
                         </button>
 
                         @if ($novel->assets3d->isNotEmpty())
@@ -166,6 +188,14 @@
 
             <!-- Chapter Search & Order Toggle -->
             <div class="flex items-center gap-3">
+                <button
+                    type="button"
+                    id="btn-sort-chapters"
+                    onclick="toggleChapterOrder()"
+                    class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900 sepia:bg-sepia-50 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-500 transition flex items-center gap-1.5"
+                >
+                    <span id="sort-order-icon">↓</span> <span id="sort-order-label">Cũ nhất trước</span>
+                </button>
                 <input
                     type="search"
                     id="chapter-filter-input"
@@ -205,7 +235,30 @@
                 </div>
             @endforelse
         </div>
-    </section>
+    <!-- Interactive Rating Modal -->
+    <x-modal name="ratingModal" title="Đánh Giá Tác Phẩm">
+        <form onsubmit="submitRating(event)" class="space-y-4">
+            <p class="text-xs text-slate-300 sepia:text-sepia-text">Chọn số sao đánh giá cho tác phẩm <strong>{{ $novel->title }}</strong>:</p>
+            <div class="flex items-center justify-center gap-2 py-2">
+                <template x-for="star in [1, 2, 3, 4, 5]" :key="star">
+                    <button
+                        type="button"
+                        @click="selectedRating = star"
+                        class="text-2xl transition transform hover:scale-125 focus:outline-none"
+                        :class="star <= selectedRating ? 'text-amber-400' : 'text-slate-600'"
+                    >★</button>
+                </template>
+            </div>
+            <div>
+                <label for="rating-comment" class="block text-xs font-semibold text-slate-300 sepia:text-sepia-text mb-1">Cảm nghĩ của bạn (Tùy chọn):</label>
+                <textarea id="rating-comment" rows="3" placeholder="Viết vài dòng chia sẻ về truyện..." class="w-full rounded-xl bg-slate-950/60 sepia:bg-sepia-100 border border-slate-800 sepia:border-sepia-border px-3 py-2 text-xs text-white sepia:text-sepia-text placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" @click="ratingModal = false" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white">Hủy</button>
+                <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md">Gửi Đánh Giá</button>
+            </div>
+        </form>
+    </x-modal>
 </div>
 
 <script>
@@ -220,6 +273,40 @@
                 row.style.display = 'none';
             }
         });
+    }
+
+    var sortAsc = true;
+    function toggleChapterOrder() {
+        sortAsc = !sortAsc;
+        var container = document.getElementById('chapters-list-container');
+        if (!container) return;
+        var rows = Array.from(container.querySelectorAll('.chapter-item-row'));
+        rows.reverse();
+        rows.forEach(function(row) {
+            container.appendChild(row);
+        });
+        var label = document.getElementById('sort-order-label');
+        var icon = document.getElementById('sort-order-icon');
+        if (label) label.textContent = sortAsc ? 'Cũ nhất trước' : 'Mới nhất trước';
+        if (icon) icon.textContent = sortAsc ? '↓' : '↑';
+    }
+
+    function shareStory() {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(window.location.href);
+            if (window.showToast) {
+                window.showToast('Đã sao chép liên kết truyện vào clipboard!', 'success');
+            }
+        }
+    }
+
+    function submitRating(e) {
+        if (e) e.preventDefault();
+        if (window.showToast) {
+            window.showToast('Cảm ơn bạn đã gửi đánh giá tác phẩm!', 'success');
+        }
+        var modalCloseBtn = document.querySelector('[aria-label="Đóng cửa sổ"]');
+        if (modalCloseBtn) modalCloseBtn.click();
     }
 
     function toggleStoryBookmark(novelId) {
@@ -242,8 +329,16 @@
         })
         .then(function(data) {
             if (data && data.bookmarked !== undefined) {
-                var btn = document.getElementById('bookmark-btn-label');
-                btn.textContent = data.bookmarked ? 'Đã Lưu Vào Tủ Sách' : 'Lưu Vào Tủ Sách';
+                var btn = document.getElementById('btn-bookmark-toggle');
+                var label = document.getElementById('bookmark-btn-label');
+                if (label) label.textContent = data.bookmarked ? 'Đã Lưu Vào Tủ Sách' : 'Lưu Vào Tủ Sách';
+                if (btn) {
+                    if (data.bookmarked) {
+                        btn.className = 'px-5 py-3 rounded-xl border border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-600/20 text-xs font-bold transition flex items-center gap-2';
+                    } else {
+                        btn.className = 'px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 sepia:border-sepia-border hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-200 text-slate-800 dark:text-slate-200 sepia:text-sepia-text text-xs font-bold transition flex items-center gap-2';
+                    }
+                }
                 if (window.showToast) {
                     window.showToast(data.message, 'success');
                 }

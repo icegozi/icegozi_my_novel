@@ -36,7 +36,11 @@ class NovelViewController extends Controller
             }
         }
 
-        return view('reader.novels.show', compact('novel'));
+        $isBookmarked = auth()->check()
+            ? auth()->user()->bookmarks()->where('novel_id', $novel->id)->exists()
+            : false;
+
+        return view('reader.novels.show', compact('novel', 'isBookmarked'));
     }
 
     /**

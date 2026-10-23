@@ -23,4 +23,14 @@ class LayoutAndThemeTest extends TestCase
         $response->assertSee('class="sepia"', false);
         $response->assertSee('content="#f5efe6"', false);
     }
+
+    public function test_theme_contains_13_plus_tokens_and_accessibility_styles(): void
+    {
+        $css = file_get_contents(resource_path('css/app.css'));
+        $tailwind = file_get_contents(base_path('tailwind.config.js'));
+
+        $this->assertStringContainsString('--color-accent-glow', $css);
+        $this->assertStringContainsString('aspectRatio', $tailwind);
+    }
 }
+

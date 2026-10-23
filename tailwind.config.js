@@ -45,6 +45,12 @@ export default {
                     muted: '#6f5e4c',
                     border: '#e4d6bf',
                 },
+                age13: '#06b6d4',
+                age16: '#f59e0b',
+                age18: '#f43f5e',
+            },
+            aspectRatio: {
+                'book': '3/4',
             },
             boxShadow: {
                 'book': '0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2)',

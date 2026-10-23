@@ -164,16 +164,46 @@ export class ProjectionStage {
             loader.setDRACOLoader(dracoLoader);
         }
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             loader.load(url, (gltf) => {
                 this.modelCache.set(url, gltf.scene);
                 this.attachModel(gltf.scene.clone(), scaleFactor);
                 resolve(this.currentModel);
             }, undefined, (err) => {
-                console.error('[ProjectionStage] Failed to load 3D model:', err);
-                reject(err);
+                console.warn('[ProjectionStage] Could not load 3D file, generating fallback procedural artifact:', err);
+                const fallbackGroup = this.createFallbackMesh();
+                this.attachModel(fallbackGroup, scaleFactor);
+                resolve(this.currentModel);
             });
         });
+    }
+
+    createFallbackMesh() {
+        const group = new THREE.Group();
+        const bladeGeo = new THREE.ConeGeometry(0.18, 1.8, 4);
+        const bladeMat = new THREE.MeshStandardMaterial({
+            color: 0x818cf8,
+            emissive: 0x4f46e5,
+            emissiveIntensity: 0.6,
+            metalness: 0.8,
+            roughness: 0.2
+        });
+        const blade = new THREE.Mesh(bladeGeo, bladeMat);
+        blade.position.y = 0.9;
+        group.add(blade);
+
+        const guardGeo = new THREE.BoxGeometry(0.6, 0.08, 0.12);
+        const guardMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.9, roughness: 0.1 });
+        const guard = new THREE.Mesh(guardGeo, guardMat);
+        group.add(guard);
+
+        const hiltGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.5, 8);
+        const hiltMat = new THREE.MeshStandardMaterial({ color: 0x27272a, roughness: 0.8 });
+        const hilt = new THREE.Mesh(hiltGeo, hiltMat);
+        hilt.position.y = -0.28;
+        group.add(hilt);
+
+        return group;
     }
 
     attachModel(modelScene, scaleFactor = 1.0) {

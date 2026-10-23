@@ -5,14 +5,21 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 Alpine.start();
+import './reader-controls.js';
 import { ProjectionStage } from './3d-engine/projection-stage.js';
 import { ParticleSystem } from './3d-engine/particle-system.js';
 import { ModelCache } from './3d-engine/model-cache.js';
+import { Scroll3dObserver } from './scroll-3d-observer.js';
+import { ReaderPreferences } from './reader-preferences.js';
+import { ReadingProgressTracker } from './reading-progress-tracker.js';
 
 window.Novel3D = {
     ProjectionStage,
     ParticleSystem,
-    ModelCache
+    ModelCache,
+    Scroll3dObserver,
+    ReaderPreferences,
+    ReadingProgressTracker
 };
 
 // Global Toast helper

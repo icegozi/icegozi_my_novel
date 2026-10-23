@@ -6,7 +6,6 @@
     <title>{{ $chapter->title }} - {{ $novel->title }} - Trình Đọc 3D</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/resources/css/reader-stage.css">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-novel { font-family: 'Merriweather', Georgia, serif; }
@@ -55,8 +54,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
-    <!-- Reader Controls Script -->
-    <script src="/resources/js/reader-controls.js" defer></script>
+    <!-- Reader Controls: reader-controls.js is bundled into app.js -->
 </head>
 <body class="theme-dark min-h-screen flex flex-col antialiased transition-colors">
     <!-- Top Progress Bar -->
@@ -342,63 +340,66 @@
 
     @if ($novel->assets3d->isNotEmpty())
         <!-- Reader 3D Logic Engine -->
-        <script type="module">
-            import { ProjectionStage } from '/resources/js/3d-engine/projection-stage.js';
-            import { Scroll3dObserver } from '/resources/js/scroll-3d-observer.js';
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { ProjectionStage, Scroll3dObserver } = window.Novel3D || {};
+                const stageContainer = document.getElementById('stage-container');
+                const projections = JSON.parse(document.getElementById('projections-data')?.textContent || '[]');
 
-            const stageContainer = document.getElementById('stage-container');
-            const projections = JSON.parse(document.getElementById('projections-data').textContent || '[]');
+                if (stageContainer && ProjectionStage) {
+                    const stage = new ProjectionStage(stageContainer, {
+                        interactive: false,
+                        autoRotate: true
+                    });
+                    window.activeStage = stage;
 
-            if (stageContainer) {
-                const stage = new ProjectionStage(stageContainer, {
-                    interactive: false,
-                    autoRotate: true
-                });
-                window.activeStage = stage;
-
-                const observer = new Scroll3dObserver(projections, stage, {
-                    title: document.getElementById('hud-hologram-title'),
-                    keyword: document.getElementById('hud-trigger-keyword'),
-                    badge: document.getElementById('hud-badge')
-                });
-
-                const toggleBtn = document.getElementById('toggle-stage-interactive');
-                const btnLabel = document.getElementById('interactive-btn-label');
-                let isInteractive = false;
-
-                toggleBtn?.addEventListener('click', () => {
-                    isInteractive = !isInteractive;
-                    stageContainer.classList.toggle('is-interactive', isInteractive);
-                    stage.setInteractive(isInteractive);
-
-                    if (isInteractive) {
-                        btnLabel.textContent = 'Khóa Cuộn (Đang Xoay)';
-                        toggleBtn.classList.replace('text-indigo-400', 'text-amber-400');
-                    } else {
-                        btnLabel.textContent = 'Tương tác 360°';
-                        toggleBtn.classList.replace('text-amber-400', 'text-indigo-400');
+                    if (Scroll3dObserver) {
+                        new Scroll3dObserver(projections, stage, {
+                            title: document.getElementById('hud-hologram-title'),
+                            keyword: document.getElementById('hud-trigger-keyword'),
+                            badge: document.getElementById('hud-badge')
+                        });
                     }
-                });
-            }
+
+                    const toggleBtn = document.getElementById('toggle-stage-interactive');
+                    const btnLabel = document.getElementById('interactive-btn-label');
+                    let isInteractive = false;
+
+                    toggleBtn?.addEventListener('click', () => {
+                        isInteractive = !isInteractive;
+                        stageContainer.classList.toggle('is-interactive', isInteractive);
+                        stage.setInteractive(isInteractive);
+
+                        if (isInteractive) {
+                            btnLabel.textContent = 'Khóa Cuộn (Đang Xoay)';
+                            toggleBtn.classList.replace('text-indigo-400', 'text-amber-400');
+                        } else {
+                            btnLabel.textContent = 'Tương tác 360°';
+                            toggleBtn.classList.replace('text-amber-400', 'text-indigo-400');
+                        }
+                    });
+                }
+            });
         </script>
     @endif
 
     <!-- Zen Toolbar Partial -->
     @include('reader.chapters.partials.zen_toolbar')
 
-    <!-- Preferences Initialization -->
-    <script type="module">
-        import { ReaderPreferences } from '/resources/js/reader-preferences.js';
-        new ReaderPreferences({
-            apiEndpoint: "{{ route('reader.preferences.update') }}",
-            csrfToken: "{{ csrf_token() }}"
+    <!-- Preferences & Progress Tracker Initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { ReaderPreferences, ReadingProgressTracker } = window.Novel3D || {};
+            if (ReaderPreferences) {
+                new ReaderPreferences({
+                    apiEndpoint: "{{ route('reader.preferences.update') }}",
+                    csrfToken: "{{ csrf_token() }}"
+                });
+            }
+            if (ReadingProgressTracker) {
+                new ReadingProgressTracker({{ $chapter->id }}, "{{ route('reader.progress.sync') }}", "{{ csrf_token() }}");
+            }
         });
-    </script>
-
-    <!-- Reading Progress Tracker Initialization -->
-    <script type="module">
-        import { ReadingProgressTracker } from '/resources/js/reading-progress-tracker.js';
-        new ReadingProgressTracker({{ $chapter->id }}, "{{ route('reader.progress.sync') }}", "{{ csrf_token() }}");
     </script>
 </body>
 </html>

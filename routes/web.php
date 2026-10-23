@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/history', [\App\Http\Controllers\Reader\UserLibraryController::class, 'history'])->name('reader.history');
     Route::get('/bookmarks', [\App\Http\Controllers\Reader\UserLibraryController::class, 'bookmarks'])->name('reader.bookmarks');
     Route::post('/api/bookmarks/toggle', [\App\Http\Controllers\Reader\UserLibraryController::class, 'toggleBookmark'])->name('reader.bookmarks.toggle');
+    Route::delete('/api/history/{id}', [\App\Http\Controllers\Reader\UserLibraryController::class, 'deleteHistory'])->name('reader.history.delete');
 
     Route::get('/notifications', [\App\Http\Controllers\Reader\UserProfileController::class, 'notifications'])->name('reader.notifications');
     Route::get('/profile', [\App\Http\Controllers\Reader\UserProfileController::class, 'profile'])->name('reader.profile');

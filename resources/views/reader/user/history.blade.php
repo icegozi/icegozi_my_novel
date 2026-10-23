@@ -24,7 +24,7 @@
     <div class="space-y-4">
         @forelse ($histories as $history)
             @if ($history->novel && $history->lastChapter)
-                <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900/40 sepia:bg-sepia-50 flex items-center justify-between gap-4 hover:border-indigo-500/40 transition">
+                <div id="history-item-{{ $history->id }}" class="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border bg-white dark:bg-slate-900/40 sepia:bg-sepia-50 flex items-center justify-between gap-4 hover:border-indigo-500/40 transition">
                     <div class="flex items-center gap-4 min-w-0">
                         <img src="{{ $history->novel->cover_image ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=150&q=80' }}" alt="{{ $history->novel->title }}" class="w-14 h-20 rounded-xl object-cover shrink-0">
                         <div class="min-w-0 space-y-1">
@@ -44,6 +44,16 @@
                         <a href="/stories/{{ $history->novel->slug }}/read/{{ $history->lastChapter->chapter_number }}" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-sm">
                             Đọc Tiếp
                         </a>
+                        <button type="button" 
+                                onclick="deleteHistory({{ $history->id }})" 
+                                class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 sepia:border-sepia-border text-slate-500 hover:text-rose-600 hover:border-rose-300 dark:hover:border-rose-900/50 text-xs font-semibold transition flex items-center gap-1"
+                                title="Xóa khỏi lịch sử đọc"
+                                aria-label="Xóa khỏi lịch sử">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            <span class="hidden sm:inline">Xóa</span>
+                        </button>
                     </div>
                 </div>
             @endif
@@ -63,4 +73,38 @@
         {{ $histories->links() }}
     </div>
 </div>
+
+<script>
+function deleteHistory(id) {
+    if (!confirm('Bạn có chắc muốn xóa tác phẩm này khỏi lịch sử đọc?')) return;
+    
+    fetch('/api/history/' + id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            const el = document.getElementById('history-item-' + id);
+            if (el) {
+                el.classList.add('opacity-0', 'scale-95', 'transition-all', 'duration-300');
+                setTimeout(() => el.remove(), 300);
+            }
+            if (typeof window.showToast === 'function') {
+                window.showToast(data.message || 'Đã xóa khỏi lịch sử đọc', 'success');
+            }
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        if (typeof window.showToast === 'function') {
+            window.showToast('Không thể xóa lịch sử đọc lúc này', 'error');
+        }
+    });
+}
+</script>
 @endsection

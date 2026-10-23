@@ -86,4 +86,18 @@ class UserLibraryController extends Controller
             'bookmark_count' => $novel->bookmark_count,
         ]);
     }
+
+    public function deleteHistory(int $id)
+    {
+        $history = ReadingHistory::findOrFail($id);
+        if ($history->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $history->delete();
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Đã xóa tác phẩm khỏi lịch sử đọc.',
+        ]);
+    }
 }

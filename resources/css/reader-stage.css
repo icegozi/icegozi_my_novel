@@ -72,3 +72,22 @@ body.theme-light .paragraph-highlight-3d {
 .reading-content.size-base { font-size: 1.125rem; line-height: 1.95; }
 .reading-content.size-lg { font-size: 1.25rem; line-height: 2.05; }
 .reading-content.size-xl { font-size: 1.4rem; line-height: 2.2; }
+
+/* 5. Zen Reading Mode: Distraction-Free Focus */
+body.zen-mode header,
+body.zen-mode aside,
+body.zen-mode #reading-progress-bar {
+    display: none !important;
+}
+
+body.zen-mode main {
+    max-width: 54rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-top: 2rem !important;
+}
+
+body.zen-mode #zen-toolbar {
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.25), 0 8px 10px -6px rgba(99, 102, 241, 0.25);
+    border-color: rgba(99, 102, 241, 0.5);
+}

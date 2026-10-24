@@ -127,6 +127,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/tac-gia/phan-doi-khieu-nai/{report}', [\App\Http\Controllers\Author\CounterNoticeController::class, 'store'])
         ->name('author.counter-notice.store');
 
+    // Admin Dashboard Routes
+    Route::middleware('admin.mod')->group(function () {
+        Route::get('/admin', function () {
+            return redirect()->route('admin.dashboard');
+        })->name('admin.root');
+        Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])
+            ->name('admin.dashboard');
+    });
+
     // Admin & Moderator Content Moderation Routes
     Route::middleware('admin.mod')->prefix('/admin/kiem-duyet')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'queue'])

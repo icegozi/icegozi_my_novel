@@ -220,6 +220,22 @@ Route::middleware('auth')->group(function () {
             ->name('admin.chapters.restore');
     });
 
+    // Admin Bulk Import Wizard (BRIEF-6 Module D)
+    Route::middleware('admin.mod')->prefix('/admin/du-lieu')->group(function () {
+        Route::get('/nhap-du-lieu', [\App\Http\Controllers\Admin\ImportWizardController::class, 'index'])
+            ->name('admin.import.index');
+        Route::get('/mau-import/{type}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'template'])
+            ->name('admin.import.template');
+        Route::post('/tai-len', [\App\Http\Controllers\Admin\ImportWizardController::class, 'upload'])
+            ->name('admin.import.upload');
+        Route::get('/xem-truoc/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'preview'])
+            ->name('admin.import.preview');
+        Route::get('/bao-cao-loi/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'errors'])
+            ->name('admin.import.errors');
+        Route::post('/xac-nhan-nap/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'commit'])
+            ->name('admin.import.commit');
+    });
+
     // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)
     Route::middleware('admin.mod')->prefix('/admin/nhat-ky-an-ninh')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\AuditLogExplorerController::class, 'index'])

@@ -68,6 +68,7 @@
 | 15 | **OWASP CSV Formula Injection** | Cells starting with `=`, `+`, `-`, `@`, `\t`, `\r` execute formulas or trigger DDE in Excel. | Exporting raw user text fields without formula sanitization. | Use `FormulaSanitizerHelper::escapeFormula()` prefixing sensitive tokens with single quote `'` and handling RFC 4180 quotes. |
 | 16 | **Audit Log Target ID Integrity** | Entity-less admin activities (e.g. standalone media upload) crash audit logger. | `audit_logs.target_id` is an unsigned bigint NOT NULL column. | Set `'target_id' => 0` for non-entity or global operational logging events. |
 | 17 | **Novel & Chapter Soft-Deletes** | Hard deletion of novel cascades to author statistics, comments, and chapter histories. | Cascade constraint on foreign keys deletes related reading history records permanently. | Implement `Illuminate\Database\Eloquent\SoftDeletes` on `Novel` and `Chapter` models with restore action in Admin Desk. |
+| 18 | **Author Chapter Route Binding** | Navigating to `/tac-gia/truyen/{slug}/chuong/them-moi` returns 404. | Route parameter `{truyen}` in `routes/web.php` uses default Laravel primary key binding `id`, not `slug`. | Use novel ID in author studio management routes: `/tac-gia/truyen/{id}/chuong/them-moi`. |
 
 ---
 

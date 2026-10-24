@@ -19,11 +19,15 @@ export class ReaderPreferences {
         const stored = localStorage.getItem('novel_reader_preferences');
         if (stored) {
             try {
-                return JSON.parse(stored);
+                const parsed = JSON.parse(stored);
+                if (parsed.theme === 'dark') {
+                    parsed.theme = 'sepia';
+                }
+                return parsed;
             } catch (e) {}
         }
         return {
-            theme: 'dark',
+            theme: 'sepia',
             font_size: 'base',
             mode: '3d'
         };
@@ -104,8 +108,13 @@ export class ReaderPreferences {
     }
 
     applyTheme() {
+        let theme = this.preferences.theme || 'sepia';
+        if (theme === 'dark') {
+            theme = 'sepia';
+            this.preferences.theme = 'sepia';
+        }
         document.body.classList.remove('theme-dark', 'theme-sepia', 'theme-light');
-        document.body.classList.add('theme-' + (this.preferences.theme || 'dark'));
+        document.body.classList.add('theme-' + theme);
     }
 
     applyFontSize() {

@@ -19,6 +19,10 @@
     <script>
         (function() {
             var theme = localStorage.getItem('novel_reader_theme') || 'sepia';
+            if (theme === 'dark') {
+                theme = 'sepia';
+                localStorage.setItem('novel_reader_theme', 'sepia');
+            }
             document.documentElement.className = theme;
         })();
     </script>

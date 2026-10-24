@@ -31,6 +31,11 @@ class FormulaSanitizerHelper
             return "'" . $str;
         }
 
+        $spaceTrimmed = ltrim($str, ' ');
+        if ($spaceTrimmed !== '' && in_array(mb_substr($spaceTrimmed, 0, 1), self::DANGEROUS_PREFIXES, true)) {
+            return "'" . $str;
+        }
+
         return $str;
     }
 

@@ -81,8 +81,8 @@ class DataStreamingExportService
             // 2. Write CSV Header
             fputcsv($output, array_values($headers));
 
-            // 3. Stream data row by row using cursor()
-            foreach ($query->cursor() as $novel) {
+            // 3. Stream data row by row in eager-loaded chunks to eliminate N+1 queries
+            foreach ($query->lazy(500) as $novel) {
                 $row = [];
                 foreach ($columns as $col) {
                     $val = match ($col) {
@@ -144,8 +144,8 @@ class DataStreamingExportService
             // 2. Write CSV Header
             fputcsv($output, array_values($headers));
 
-            // 3. Stream data row by row
-            foreach ($query->cursor() as $author) {
+            // 3. Stream data row by row in eager-loaded chunks to eliminate N+1 queries
+            foreach ($query->lazy(500) as $author) {
                 $row = [];
                 foreach ($columns as $col) {
                     $val = match ($col) {

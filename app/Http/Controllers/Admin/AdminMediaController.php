@@ -36,8 +36,13 @@ class AdminMediaController extends Controller
         }
 
         $dateFolder = now()->format('Y/m');
-        $extension = $file->getClientOriginalExtension() ?: 'webp';
-        $filename = bin2hex(random_bytes(16)) . '.' . strtolower($extension);
+        $extension = match ($mime) {
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            default => 'bin',
+        };
+        $filename = bin2hex(random_bytes(16)) . '.' . $extension;
         $storedPath = $file->storeAs("editor/{$dateFolder}", $filename, 'public');
 
         $url = Storage::disk('public')->url($storedPath);

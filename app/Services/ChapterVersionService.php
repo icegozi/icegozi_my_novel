@@ -20,8 +20,31 @@ class ChapterVersionService
         $oldLines = explode("\n", str_replace(["\r\n", "\r"], "\n", $oldText));
         $newLines = explode("\n", str_replace(["\r\n", "\r"], "\n", $newText));
 
+        // 1. Trim identical prefix lines
+        $prefix = [];
+        while (!empty($oldLines) && !empty($newLines) && reset($oldLines) === reset($newLines)) {
+            $prefix[] = ['type' => 'unchanged', 'text' => array_shift($oldLines)];
+            array_shift($newLines);
+        }
+
+        // 2. Trim identical suffix lines
+        $suffix = [];
+        while (!empty($oldLines) && !empty($newLines) && end($oldLines) === end($newLines)) {
+            $suffix[] = ['type' => 'unchanged', 'text' => array_pop($oldLines)];
+            array_pop($newLines);
+        }
+        $suffix = array_reverse($suffix);
+
         $m = count($oldLines);
         $n = count($newLines);
+
+        // Fallback guard against memory exhaustion on massive dissimilar files
+        if (($m * $n) > 250000) {
+            $fallback = [
+                ['type' => 'deleted', 'text' => '... (Khối văn bản quá lớn để so sánh chi tiết từng dòng) ...'],
+            ];
+            return array_merge($prefix, $fallback, $suffix);
+        }
 
         // Build LCS table
         $lcs = [];
@@ -58,7 +81,7 @@ class ChapterVersionService
             }
         }
 
-        return array_reverse($diff);
+        return array_merge($prefix, array_reverse($diff), $suffix);
     }
 
     /**

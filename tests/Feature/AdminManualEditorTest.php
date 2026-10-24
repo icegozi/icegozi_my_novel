@@ -106,6 +106,24 @@ class AdminManualEditorTest extends TestCase
         $response->assertStatus(422);
     }
 
+    public function test_editor_image_upload_derives_extension_strictly_from_mime_and_ignores_client_extension(): void
+    {
+        Storage::fake('public');
+
+        // Create fake file with real image/jpeg MIME but dangerous client extension .php
+        $file = UploadedFile::fake()->create('exploit.php', 100, 'image/jpeg');
+
+        $response = $this->actingAs($this->admin)->postJson('/admin/media/tai-anh-soan-thao', [
+            'image' => $file,
+        ]);
+
+        $response->assertStatus(200);
+        $filename = $response->json('filename');
+
+        $this->assertStringEndsWith('.jpg', $filename);
+        $this->assertStringNotContainsString('.php', $filename);
+    }
+
     public function test_admin_can_manually_create_novel_for_author(): void
     {
         // View create form

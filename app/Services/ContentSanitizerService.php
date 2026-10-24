@@ -7,7 +7,7 @@ class ContentSanitizerService
     /**
      * Allowed HTML tags for novel chapters.
      */
-    private const ALLOWED_TAGS = '<p><br><b><strong><i><em><u><s><h3><h4><blockquote><hr><span><div><ul><ol><li>';
+    private const ALLOWED_TAGS = '<p><br><b><strong><i><em><u><s><h3><h4><blockquote><hr><span><div><ul><ol><li><img><figure><figcaption>';
 
     /**
      * Cleanse HTML content from potential XSS attack vectors.

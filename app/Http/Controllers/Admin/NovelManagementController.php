@@ -38,7 +38,9 @@ class NovelManagementController extends Controller
             });
         }
 
-        if ($request->filled('status')) {
+        if ($request->input('status') === 'trashed') {
+            $query->onlyTrashed();
+        } elseif ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
 
@@ -229,5 +231,31 @@ class NovelManagementController extends Controller
 
         return redirect()->route('admin.novels.index')
             ->with('success', "Đã xóa mềm tác phẩm '{$novelTitle}' khỏi hệ thống hiển thị.");
+    }
+
+    /**
+     * Restore a soft-deleted novel.
+     */
+    public function restore(Request $request, int $id): RedirectResponse
+    {
+        $novel = Novel::onlyTrashed()->findOrFail($id);
+        Gate::authorize('deleteAdmin', $novel);
+
+        $novel->restore();
+
+        AuditLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'admin_novel_restored',
+            'target_type' => 'Novel',
+            'target_id' => $novel->id,
+            'old_values' => ['deleted_at' => $novel->deleted_at],
+            'new_values' => ['deleted_at' => null],
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'created_at' => now(),
+        ]);
+
+        return redirect()->route('admin.novels.index')
+            ->with('success', "Đã khôi phục tác phẩm '{$novel->title}' thành công.");
     }
 }

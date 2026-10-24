@@ -109,6 +109,12 @@ class ImportValidationService
         $authors = AuthorProfile::pluck('user_id', 'pen_name')->toArray();
         $genres = Genre::pluck('id', 'name')->toArray();
         $novels = Novel::pluck('id', 'slug')->toArray();
+        $existingChapters = $type === 'chapters'
+            ? Chapter::select('novel_id', 'chapter_number')->get()->groupBy('novel_id')->map(function ($items) {
+                return $items->pluck('chapter_number')->map(fn ($n) => (string) (float) $n)->flip()->toArray();
+            })->toArray()
+            : [];
+        $seenInCsv = [];
 
         $errors = [];
         $parsedData = [];
@@ -129,7 +135,7 @@ class ImportValidationService
             $rowData = array_combine($headers, array_map('trim', array_slice($row, 0, count($headers))));
 
             if ($type === 'chapters') {
-                $this->validateChapterRow($rowData, $rowIndex, $novels, $errors, $parsedData);
+                $this->validateChapterRow($rowData, $rowIndex, $novels, $existingChapters, $seenInCsv, $errors, $parsedData);
             } else {
                 $this->validateNovelRow($rowData, $rowIndex, $authors, $genres, $errors, $parsedData);
             }
@@ -205,6 +211,8 @@ class ImportValidationService
         array $row,
         int $rowIndex,
         array $novels,
+        array $existingChapters,
+        array &$seenInCsv,
         array &$errors,
         array &$parsedData
     ): void {
@@ -222,6 +230,20 @@ class ImportValidationService
             $errors[] = ['row' => $rowIndex, 'column' => 'so_chuong', 'message' => "Dòng {$rowIndex}: Số chương '{$soChuong}' phải là định dạng số."];
             return;
         }
+
+        $novelId = $novels[$slugTruyen];
+        $chapKey = (string) (float) $soChuong;
+
+        if (isset($existingChapters[$novelId][$chapKey])) {
+            $errors[] = ['row' => $rowIndex, 'column' => 'so_chuong', 'message' => "Dòng {$rowIndex}: Số chương '{$soChuong}' đã tồn tại trong tác phẩm này."];
+            return;
+        }
+
+        if (isset($seenInCsv[$novelId][$chapKey])) {
+            $errors[] = ['row' => $rowIndex, 'column' => 'so_chuong', 'message' => "Dòng {$rowIndex}: Số chương '{$soChuong}' bị khai báo trùng lặp trong cùng tệp CSV."];
+            return;
+        }
+        $seenInCsv[$novelId][$chapKey] = true;
 
         if ($tieuDe === '') {
             $errors[] = ['row' => $rowIndex, 'column' => 'tieu_de_chuong', 'message' => "Dòng {$rowIndex}: Tiêu đề chương không được để trống."];

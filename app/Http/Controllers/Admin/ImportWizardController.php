@@ -144,15 +144,21 @@ class ImportWizardController extends Controller
     {
         $this->authorizeAdmin();
 
-        if ($job->status !== 'validated') {
+        // Atomic status transition prevents race condition / double-submission
+        $affected = ImportJob::where('id', $job->id)
+            ->where('status', 'validated')
+            ->update(['status' => 'importing']);
+
+        if (!$affected) {
             return redirect()->route('admin.import.preview', $job)
-                ->with('error', 'Tệp dữ liệu này chưa vượt qua vòng kiểm tra Dry-Run hoặc đã được nhập.');
+                ->with('error', 'Tệp dữ liệu này chưa vượt qua vòng kiểm tra Dry-Run, đang được xử lý hoặc đã hoàn tất.');
         }
 
         $fullPath = Storage::disk('local')->path($job->file_path);
         $result = $service->validateCsv($fullPath, $job->type);
 
         if (!$result['valid']) {
+            $job->update(['status' => 'failed']);
             return redirect()->route('admin.import.preview', $job)
                 ->with('error', 'Không thể hoàn tất nạp dữ liệu vì tệp chứa lỗi.');
         }

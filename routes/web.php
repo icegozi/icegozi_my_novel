@@ -208,6 +208,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.novels.update');
         Route::delete('/{novel}', [\App\Http\Controllers\Admin\NovelManagementController::class, 'destroy'])
             ->name('admin.novels.destroy');
+        Route::post('/{id}/khoi-phuc', [\App\Http\Controllers\Admin\NovelManagementController::class, 'restore'])
+            ->name('admin.novels.restore');
         Route::get('/{novel}/chuong', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'index'])
             ->name('admin.novels.chapters.index');
     });

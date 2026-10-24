@@ -54,6 +54,7 @@
                     <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Hoàn thành (completed)</option>
                     <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Từ chối (rejected)</option>
                     <option value="takedown" {{ request('status') === 'takedown' ? 'selected' : '' }}>Gỡ bỏ (takedown)</option>
+                    <option value="trashed" {{ request('status') === 'trashed' ? 'selected' : '' }}>Thùng rác (Đã xóa mềm)</option>
                 </select>
             </div>
 
@@ -188,29 +189,47 @@
                                        title="Quản lý chương">
                                         Chương
                                     </a>
-                                    <a href="{{ route('admin.novels.edit', $novel) }}" 
-                                       class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                                       aria-label="Chỉnh sửa tác phẩm">
-                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                    </a>
-                                    @can('deleteAdmin', $novel)
-                                        <form action="{{ route('admin.novels.destroy', $novel) }}" 
-                                              method="POST" 
-                                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa mềm tác phẩm này không?');"
-                                              class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="p-1.5 rounded-lg text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors"
-                                                    aria-label="Xóa mềm tác phẩm">
-                                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    @endcan
+                                    @if($novel->trashed())
+                                        @can('deleteAdmin', $novel)
+                                            <form action="{{ route('admin.novels.restore', $novel->id) }}" 
+                                                  method="POST" 
+                                                  onsubmit="return confirm('Bạn có muốn khôi phục tác phẩm này không?');"
+                                                  class="inline">
+                                                @csrf
+                                                <button type="submit" 
+                                                        class="p-1.5 rounded-lg text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors"
+                                                        aria-label="Khôi phục tác phẩm">
+                                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    @else
+                                        <a href="{{ route('admin.novels.edit', $novel) }}" 
+                                           class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                                           aria-label="Chỉnh sửa tác phẩm">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </a>
+                                        @can('deleteAdmin', $novel)
+                                            <form action="{{ route('admin.novels.destroy', $novel) }}" 
+                                                  method="POST" 
+                                                  onsubmit="return confirm('Bạn có chắc chắn muốn xóa mềm tác phẩm này không?');"
+                                                  class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" 
+                                                        class="p-1.5 rounded-lg text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors"
+                                                        aria-label="Xóa mềm tác phẩm">
+                                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    @endif
                                 </div>
                             </td>
                         </tr>

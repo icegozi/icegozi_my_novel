@@ -120,4 +120,28 @@ class AdminImportWizardTest extends TestCase
 
         $this->assertEquals('completed', $job->fresh()->status);
     }
+
+    public function test_double_commit_request_is_safely_rejected(): void
+    {
+        $content = "\xEF\xBB\xBF" . "tieu_de,but_danh_tac_gia,the_loai,tom_tat,do_tuoi,ban_quyen,tu_khoa_seo,meta_description\n" .
+            "Nhất Niệm Vĩnh Hằng,Kỳ Dị Cư Sĩ,Huyền Huyễn,Bạch Tiểu Thuần tu tiên,all,original,tien-hiep,Mo ta\n";
+
+        $file = UploadedFile::fake()->createWithContent('valid_novels2.csv', $content);
+
+        $this->actingAs($this->admin)->post('/admin/du-lieu/tai-len', [
+            'type' => 'novels',
+            'file' => $file,
+        ]);
+
+        $job = ImportJob::latest()->first();
+
+        // 1st commit request succeeds
+        $res1 = $this->actingAs($this->admin)->post("/admin/du-lieu/xac-nhan-nap/{$job->id}");
+        $res1->assertRedirect('/admin/du-lieu/nhap-du-lieu');
+
+        // 2nd commit request on same job is rejected safely
+        $res2 = $this->actingAs($this->admin)->post("/admin/du-lieu/xac-nhan-nap/{$job->id}");
+        $res2->assertRedirect("/admin/du-lieu/xem-truoc/{$job->id}");
+        $res2->assertSessionHas('error');
+    }
 }

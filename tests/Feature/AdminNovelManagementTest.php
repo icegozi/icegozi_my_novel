@@ -201,4 +201,35 @@ class AdminNovelManagementTest extends TestCase
             'target_id' => $this->chapter->id,
         ]);
     }
+
+    public function test_admin_can_filter_trashed_novels_and_restore_soft_deleted_novel(): void
+    {
+        // 1. Soft delete novel
+        $this->actingAs($this->admin)->delete("/admin/tac-pham/{$this->novel->id}")
+            ->assertRedirect('/admin/tac-pham');
+
+        $this->assertSoftDeleted('novels', ['id' => $this->novel->id]);
+
+        // 2. Normal list does not show it in table
+        session()->flush();
+        $this->actingAs($this->admin)->get('/admin/tac-pham')
+            ->assertDontSee($this->novel->title);
+
+        // 3. Filter with status=trashed shows it with restore button
+        $this->actingAs($this->admin)->get('/admin/tac-pham?status=trashed')
+            ->assertStatus(200)
+            ->assertSee($this->novel->title)
+            ->assertSee('Khôi phục tác phẩm');
+
+        // 4. Restore novel
+        $restoreResponse = $this->actingAs($this->admin)->post("/admin/tac-pham/{$this->novel->id}/khoi-phuc");
+        $restoreResponse->assertRedirect('/admin/tac-pham');
+
+        $this->assertNotSoftDeleted('novels', ['id' => $this->novel->id]);
+        $this->assertDatabaseHas('audit_logs', [
+            'action' => 'admin_novel_restored',
+            'target_type' => 'Novel',
+            'target_id' => $this->novel->id,
+        ]);
+    }
 }

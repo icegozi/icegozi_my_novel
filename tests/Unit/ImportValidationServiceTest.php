@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\AuthorProfile;
+use App\Models\Chapter;
 use App\Models\Genre;
 use App\Models\ImportJob;
 use App\Models\Novel;
@@ -118,5 +119,69 @@ class ImportValidationServiceTest extends TestCase
 
         $this->assertEquals('completed', $job->fresh()->status);
         $this->assertEquals(1, $job->fresh()->successful_rows);
+    }
+
+    public function test_detects_existing_chapter_number_in_database_and_reports_error(): void
+    {
+        $novel = Novel::create([
+            'author_id' => $this->authorUser->id,
+            'title' => 'Thiên Đạo Kiếm Tôn',
+            'slug' => 'thien-dao-kiem-ton',
+            'synopsis' => 'Tóm tắt truyện',
+            'status' => 'published',
+            'age_rating' => 'all',
+            'copyright_type' => 'original',
+        ]);
+
+        Chapter::create([
+            'novel_id' => $novel->id,
+            'chapter_number' => 1.0,
+            'title' => 'Chương 1 Gốc',
+            'slug' => 'chuong-1-goc',
+            'content' => 'Nội dung chương 1 đã có sẵn trong database.',
+            'status' => 'published',
+        ]);
+
+        $csvContent = "\xEF\xBB\xBF" . "slug_truyen,so_chuong,tieu_de_chuong,noi_dung\n" .
+            "thien-dao-kiem-ton,1.0,Chương 1 Bị Trùng,Nội dung mới nạp\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_chap_');
+        file_put_contents($tempFile, $csvContent);
+
+        $result = $this->service->validateCsv($tempFile, 'chapters');
+        unlink($tempFile);
+
+        $this->assertFalse($result['valid']);
+        $this->assertNotEmpty($result['errors']);
+        $this->assertEquals('so_chuong', $result['errors'][0]['column']);
+        $this->assertStringContainsString('đã tồn tại', $result['errors'][0]['message']);
+    }
+
+    public function test_detects_duplicate_chapter_number_within_same_csv_file(): void
+    {
+        $novel = Novel::create([
+            'author_id' => $this->authorUser->id,
+            'title' => 'Thiên Đạo Kiếm Tôn',
+            'slug' => 'thien-dao-kiem-ton',
+            'synopsis' => 'Tóm tắt truyện',
+            'status' => 'published',
+            'age_rating' => 'all',
+            'copyright_type' => 'original',
+        ]);
+
+        $csvContent = "\xEF\xBB\xBF" . "slug_truyen,so_chuong,tieu_de_chuong,noi_dung\n" .
+            "thien-dao-kiem-ton,2.0,Chương 2 Bản A,Nội dung A\n" .
+            "thien-dao-kiem-ton,2.0,Chương 2 Bản B,Nội dung B\n";
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv_chap_');
+        file_put_contents($tempFile, $csvContent);
+
+        $result = $this->service->validateCsv($tempFile, 'chapters');
+        unlink($tempFile);
+
+        $this->assertFalse($result['valid']);
+        $this->assertNotEmpty($result['errors']);
+        $this->assertEquals('so_chuong', $result['errors'][0]['column']);
+        $this->assertStringContainsString('trùng lặp', $result['errors'][0]['message']);
     }
 }

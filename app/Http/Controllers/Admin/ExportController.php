@@ -52,6 +52,8 @@ class ExportController extends Controller
             'genre_id' => 'nullable|integer|exists:genres,id',
             'from_date' => 'nullable|date',
             'to_date' => 'nullable|date|after_or_equal:from_date',
+            'verification_status' => 'nullable|string|in:pending,verified,rejected',
+            'user_status' => 'nullable|string|in:active,suspended,banned',
             'columns' => 'nullable|array',
             'columns.*' => 'string|max:50',
         ]);

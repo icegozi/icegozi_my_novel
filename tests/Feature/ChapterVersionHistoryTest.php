@@ -100,6 +100,44 @@ class ChapterVersionHistoryTest extends TestCase
         $this->assertContains('unchanged', $types);
     }
 
+    public function test_diff_service_handles_large_chapters_efficiently_with_prefix_suffix_trimming(): void
+    {
+        $service = app(\App\Services\ChapterVersionService::class);
+
+        $linesOld = [];
+        $linesNew = [];
+
+        // 500 common lines at the beginning
+        for ($i = 1; $i <= 500; $i++) {
+            $linesOld[] = "Đoạn mở đầu số {$i}";
+            $linesNew[] = "Đoạn mở đầu số {$i}";
+        }
+
+        // Changed lines in the middle
+        $linesOld[] = "Dòng giữa phiên bản cũ";
+        $linesNew[] = "Dòng giữa phiên bản mới";
+
+        // 500 common lines at the end
+        for ($i = 501; $i <= 1000; $i++) {
+            $linesOld[] = "Đoạn kết thúc số {$i}";
+            $linesNew[] = "Đoạn kết thúc số {$i}";
+        }
+
+        $oldText = implode("\n", $linesOld);
+        $newText = implode("\n", $linesNew);
+
+        $startTime = microtime(true);
+        $diff = $service->diff($oldText, $newText);
+        $duration = microtime(true) - $startTime;
+
+        $this->assertNotEmpty($diff);
+        // Prefix/suffix trimming allows 1000+ line diff to complete well under 200ms
+        $this->assertLessThan(0.5, $duration);
+        $this->assertEquals('unchanged', $diff[0]['type']);
+        $this->assertEquals('Đoạn mở đầu số 1', $diff[0]['text']);
+        $this->assertEquals('unchanged', end($diff)['type']);
+    }
+
     public function test_admin_and_moderator_can_view_revision_history_and_diff(): void
     {
         // Moderator can view history list

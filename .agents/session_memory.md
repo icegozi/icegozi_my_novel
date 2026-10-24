@@ -7,7 +7,7 @@
 ## 1. Project Architecture Snapshot
 
 ### 1.1 Core Modules & Subsystems
-- **Novel Catalog & Reading Experience:** Full-featured online novel/comic platform with multi-theme support (Dark, Light, Sepia default), customizable typography, and reading progress synchronization.
+- **Novel Catalog & Reading Experience:** Full-featured online novel/comic platform with dual-theme reading system (Màu Vàng parchment / sepia default and Sáng / light mode), customizable typography, and reading progress synchronization.
 - **Interactive 3D WebGL Exhibition & Stage:** Three.js-powered 3D stage embedded in chapter reader, rendering GLB models linked directly to story artifacts, weapons, and characters (`novel_3d_assets` and `chapter_3d_projections`).
 - **Author Studio & Identity Verification:** Creator dashboard for publishing works, managing chapters, and undergoing e-KYC legal identity verification (`author_profiles`).
 - **Legal Compliance & DMCA Notice System:** Full adherence to Vietnamese digital publishing laws:
@@ -85,6 +85,7 @@
 | 2026-10-23 | Accessibility & SEO Guidelines Remediation | `c738344`..`679b8d0` | 172 passed (100%) |
 | 2026-10-23 | Senior Code Review Patches (C1-C2, I1-I4) & Playwright Verification | Applied & Verified | 179 passed (100%) |
 | 2026-10-24 | BRIEF-6 CMS Admin Masterplan (Phases 1-6 Full Implementation) | `1545adb`..`00dfeae` | 222 passed (100%) |
+| 2026-10-24 | Remove Dark Mode & Standardize Dual Yellow/Light Theme | `994c0ea`..`dcf8048` | 235 passed (100%) |
 
 ---
 

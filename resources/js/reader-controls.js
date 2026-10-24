@@ -146,12 +146,14 @@
             });
         }
 
-        const currentTheme = window.getReaderTheme ? window.getReaderTheme() : (localStorage.getItem('novel_reader_theme') || 'sepia');
+        let currentTheme = window.getReaderTheme ? window.getReaderTheme() : (localStorage.getItem('novel_reader_theme') || 'sepia');
+        if (currentTheme === 'dark') currentTheme = 'sepia';
         updateActiveThemeButton(currentTheme);
 
         window.addEventListener('themechange', function (e) {
             if (e.detail && e.detail.theme) {
-                updateActiveThemeButton(e.detail.theme);
+                const target = e.detail.theme === 'dark' ? 'sepia' : e.detail.theme;
+                updateActiveThemeButton(target);
             }
         });
     }

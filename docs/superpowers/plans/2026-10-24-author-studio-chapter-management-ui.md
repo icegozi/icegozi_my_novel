@@ -35,18 +35,18 @@
 - Modify: `tests/Feature/AuthorNovelsGuidelinesTest.php`
 - Modify: `tests/Feature/AuthorNovelCrudTest.php`
 
-- [ ] **Step 1: Viết failing test trong `AuthorNovelsGuidelinesTest.php`**
+- [x] **Step 1: Viết failing test trong `AuthorNovelsGuidelinesTest.php`**
   Thêm assertions kiểm tra trên trang `/tac-gia/truyen`:
   - Thẻ truyện chứa link `href="/tac-gia/truyen/{id}/chuong/them-moi"` với text hoặc aria-label chứa "Soạn Chương" hoặc "Viết Chương".
   - Thẻ truyện chứa link `href="/tac-gia/truyen/{id}/tach-chuong"` với text "Tách Chương".
   - Thẻ truyện chứa link `href="/tac-gia/truyen/{id}/kho-3d"` với text "Kho 3D".
 
-- [ ] **Step 2: Viết failing test trong `AuthorNovelCrudTest.php`**
+- [x] **Step 2: Viết failing test trong `AuthorNovelCrudTest.php`**
   Thêm test kiểm tra trên trang `/tac-gia/truyen/{id}/edit`:
   - Khi truyện có chương: View nhận biến `$novel` chứa relation `chapters`, hiển thị tiêu đề chương, số từ, và nút link tới `/tac-gia/truyen/{id}/chuong/{chapter_id}/soan-thao`.
   - Hiển thị nút `+ Soạn Chương Mới` và `Tách Chương Hàng Loạt`.
 
-- [ ] **Step 3: Chạy test để xác nhận Red (Failure)**
+- [x] **Step 3: Chạy test để xác nhận Red (Failure)**
   ```powershell
   php artisan test --filter=AuthorNovelsGuidelinesTest ; php artisan test --filter=AuthorNovelCrudTest
   ```
@@ -58,7 +58,7 @@
 **Files:**
 - Modify: `resources/views/author/novels/index.blade.php:73-95`
 
-- [ ] **Step 1: Thiết kế lại thanh thao tác (Action Bar) trên mỗi thẻ truyện**
+- [x] **Step 1: Thiết kế lại thanh thao tác (Action Bar) trên mỗi thẻ truyện**
   - **Nút hành động chính (Primary Action):**
     Nút `+ Soạn Chương` với màu sắc nổi bật, tương phản cao:
     - Light/Dark: `bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm`
@@ -70,12 +70,12 @@
     - `Sửa Thông Tin` (`route('author.novels.edit', $novel->id)`): Chỉnh sửa tên, thể loại, ảnh bìa.
     - `👁️ Xem` (`route('reader.stories.show', $novel->slug)`): Xem giao diện người đọc.
 
-- [ ] **Step 2: Tối ưu UI/UX & Khả năng tiếp cận (Accessibility)**
+- [x] **Step 2: Tối ưu UI/UX & Khả năng tiếp cận (Accessibility)**
   - Thêm `aria-label` chi tiết cho từng nút kèm tên truyện, đảm bảo tuân thủ WCAG 2.5.3 (Label in Name).
   - Sử dụng `transition-colors`, `transition-opacity` (loại bỏ hoàn toàn `transition-all`).
   - Đảm bảo touch target thân thiện di động (`min-h-[38px]`, padding cân đối).
 
-- [ ] **Step 3: Chạy test để xác nhận Green**
+- [x] **Step 3: Chạy test để xác nhận Green**
   ```powershell
   php artisan test --filter=AuthorNovelsGuidelinesTest
   ```
@@ -88,13 +88,13 @@
 - Modify: `app/Http/Controllers/Author/NovelController.php:78-86`
 - Modify: `resources/views/author/novels/create_or_edit.blade.php`
 
-- [ ] **Step 1: Cập nhật `NovelController::edit` để nạp chapters**
+- [x] **Step 1: Cập nhật `NovelController::edit` để nạp chapters**
   Eager-load quan hệ `chapters` theo thứ tự chương tăng dần:
   ```php
   $novel = $truyen->load(['chapters' => fn($q) => $q->orderBy('chapter_number', 'asc')]);
   ```
 
-- [ ] **Step 2: Thêm khối giao diện "Quản Lý Chương & Bản Thảo" vào `create_or_edit.blade.php`**
+- [x] **Step 2: Thêm khối giao diện "Quản Lý Chương & Bản Thảo" vào `create_or_edit.blade.php`**
   Chỉ hiển thị khi `$novel->exists`:
   - **Header khu vực chương:**
     - Tiêu đề: `Danh Sách Chương ({{ $novel->chapters->count() }} chương)`
@@ -110,7 +110,7 @@
   - **Empty state (khi chưa có chương):**
     - Hộp thông báo ấm áp, mời tác giả bấm nút bắt đầu soạn chương đầu tiên.
 
-- [ ] **Step 3: Chạy test để xác nhận Green**
+- [x] **Step 3: Chạy test để xác nhận Green**
   ```powershell
   php artisan test --filter=AuthorNovelCrudTest
   ```
@@ -122,11 +122,11 @@
 **Files:**
 - Toàn bộ test suite PHPUnit
 
-- [ ] **Step 1: Chạy toàn bộ test suite để đảm bảo không có bất kỳ regression nào**
+- [x] **Step 1: Chạy toàn bộ test suite để đảm bảo không có bất kỳ regression nào**
   ```powershell
   php artisan test --compact
   ```
-- [ ] **Step 2: Commit các thay đổi code giao diện và test**
+- [x] **Step 2: Commit các thay đổi code giao diện và test**
   ```powershell
   git add . ; git commit -m "feat(author): add prominent chapter action triggers and management table in author studio"
   ```
@@ -137,17 +137,17 @@
 
 **Công cụ:** `playwright` MCP
 
-- [ ] **Step 1: Đăng nhập tác giả và truy cập `/tac-gia/truyen`**
+- [x] **Step 1: Đăng nhập tác giả và truy cập `/tac-gia/truyen`**
   - Đăng nhập `author_test@icegozi.com`.
   - Vào `http://localhost:8000/tac-gia/truyen`.
   - Chụp ảnh màn hình danh sách truyện hiển thị các nút thao tác mới.
 
-- [ ] **Step 2: Thao tác click chuột thật trên nút `+ Soạn Chương`**
+- [x] **Step 2: Thao tác click chuột thật trên nút `+ Soạn Chương`**
   - Sử dụng `browser_click` click vào nút `+ Soạn Chương` trên thẻ truyện `Thần Ma Đại Lục`.
   - Xác nhận trình duyệt tự động chuyển hướng thành công đến `/tac-gia/truyen/8/chuong/them-moi` (Zen Editor).
   - Chụp ảnh màn hình bằng chứng.
 
-- [ ] **Step 3: Thao tác click chuột thật vào trang Chỉnh Sửa Truyện**
+- [x] **Step 3: Thao tác click chuột thật vào trang Chỉnh Sửa Truyện**
   - Click vào nút `Sửa Thông Tin`.
   - Trình duyệt điều hướng tới `/tac-gia/truyen/8/edit`.
   - Cuộn chuột xuống kiểm tra bảng "Quản Lý Chương & Bản Thảo" hiển thị đầy đủ Chương 1 ("Chương 1: Thần Kiếm Xuất Thế", 36 chữ).
@@ -155,5 +155,5 @@
   - Xác nhận mở đúng Zen Editor của Chương 1.
   - Chụp ảnh màn hình bằng chứng.
 
-- [ ] **Step 4: Kiểm tra console log trình duyệt**
+- [x] **Step 4: Kiểm tra console log trình duyệt**
   - Đảm bảo 0 console errors và 0 console warnings.

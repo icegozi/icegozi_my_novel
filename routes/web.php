@@ -214,6 +214,10 @@ Route::middleware('auth')->group(function () {
             ->name('admin.chapters.edit');
         Route::put('/{chapter}', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'update'])
             ->name('admin.chapters.update');
+        Route::get('/{chapter}/lich-su', [\App\Http\Controllers\Admin\ChapterVersionController::class, 'history'])
+            ->name('admin.chapters.history');
+        Route::post('/{chapter}/khoi-phuc/{version}', [\App\Http\Controllers\Admin\ChapterVersionController::class, 'restore'])
+            ->name('admin.chapters.restore');
     });
 
     // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)

@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
+use App\Models\AuthorProfile;
 use App\Models\Genre;
 use App\Models\Novel;
 use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class NovelManagementController extends Controller
@@ -51,6 +53,76 @@ class NovelManagementController extends Controller
         $genres = Genre::orderBy('name')->get();
 
         return view('admin.novels.index', compact('novels', 'genres'));
+    }
+
+    /**
+     * Show form for manually creating a novel by Admin.
+     */
+    public function create(): View
+    {
+        Gate::authorize('createAdmin', Novel::class);
+
+        $authors = AuthorProfile::with('user')->orderBy('pen_name')->get();
+        $genres = Genre::orderBy('name')->get();
+        $tags = Tag::orderBy('name')->get();
+
+        return view('admin.editor.manual_create', compact('authors', 'genres', 'tags'));
+    }
+
+    /**
+     * Store manually created novel in database.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        Gate::authorize('createAdmin', Novel::class);
+
+        $validated = $request->validate([
+            'author_id' => 'required|exists:users,id',
+            'title' => 'required|string|max:255',
+            'synopsis' => 'required|string',
+            'status' => 'required|in:draft,pending_approval,published,paused,completed,rejected,takedown,archived',
+            'age_rating' => 'required|in:all,13_plus,16_plus,18_plus',
+            'copyright_type' => 'required|in:original,authorized_translation,public_domain',
+            'genres' => 'nullable|array',
+            'genres.*' => 'integer|exists:genres,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
+        ]);
+
+        $slug = Str::slug($validated['title']) . '-' . Str::random(5);
+
+        $novel = Novel::create([
+            'author_id' => $validated['author_id'],
+            'title' => $validated['title'],
+            'slug' => $slug,
+            'synopsis' => $validated['synopsis'],
+            'status' => $validated['status'],
+            'age_rating' => $validated['age_rating'],
+            'copyright_type' => $validated['copyright_type'],
+        ]);
+
+        if (!empty($validated['genres'])) {
+            $novel->genres()->sync($validated['genres']);
+        }
+
+        if (!empty($validated['tags'])) {
+            $novel->tags()->sync($validated['tags']);
+        }
+
+        AuditLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'admin_novel_created',
+            'target_type' => 'Novel',
+            'target_id' => $novel->id,
+            'old_values' => [],
+            'new_values' => ['title' => $novel->title, 'author_id' => $novel->author_id, 'status' => $novel->status],
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'created_at' => now(),
+        ]);
+
+        return redirect()->route('admin.novels.chapters.index', $novel)
+            ->with('success', "Đã tạo mới tác phẩm '{$novel->title}' thành công.");
     }
 
     /**

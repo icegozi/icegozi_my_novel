@@ -198,6 +198,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin.mod')->prefix('/admin/tac-pham')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\NovelManagementController::class, 'index'])
             ->name('admin.novels.index');
+        Route::get('/tao-moi', [\App\Http\Controllers\Admin\NovelManagementController::class, 'create'])
+            ->name('admin.novels.create');
+        Route::post('/', [\App\Http\Controllers\Admin\NovelManagementController::class, 'store'])
+            ->name('admin.novels.store');
         Route::get('/{novel}/chinh-sua', [\App\Http\Controllers\Admin\NovelManagementController::class, 'edit'])
             ->name('admin.novels.edit');
         Route::put('/{novel}', [\App\Http\Controllers\Admin\NovelManagementController::class, 'update'])
@@ -206,6 +210,12 @@ Route::middleware('auth')->group(function () {
             ->name('admin.novels.destroy');
         Route::get('/{novel}/chuong', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'index'])
             ->name('admin.novels.chapters.index');
+    });
+
+    // Admin Media Upload Pipeline (BRIEF-6 Module F)
+    Route::middleware('admin.mod')->prefix('/admin/media')->group(function () {
+        Route::post('/tai-anh-soan-thao', [\App\Http\Controllers\Admin\AdminMediaController::class, 'uploadEditorImage'])
+            ->name('admin.media.upload');
     });
 
     // Admin Chapter Management (BRIEF-6 Module C)

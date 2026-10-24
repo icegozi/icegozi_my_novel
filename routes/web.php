@@ -234,6 +234,12 @@ Route::middleware('auth')->group(function () {
             ->name('admin.import.errors');
         Route::post('/xac-nhan-nap/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'commit'])
             ->name('admin.import.commit');
+
+        // Admin Export Desk (BRIEF-6 Module E)
+        Route::get('/xuat-du-lieu', [\App\Http\Controllers\Admin\ExportController::class, 'index'])
+            ->name('admin.export.index');
+        Route::post('/xuat-du-lieu', [\App\Http\Controllers\Admin\ExportController::class, 'download'])
+            ->name('admin.export.download');
     });
 
     // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)

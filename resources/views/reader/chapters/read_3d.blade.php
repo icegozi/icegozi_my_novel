@@ -56,7 +56,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
     <!-- Reader Controls: reader-controls.js is bundled into app.js -->
 </head>
-<body class="theme-dark min-h-screen flex flex-col antialiased transition-colors">
+<body class="theme-sepia sepia min-h-screen flex flex-col antialiased transition-colors">
     <!-- Top Progress Bar -->
     <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 z-50 transition-all duration-150" style="width: 0%;"></div>
 
@@ -159,9 +159,8 @@
                 <!-- Theme selector -->
                 <div class="space-y-2">
                     <span class="font-semibold text-slate-400 block">Chủ Đề Nền:</span>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="document.body.className='theme-dark dark'; window.setReaderTheme('dark')" class="p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold text-center">Tối</button>
-                        <button type="button" onclick="document.body.className='theme-sepia sepia'; window.setReaderTheme('sepia')" class="p-2.5 rounded-xl bg-[#f5efe6] border border-amber-300 text-amber-950 font-bold text-center">Sepia</button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="document.body.className='theme-sepia sepia'; window.setReaderTheme('sepia')" class="p-2.5 rounded-xl bg-[#f5efe6] border border-amber-300 text-amber-950 font-bold text-center">Màu Vàng (Giấy Cổ)</button>
                         <button type="button" onclick="document.body.className='light'; window.setReaderTheme('light')" class="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-bold text-center">Sáng</button>
                     </div>
                 </div>

@@ -194,6 +194,28 @@ Route::middleware('auth')->group(function () {
             ->name('admin.authors.status');
     });
 
+    // Admin Novel Management (BRIEF-6 Module C)
+    Route::middleware('admin.mod')->prefix('/admin/tac-pham')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\NovelManagementController::class, 'index'])
+            ->name('admin.novels.index');
+        Route::get('/{novel}/chinh-sua', [\App\Http\Controllers\Admin\NovelManagementController::class, 'edit'])
+            ->name('admin.novels.edit');
+        Route::put('/{novel}', [\App\Http\Controllers\Admin\NovelManagementController::class, 'update'])
+            ->name('admin.novels.update');
+        Route::delete('/{novel}', [\App\Http\Controllers\Admin\NovelManagementController::class, 'destroy'])
+            ->name('admin.novels.destroy');
+        Route::get('/{novel}/chuong', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'index'])
+            ->name('admin.novels.chapters.index');
+    });
+
+    // Admin Chapter Management (BRIEF-6 Module C)
+    Route::middleware('admin.mod')->prefix('/admin/chuong')->group(function () {
+        Route::get('/{chapter}/chinh-sua', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'edit'])
+            ->name('admin.chapters.edit');
+        Route::put('/{chapter}', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'update'])
+            ->name('admin.chapters.update');
+    });
+
     // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)
     Route::middleware('admin.mod')->prefix('/admin/nhat-ky-an-ninh')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\AuditLogExplorerController::class, 'index'])

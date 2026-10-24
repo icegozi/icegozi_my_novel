@@ -60,5 +60,13 @@ class AuthorNovelsGuidelinesTest extends TestCase
         $response->assertSee('aria-hidden="true">✍️</span>', false);
         $response->assertSee('aria-hidden="true">📖</span>', false);
         $response->assertDontSee('transition-all', false);
+
+        // Chapter management action buttons on novel cards
+        $response->assertSee(route('author.chapters.create', $novelWithCover->id), false);
+        $response->assertSee('Soạn Chương', false);
+        $response->assertSee(route('author.novels.bulk-chapters.create', $novelWithCover->id), false);
+        $response->assertSee('Tách Chương', false);
+        $response->assertSee(route('author.novels.3d-assets.index', $novelWithCover->id), false);
+        $response->assertSee('Kho 3D', false);
     }
 }

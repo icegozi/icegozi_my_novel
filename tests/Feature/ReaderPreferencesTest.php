@@ -91,6 +91,58 @@ class ReaderPreferencesTest extends TestCase
             ->assertJsonValidationErrors(['theme', 'font_size']);
     }
 
+    public function test_reader_preferences_api_accepts_sepia_and_light_themes(): void
+    {
+        $responseSepia = $this->actingAs($this->user)
+            ->postJson(route('reader.preferences.update'), [
+                'theme' => 'sepia',
+                'font_size' => 'base',
+            ]);
+
+        $responseSepia->assertOk()
+            ->assertJsonPath('preferences.theme', 'sepia');
+
+        $responseLight = $this->actingAs($this->user)
+            ->postJson(route('reader.preferences.update'), [
+                'theme' => 'light',
+                'font_size' => 'base',
+            ]);
+
+        $responseLight->assertOk()
+            ->assertJsonPath('preferences.theme', 'light');
+    }
+
+    public function test_reader_preferences_api_migrates_legacy_dark_theme_to_sepia(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->postJson(route('reader.preferences.update'), [
+                'theme' => 'dark',
+                'font_size' => 'base',
+            ]);
+
+        $response->assertOk()
+            ->assertJsonPath('preferences.theme', 'sepia');
+
+        $this->assertEquals('sepia', session('reader_preferences.theme'));
+    }
+
+    public function test_user_profile_settings_defaults_to_sepia_and_migrates_dark_theme(): void
+    {
+        $response = $this->actingAs($this->user)->get(route('reader.settings'));
+        $response->assertOk();
+        $this->assertEquals('sepia', $response->viewData('preferences')['theme'] ?? null);
+
+        $postResponse = $this->actingAs($this->user)
+            ->post(route('reader.settings.update'), [
+                'theme' => 'dark',
+                'font_size' => 'base',
+                'font_family' => 'sans',
+            ]);
+
+        $postResponse->assertSessionHasNoErrors();
+        $this->assertEquals('sepia', session('reader_preferences.theme'));
+    }
+
     public function test_reader_view_includes_zen_toolbar_components(): void
     {
         $response = $this->get(route('reader.chapters.read', [

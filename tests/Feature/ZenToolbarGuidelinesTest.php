@@ -10,8 +10,8 @@ class ZenToolbarGuidelinesTest extends TestCase
     {
         $rendered = view('reader.chapters.partials.zen_toolbar')->render();
 
-        $this->assertStringContainsString('aria-label="Chuyển sang giao diện tối"', $rendered);
-        $this->assertStringContainsString('aria-label="Chuyển sang giao diện giấy cổ"', $rendered);
+        $this->assertStringNotContainsString('aria-label="Chuyển sang giao diện tối"', $rendered);
+        $this->assertStringContainsString('aria-label="Chuyển sang giao diện màu vàng giấy cổ"', $rendered);
         $this->assertStringContainsString('aria-label="Chuyển sang giao diện sáng"', $rendered);
         $this->assertStringContainsString('aria-label="A- Giảm kích thước phông chữ"', $rendered);
         $this->assertStringContainsString('aria-label="A+ Tăng kích thước phông chữ"', $rendered);

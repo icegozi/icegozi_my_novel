@@ -7,7 +7,7 @@ class ContentSanitizerService
     /**
      * Allowed HTML tags for novel chapters.
      */
-    private const ALLOWED_TAGS = '<p><br><b><strong><i><em><u><s><h3><h4><blockquote><hr><span><div><ul><ol><li>';
+    private const ALLOWED_TAGS = '<p><br><b><strong><i><em><u><s><h3><h4><blockquote><hr><span><div><ul><ol><li><img><figure><figcaption>';
 
     /**
      * Cleanse HTML content from potential XSS attack vectors.
@@ -62,5 +62,31 @@ class ContentSanitizerService
         $words = preg_split('/\s+/u', $plainText, -1, PREG_SPLIT_NO_EMPTY);
 
         return is_array($words) ? count($words) : 0;
+    }
+
+    /**
+     * Clean and strip Microsoft Word / Google Docs proprietary markup,
+     * removing MSO conditionals, inline styles, and namespace tags while preserving semantic structure.
+     */
+    public function sanitizeWordPaste(string $content): string
+    {
+        // 1. Remove XML/HTML comments including MSO conditionals (<!--[if ...]>...<![endif]-->)
+        $cleaned = preg_replace('/<!--.*?-->/s', '', $content);
+
+        // 2. Remove XML namespace tags such as <o:p>, </o:p>, <w:WordDocument>, etc.
+        $cleaned = preg_replace('/<\/?(o|w|m|v):[^>]*>/i', '', $cleaned);
+
+        // 3. Remove all inline style attributes to preserve clean reading theme styling
+        $cleaned = preg_replace('/\sstyle\s*=\s*("[^"]*"|\'[^\']*\')/i', '', $cleaned);
+
+        // 4. Remove Mso* classes
+        $cleaned = preg_replace('/\sclass\s*=\s*("[^"]*Mso[^"]*"|\'[^\']*Mso[^\']*\')/i', '', $cleaned);
+
+        // 5. Convert <b> to <strong>, <i> to <em>
+        $cleaned = preg_replace('/<b\b[^>]*>(.*?)<\/b>/i', '<strong>$1</strong>', $cleaned);
+        $cleaned = preg_replace('/<i\b[^>]*>(.*?)<\/i>/i', '<em>$1</em>', $cleaned);
+
+        // 6. Cleanse with base sanitizer to eliminate script, iframe, and dangerous event handlers
+        return $this->sanitize($cleaned);
     }
 }

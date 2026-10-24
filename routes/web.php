@@ -127,6 +127,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/tac-gia/phan-doi-khieu-nai/{report}', [\App\Http\Controllers\Author\CounterNoticeController::class, 'store'])
         ->name('author.counter-notice.store');
 
+    // Admin Dashboard Routes
+    Route::middleware('admin.mod')->group(function () {
+        Route::get('/admin', function () {
+            return redirect()->route('admin.dashboard');
+        })->name('admin.root');
+        Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])
+            ->name('admin.dashboard');
+    });
+
     // Admin & Moderator Content Moderation Routes
     Route::middleware('admin.mod')->prefix('/admin/kiem-duyet')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\ModerationQueueController::class, 'queue'])
@@ -169,6 +178,80 @@ Route::middleware('auth')->group(function () {
             ->name('admin.kyc.approve');
         Route::post('/{profile}/tu-choi', [\App\Http\Controllers\Admin\AuthorKycReviewController::class, 'reject'])
             ->name('admin.kyc.reject');
+    });
+
+    // Admin Author Management Desk (BRIEF-6 Module B)
+    Route::middleware('admin.mod')->prefix('/admin/tac-gia')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'index'])
+            ->name('admin.authors.index');
+        Route::get('/{author}', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'show'])
+            ->name('admin.authors.show');
+        Route::get('/{author}/chinh-sua', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'edit'])
+            ->name('admin.authors.edit');
+        Route::put('/{author}', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'update'])
+            ->name('admin.authors.update');
+        Route::post('/{author}/trang-thai', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'changeStatus'])
+            ->name('admin.authors.status');
+    });
+
+    // Admin Novel Management (BRIEF-6 Module C)
+    Route::middleware('admin.mod')->prefix('/admin/tac-pham')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\NovelManagementController::class, 'index'])
+            ->name('admin.novels.index');
+        Route::get('/tao-moi', [\App\Http\Controllers\Admin\NovelManagementController::class, 'create'])
+            ->name('admin.novels.create');
+        Route::post('/', [\App\Http\Controllers\Admin\NovelManagementController::class, 'store'])
+            ->name('admin.novels.store');
+        Route::get('/{novel}/chinh-sua', [\App\Http\Controllers\Admin\NovelManagementController::class, 'edit'])
+            ->name('admin.novels.edit');
+        Route::put('/{novel}', [\App\Http\Controllers\Admin\NovelManagementController::class, 'update'])
+            ->name('admin.novels.update');
+        Route::delete('/{novel}', [\App\Http\Controllers\Admin\NovelManagementController::class, 'destroy'])
+            ->name('admin.novels.destroy');
+        Route::post('/{id}/khoi-phuc', [\App\Http\Controllers\Admin\NovelManagementController::class, 'restore'])
+            ->name('admin.novels.restore');
+        Route::get('/{novel}/chuong', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'index'])
+            ->name('admin.novels.chapters.index');
+    });
+
+    // Admin Media Upload Pipeline (BRIEF-6 Module F)
+    Route::middleware('admin.mod')->prefix('/admin/media')->group(function () {
+        Route::post('/tai-anh-soan-thao', [\App\Http\Controllers\Admin\AdminMediaController::class, 'uploadEditorImage'])
+            ->name('admin.media.upload');
+    });
+
+    // Admin Chapter Management (BRIEF-6 Module C)
+    Route::middleware('admin.mod')->prefix('/admin/chuong')->group(function () {
+        Route::get('/{chapter}/chinh-sua', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'edit'])
+            ->name('admin.chapters.edit');
+        Route::put('/{chapter}', [\App\Http\Controllers\Admin\ChapterManagementController::class, 'update'])
+            ->name('admin.chapters.update');
+        Route::get('/{chapter}/lich-su', [\App\Http\Controllers\Admin\ChapterVersionController::class, 'history'])
+            ->name('admin.chapters.history');
+        Route::post('/{chapter}/khoi-phuc/{version}', [\App\Http\Controllers\Admin\ChapterVersionController::class, 'restore'])
+            ->name('admin.chapters.restore');
+    });
+
+    // Admin Bulk Import Wizard (BRIEF-6 Module D)
+    Route::middleware('admin.mod')->prefix('/admin/du-lieu')->group(function () {
+        Route::get('/nhap-du-lieu', [\App\Http\Controllers\Admin\ImportWizardController::class, 'index'])
+            ->name('admin.import.index');
+        Route::get('/mau-import/{type}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'template'])
+            ->name('admin.import.template');
+        Route::post('/tai-len', [\App\Http\Controllers\Admin\ImportWizardController::class, 'upload'])
+            ->name('admin.import.upload');
+        Route::get('/xem-truoc/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'preview'])
+            ->name('admin.import.preview');
+        Route::get('/bao-cao-loi/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'errors'])
+            ->name('admin.import.errors');
+        Route::post('/xac-nhan-nap/{job}', [\App\Http\Controllers\Admin\ImportWizardController::class, 'commit'])
+            ->name('admin.import.commit');
+
+        // Admin Export Desk (BRIEF-6 Module E)
+        Route::get('/xuat-du-lieu', [\App\Http\Controllers\Admin\ExportController::class, 'index'])
+            ->name('admin.export.index');
+        Route::post('/xuat-du-lieu', [\App\Http\Controllers\Admin\ExportController::class, 'download'])
+            ->name('admin.export.download');
     });
 
     // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)

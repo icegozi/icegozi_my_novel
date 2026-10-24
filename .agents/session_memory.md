@@ -7,7 +7,7 @@
 ## 1. Project Architecture Snapshot
 
 ### 1.1 Core Modules & Subsystems
-- **Novel Catalog & Reading Experience:** Full-featured online novel/comic platform with multi-theme support (Dark, Light, Sepia default), customizable typography, and reading progress synchronization.
+- **Novel Catalog & Reading Experience:** Full-featured online novel/comic platform with dual-theme reading system (Màu Vàng parchment / sepia default and Sáng / light mode), customizable typography, and reading progress synchronization.
 - **Interactive 3D WebGL Exhibition & Stage:** Three.js-powered 3D stage embedded in chapter reader, rendering GLB models linked directly to story artifacts, weapons, and characters (`novel_3d_assets` and `chapter_3d_projections`).
 - **Author Studio & Identity Verification:** Creator dashboard for publishing works, managing chapters, and undergoing e-KYC legal identity verification (`author_profiles`).
 - **Legal Compliance & DMCA Notice System:** Full adherence to Vietnamese digital publishing laws:
@@ -65,6 +65,11 @@
 | 12 | **Bulk Chapter Unique Collision** | Splitting chapters into existing chapter numbers caused 500 SQLSTATE[23000] crash. | SQLite UNIQUE index on `(novel_id, chapter_number)`. | Detect collisions upfront and offset incoming chapter numbers starting from `(max_existing + 1.0)`. |
 | 13 | **Single-Pass Keyword Highlighting** | Highlighting multiple keywords in loops corrupted `<mark class="...">` attributes. | Later replacement passes matched class names (e.g. `bg-rose-500/20`). | Use unified regex alternation `/(word1|word2|...)/ui` in a single pass with preg_replace_callback. |
 | 14 | **Mailable Queuing Architecture** | Transactional emails dispatched synchronously, causing HTTP latency spikes. | Missing `ShouldQueue` contract on Mailable classes. | Implement `Illuminate\Contracts\Queue\ShouldQueue` on all legal/KYC mailables. |
+| 15 | **OWASP CSV Formula Injection** | Cells starting with `=`, `+`, `-`, `@`, `\t`, `\r` execute formulas or trigger DDE in Excel. | Exporting raw user text fields without formula sanitization. | Use `FormulaSanitizerHelper::escapeFormula()` prefixing sensitive tokens with single quote `'` and handling RFC 4180 quotes. |
+| 16 | **Audit Log Target ID Integrity** | Entity-less admin activities (e.g. standalone media upload) crash audit logger. | `audit_logs.target_id` is an unsigned bigint NOT NULL column. | Set `'target_id' => 0` for non-entity or global operational logging events. |
+| 17 | **Novel & Chapter Soft-Deletes** | Hard deletion of novel cascades to author statistics, comments, and chapter histories. | Cascade constraint on foreign keys deletes related reading history records permanently. | Implement `Illuminate\Database\Eloquent\SoftDeletes` on `Novel` and `Chapter` models with restore action in Admin Desk. |
+| 18 | **Author Chapter Route Binding** | Navigating to `/tac-gia/truyen/{slug}/chuong/them-moi` returns 404. | Route parameter `{truyen}` in `routes/web.php` uses default Laravel primary key binding `id`, not `slug`. | Use novel ID in author studio management routes: `/tac-gia/truyen/{id}/chuong/them-moi`. |
+| 19 | **3D Exhibition Three.js Bundling** | 3D gallery `/phong-trung-bay-3d` fails to render WebGL models (`hasThree: false`). | View was missing Three.js/GLTFLoader/OrbitControls CDN scripts and did not instantiate `ProjectionStage`. | Include Three.js bundle in `<head>`, initialize `new window.Novel3D.ProjectionStage(container, { interactive: true })`, wrap `model_file_url` in `asset()`, and auto-load the first asset. |
 
 ---
 
@@ -80,6 +85,9 @@
 | 2026-10-23 | UI Consistency, Modals & Sepia Theme | `68c3409`, `60bc729` | 158 passed (100%) |
 | 2026-10-23 | Accessibility & SEO Guidelines Remediation | `c738344`..`679b8d0` | 172 passed (100%) |
 | 2026-10-23 | Senior Code Review Patches (C1-C2, I1-I4) & Playwright Verification | Applied & Verified | 179 passed (100%) |
+| 2026-10-24 | BRIEF-6 CMS Admin Masterplan (Phases 1-6 Full Implementation) | `1545adb`..`00dfeae` | 222 passed (100%) |
+| 2026-10-24 | Remove Dark Mode & Standardize Dual Yellow/Light Theme | `994c0ea`..`dcf8048` | 235 passed (100%) |
+| 2026-10-24 | Fix 3D Exhibition Stage Model Rendering & Three.js Init | Applied & Verified | 236 passed (100%) |
 
 ---
 

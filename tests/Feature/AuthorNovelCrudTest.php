@@ -108,4 +108,47 @@ class AuthorNovelCrudTest extends TestCase
         ]);
         $responseUpdate->assertStatus(403);
     }
+
+    public function test_author_can_view_novel_chapters_management_section_in_edit_page(): void
+    {
+        $novel = Novel::create([
+            'author_id' => $this->author->id,
+            'title' => 'Thiên Đạo Vạn Cổ',
+            'slug' => 'thien-dao-van-co',
+            'synopsis' => 'Tóm tắt thiên đạo vạn cổ chí tôn.',
+            'status' => 'draft',
+            'age_rating' => 'all',
+            'copyright_type' => 'original',
+        ]);
+
+        $ch1 = \App\Models\Chapter::create([
+            'novel_id' => $novel->id,
+            'title' => 'Chương 1: Tiên Tôn Trọng Sinh',
+            'slug' => 'chuong-1-tien-ton-trong-sinh',
+            'chapter_number' => '1.00',
+            'content' => 'Nội dung chương 1...',
+            'word_count' => 1500,
+            'status' => 'published',
+        ]);
+
+        $ch2 = \App\Models\Chapter::create([
+            'novel_id' => $novel->id,
+            'title' => 'Chương 2: Thần Ma Bí Cảnh',
+            'slug' => 'chuong-2-than-ma-bi-canh',
+            'chapter_number' => '2.00',
+            'content' => 'Nội dung chương 2...',
+            'word_count' => 2000,
+            'status' => 'draft',
+        ]);
+
+        $response = $this->actingAs($this->author)->get("/tac-gia/truyen/{$novel->id}/edit");
+
+        $response->assertStatus(200);
+        $response->assertSee('Quản Lý Chương &amp; Bản Thảo', false);
+        $response->assertSee('Chương 1: Tiên Tôn Trọng Sinh');
+        $response->assertSee('Chương 2: Thần Ma Bí Cảnh');
+        $response->assertSee(route('author.chapters.create', $novel->id));
+        $response->assertSee(route('author.novels.bulk-chapters.create', $novel->id));
+        $response->assertSee(route('author.chapters.edit', [$novel->id, $ch1->id]));
+    }
 }

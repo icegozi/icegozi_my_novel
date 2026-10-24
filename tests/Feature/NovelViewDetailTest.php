@@ -89,7 +89,13 @@ class NovelViewDetailTest extends TestCase
         $response->assertOk()
             ->assertSee('Phòng Trưng Bày 3D')
             ->assertSee('Long Uyên Bảo Kiếm')
-            ->assertSee('weapon');
+            ->assertSee('weapon')
+            ->assertSee('three.min.js')
+            ->assertSee('OrbitControls.js')
+            ->assertSee('GLTFLoader.js')
+            ->assertSee('DRACOLoader.js')
+            ->assertSee('id="stage-container"', false)
+            ->assertSee('ProjectionStage');
     }
 
     public function test_guest_cannot_view_unpublished_novel_detail(): void

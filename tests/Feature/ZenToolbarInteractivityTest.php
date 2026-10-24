@@ -14,7 +14,7 @@ class ZenToolbarInteractivityTest extends TestCase
         $view->assertSee('id="btn-toggle-zen-mode"', false);
         $view->assertSee('id="btn-font-decrease"', false);
         $view->assertSee('id="btn-font-increase"', false);
-        $view->assertSee('data-theme="dark"', false);
+        $view->assertDontSee('data-theme="dark"', false);
         $view->assertSee('data-theme="sepia"', false);
         $view->assertSee('data-theme="light"', false);
     }

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Chapter extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'novel_id',
@@ -56,5 +57,10 @@ class Chapter extends Model
     public function projections3d(): HasMany
     {
         return $this->hasMany(Chapter3dProjection::class);
+    }
+
+    public function versions(): HasMany
+    {
+        return $this->hasMany(ChapterVersion::class)->orderByDesc('revision');
     }
 }

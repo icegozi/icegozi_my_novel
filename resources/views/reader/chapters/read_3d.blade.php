@@ -56,9 +56,9 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
     <!-- Reader Controls: reader-controls.js is bundled into app.js -->
 </head>
-<body class="theme-dark min-h-screen flex flex-col antialiased transition-colors">
+<body class="theme-sepia sepia min-h-screen flex flex-col antialiased transition-colors">
     <!-- Top Progress Bar -->
-    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 z-50 transition-all duration-150" style="width: 0%;"></div>
+    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 z-50 transition-[width] duration-150" style="width: 0%;"></div>
 
     <!-- Top Nav Header -->
     <header class="border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-xl sticky top-0 z-40 transition-colors">
@@ -159,10 +159,9 @@
                 <!-- Theme selector -->
                 <div class="space-y-2">
                     <span class="font-semibold text-slate-400 block">Chủ Đề Nền:</span>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="document.body.className='theme-dark dark'; window.setReaderTheme('dark')" class="p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold text-center">Tối</button>
-                        <button type="button" onclick="document.body.className='theme-sepia sepia'; window.setReaderTheme('sepia')" class="p-2.5 rounded-xl bg-[#f5efe6] border border-amber-300 text-amber-950 font-bold text-center">Sepia</button>
-                        <button type="button" onclick="document.body.className='light'; window.setReaderTheme('light')" class="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-bold text-center">Sáng</button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="document.body.className='theme-sepia sepia'; window.setReaderTheme('sepia')" class="p-2.5 rounded-xl bg-[#f5efe6] border border-amber-300 text-amber-950 font-bold text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-colors">Màu Vàng (Giấy Cổ)</button>
+                        <button type="button" onclick="document.body.className='light'; window.setReaderTheme('light')" class="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-bold text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-colors">Sáng</button>
                     </div>
                 </div>
 
@@ -330,7 +329,11 @@
                 'asset3d' => [
                     'name' => $p->asset3d->name ?? '',
                     'asset_type' => $p->asset3d->asset_type ?? '',
-                    'model_file_url' => $p->asset3d->model_file_url ?? '',
+                    'model_file_url' => !empty($p->asset3d->model_file_url)
+                        ? (\Illuminate\Support\Str::startsWith($p->asset3d->model_file_url, ['http://', 'https://'])
+                            ? $p->asset3d->model_file_url
+                            : asset($p->asset3d->model_file_url))
+                        : '',
                     'scale_factor' => (float) ($p->asset3d->scale_factor ?? 1.0),
                     'particle_effect' => $p->asset3d->particle_effect ?? 'none',
                 ]

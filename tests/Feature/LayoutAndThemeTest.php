@@ -32,5 +32,17 @@ class LayoutAndThemeTest extends TestCase
         $this->assertStringContainsString('--color-accent-glow', $css);
         $this->assertStringContainsString('aspectRatio', $tailwind);
     }
+
+    public function test_theme_manager_script_contains_binary_sepia_light_rotation(): void
+    {
+        $js = file_get_contents(resource_path('js/theme-manager.js'));
+
+        $this->assertStringNotContainsString("'dark'", $js);
+        $this->assertStringContainsString("VALID_THEMES = ['light', 'sepia']", $js);
+        $this->assertStringContainsString("nextMap = { sepia: 'light', light: 'sepia'", $js);
+
+        $readerLayout = file_get_contents(resource_path('views/layouts/reader.blade.php'));
+        $this->assertStringContainsString("if (theme === 'dark')", $readerLayout);
+    }
 }
 

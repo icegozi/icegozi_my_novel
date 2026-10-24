@@ -329,7 +329,11 @@
                 'asset3d' => [
                     'name' => $p->asset3d->name ?? '',
                     'asset_type' => $p->asset3d->asset_type ?? '',
-                    'model_file_url' => $p->asset3d->model_file_url ?? '',
+                    'model_file_url' => !empty($p->asset3d->model_file_url)
+                        ? (\Illuminate\Support\Str::startsWith($p->asset3d->model_file_url, ['http://', 'https://'])
+                            ? $p->asset3d->model_file_url
+                            : asset($p->asset3d->model_file_url))
+                        : '',
                     'scale_factor' => (float) ($p->asset3d->scale_factor ?? 1.0),
                     'particle_effect' => $p->asset3d->particle_effect ?? 'none',
                 ]

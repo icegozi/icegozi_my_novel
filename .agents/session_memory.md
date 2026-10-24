@@ -69,6 +69,7 @@
 | 16 | **Audit Log Target ID Integrity** | Entity-less admin activities (e.g. standalone media upload) crash audit logger. | `audit_logs.target_id` is an unsigned bigint NOT NULL column. | Set `'target_id' => 0` for non-entity or global operational logging events. |
 | 17 | **Novel & Chapter Soft-Deletes** | Hard deletion of novel cascades to author statistics, comments, and chapter histories. | Cascade constraint on foreign keys deletes related reading history records permanently. | Implement `Illuminate\Database\Eloquent\SoftDeletes` on `Novel` and `Chapter` models with restore action in Admin Desk. |
 | 18 | **Author Chapter Route Binding** | Navigating to `/tac-gia/truyen/{slug}/chuong/them-moi` returns 404. | Route parameter `{truyen}` in `routes/web.php` uses default Laravel primary key binding `id`, not `slug`. | Use novel ID in author studio management routes: `/tac-gia/truyen/{id}/chuong/them-moi`. |
+| 19 | **3D Exhibition Three.js Bundling** | 3D gallery `/phong-trung-bay-3d` fails to render WebGL models (`hasThree: false`). | View was missing Three.js/GLTFLoader/OrbitControls CDN scripts and did not instantiate `ProjectionStage`. | Include Three.js bundle in `<head>`, initialize `new window.Novel3D.ProjectionStage(container, { interactive: true })`, wrap `model_file_url` in `asset()`, and auto-load the first asset. |
 
 ---
 
@@ -86,6 +87,7 @@
 | 2026-10-23 | Senior Code Review Patches (C1-C2, I1-I4) & Playwright Verification | Applied & Verified | 179 passed (100%) |
 | 2026-10-24 | BRIEF-6 CMS Admin Masterplan (Phases 1-6 Full Implementation) | `1545adb`..`00dfeae` | 222 passed (100%) |
 | 2026-10-24 | Remove Dark Mode & Standardize Dual Yellow/Light Theme | `994c0ea`..`dcf8048` | 235 passed (100%) |
+| 2026-10-24 | Fix 3D Exhibition Stage Model Rendering & Three.js Init | Applied & Verified | 236 passed (100%) |
 
 ---
 

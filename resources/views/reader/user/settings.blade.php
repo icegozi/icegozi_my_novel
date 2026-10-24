@@ -28,12 +28,12 @@
                     Chủ Đề Mặc Định
                 </label>
                 <div class="grid grid-cols-2 gap-3">
-                    <label class="p-4 rounded-2xl border border-amber-300 bg-[#f5efe6] text-amber-950 font-bold text-xs flex flex-col items-center gap-2 cursor-pointer hover:border-indigo-500 transition">
-                        <input type="radio" name="theme" value="sepia" {{ ($preferences['theme'] ?? 'sepia') === 'sepia' ? 'checked' : '' }} class="text-indigo-600">
+                    <label class="p-4 rounded-2xl border border-amber-300 bg-[#f5efe6] text-amber-950 font-bold text-xs flex flex-col items-center gap-2 cursor-pointer hover:border-indigo-500 transition-colors">
+                        <input type="radio" name="theme" value="sepia" {{ ($preferences['theme'] ?? 'sepia') === 'sepia' ? 'checked' : '' }} class="text-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
                         <span>Màu Vàng (Giấy Cổ)</span>
                     </label>
-                    <label class="p-4 rounded-2xl border border-slate-200 bg-white text-slate-900 font-bold text-xs flex flex-col items-center gap-2 cursor-pointer hover:border-indigo-500 transition">
-                        <input type="radio" name="theme" value="light" {{ ($preferences['theme'] ?? '') === 'light' ? 'checked' : '' }} class="text-indigo-600">
+                    <label class="p-4 rounded-2xl border border-slate-200 bg-white text-slate-900 font-bold text-xs flex flex-col items-center gap-2 cursor-pointer hover:border-indigo-500 transition-colors">
+                        <input type="radio" name="theme" value="light" {{ ($preferences['theme'] ?? '') === 'light' ? 'checked' : '' }} class="text-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
                         <span>Sáng (Light)</span>
                     </label>
                 </div>

@@ -67,4 +67,19 @@ class ReaderThemeControlsTest extends TestCase
         $response->assertDontSee('value="dark"', false);
         $response->assertDontSee('Tối (Dark)', false);
     }
+
+    public function test_theme_controls_comply_with_web_interface_guidelines(): void
+    {
+        $settingsView = view('reader.user.settings', [
+            'user' => User::factory()->make(),
+            'preferences' => ['theme' => 'sepia'],
+        ])->render();
+
+        $this->assertMatchesRegularExpression('/name="theme"[^>]*focus-visible:ring-indigo-500/', $settingsView);
+        $this->assertStringNotContainsString('transition-all', $settingsView);
+
+        $zenToolbarView = view('reader.chapters.partials.zen_toolbar')->render();
+        $this->assertStringContainsString('focus-visible:ring-2', $zenToolbarView);
+        $this->assertStringNotContainsString('transition-all', $zenToolbarView);
+    }
 }

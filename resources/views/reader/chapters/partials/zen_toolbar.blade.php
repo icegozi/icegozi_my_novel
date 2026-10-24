@@ -2,8 +2,8 @@
 <div id="zen-toolbar" class="fixed bottom-6 right-6 z-40 bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-2.5 shadow-2xl flex items-center gap-3">
     <!-- Theme Selector -->
     <div class="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
-        <button type="button" class="theme-btn w-7 h-7 rounded-lg bg-[#f4ecd8] border border-amber-300 hover:scale-105 active:scale-95 transition touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" data-theme="sepia" title="Giao diện Màu Vàng (Giấy Cổ)" aria-label="Chuyển sang giao diện màu vàng giấy cổ"></button>
-        <button type="button" class="theme-btn w-7 h-7 rounded-lg bg-white border border-slate-200 hover:scale-105 active:scale-95 transition touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" data-theme="light" title="Giao diện Sáng (Light)" aria-label="Chuyển sang giao diện sáng"></button>
+        <button type="button" class="theme-btn w-7 h-7 rounded-lg bg-[#f4ecd8] border border-amber-300 hover:scale-105 active:scale-95 transition-transform touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" data-theme="sepia" title="Giao diện Màu Vàng (Giấy Cổ)" aria-label="Chuyển sang giao diện màu vàng giấy cổ"></button>
+        <button type="button" class="theme-btn w-7 h-7 rounded-lg bg-white border border-slate-200 hover:scale-105 active:scale-95 transition-transform touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" data-theme="light" title="Giao diện Sáng (Light)" aria-label="Chuyển sang giao diện sáng"></button>
     </div>
 
     <!-- Font Size Controls -->

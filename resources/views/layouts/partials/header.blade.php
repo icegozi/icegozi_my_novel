@@ -71,7 +71,7 @@
                 type="button"
                 id="header-theme-toggle"
                 onclick="window.toggleReaderTheme()"
-                class="p-2 rounded-xl text-slate-600 dark:text-slate-300 sepia:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 border border-transparent dark:border-slate-800 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                class="p-2 rounded-xl text-slate-600 dark:text-slate-300 sepia:text-sepia-text hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 border border-transparent dark:border-slate-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 aria-label="Đổi giao diện Sáng / Vàng (Sepia)"
                 title="Đổi giao diện (Sáng / Vàng)"
             >

@@ -82,13 +82,32 @@
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 sepia:border-sepia-border/60 flex items-center gap-2">
-                        <a href="/tac-gia/truyen/{{ $novel->id }}/edit" class="flex-1 text-center py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 text-xs text-slate-800 dark:text-slate-200 sepia:text-sepia-text font-semibold border border-slate-200 dark:border-slate-700 sepia:border-sepia-border transition-colors">
-                            Chỉnh Sửa
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 sepia:border-sepia-border/60 space-y-2">
+                        <!-- Primary Chapter Creation CTA -->
+                        <a href="{{ route('author.chapters.create', $novel->id) }}" class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sepia:focus-visible:ring-amber-700 transition-colors" aria-label="Soạn Chương mới cho tác phẩm {{ $novel->title }}">
+                            <span aria-hidden="true" class="text-sm">✍️</span>
+                            <span>+ Soạn Chương</span>
                         </a>
-                        <a href="{{ route('reader.stories.show', $novel->slug) }}" target="_blank" rel="noopener noreferrer" class="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 sepia:bg-sepia-input hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 text-xs text-slate-600 dark:text-slate-400 sepia:text-sepia-muted border border-slate-200 dark:border-slate-800 sepia:border-sepia-border transition-colors" title="Xem trên giao diện người đọc" aria-label="Xem trên giao diện người đọc">
-                            👁️
-                        </a>
+
+                        <!-- Secondary Actions Grid -->
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <a href="{{ route('author.novels.bulk-chapters.create', $novel->id) }}" class="col-span-1 text-center py-2 px-1 rounded-xl bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 text-[11px] text-slate-700 dark:text-slate-300 sepia:text-sepia-text font-medium border border-slate-200 dark:border-slate-700 sepia:border-sepia-border transition-colors flex flex-col items-center justify-center min-h-[38px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" title="Tách chương hàng loạt" aria-label="Tách Chương hàng loạt cho {{ $novel->title }}">
+                                <span aria-hidden="true" class="text-xs">📥</span>
+                                <span class="truncate w-full text-center">Tách Chương</span>
+                            </a>
+                            <a href="{{ route('author.novels.3d-assets.index', $novel->id) }}" class="col-span-1 text-center py-2 px-1 rounded-xl bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 text-[11px] text-slate-700 dark:text-slate-300 sepia:text-sepia-text font-medium border border-slate-200 dark:border-slate-700 sepia:border-sepia-border transition-colors flex flex-col items-center justify-center min-h-[38px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" title="Quản lý kho mô hình 3D" aria-label="Kho 3D tác phẩm {{ $novel->title }}">
+                                <span aria-hidden="true" class="text-xs">🎨</span>
+                                <span class="truncate w-full text-center">Kho 3D</span>
+                            </a>
+                            <a href="/tac-gia/truyen/{{ $novel->id }}/edit" class="col-span-1 text-center py-2 px-1 rounded-xl bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 text-[11px] text-slate-700 dark:text-slate-300 sepia:text-sepia-text font-medium border border-slate-200 dark:border-slate-700 sepia:border-sepia-border transition-colors flex flex-col items-center justify-center min-h-[38px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" title="Sửa thông tin tác phẩm" aria-label="Sửa thông tin tác phẩm {{ $novel->title }}">
+                                <span aria-hidden="true" class="text-xs">⚙️</span>
+                                <span class="truncate w-full text-center">Sửa Truyện</span>
+                            </a>
+                            <a href="{{ route('reader.stories.show', $novel->slug) }}" target="_blank" rel="noopener noreferrer" class="col-span-1 text-center py-2 px-1 rounded-xl bg-slate-50 dark:bg-slate-900 sepia:bg-sepia-input hover:bg-slate-100 dark:hover:bg-slate-800 sepia:hover:bg-sepia-100 text-[11px] text-slate-600 dark:text-slate-400 sepia:text-sepia-muted border border-slate-200 dark:border-slate-800 sepia:border-sepia-border transition-colors flex flex-col items-center justify-center min-h-[38px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" title="Xem trên giao diện người đọc" aria-label="Xem trên giao diện người đọc">
+                                <span aria-hidden="true" class="text-xs">👁️</span>
+                                <span class="truncate w-full text-center">Xem Đọc</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             @endforeach

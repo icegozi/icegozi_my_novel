@@ -111,5 +111,121 @@
             </button>
         </div>
     </form>
+
+    @if($novel->exists)
+        <!-- Chapter Management Section -->
+        <div class="mt-10 bg-white dark:bg-slate-900/60 sepia:bg-sepia-card rounded-3xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border p-6 sm:p-8 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800 sepia:border-sepia-border/60">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 dark:bg-indigo-500/20 sepia:bg-amber-900/15 text-indigo-700 dark:text-indigo-400 sepia:text-amber-900 border border-indigo-500/25 sepia:border-amber-800/30 mb-2">
+                        <span aria-hidden="true">📖</span> Quản Lý Bản Thảo &amp; Xuất Bản
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold font-heading text-slate-900 dark:text-white sepia:text-sepia-text tracking-tight">
+                        Quản Lý Chương &amp; Bản Thảo
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 sepia:text-sepia-muted text-xs sm:text-sm mt-1">
+                        Hiện có <strong class="text-slate-900 dark:text-white sepia:text-sepia-text font-bold">{{ $novel->chapters->count() }}</strong> chương trong tác phẩm này.
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{{ route('author.chapters.create', $novel->id) }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sepia:focus-visible:ring-amber-700 transition-colors" aria-label="Soạn chương mới cho {{ $novel->title }}">
+                        <span aria-hidden="true">✍️</span>
+                        <span>+ Soạn Chương Mới</span>
+                    </a>
+                    <a href="{{ route('author.novels.bulk-chapters.create', $novel->id) }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 sepia:text-sepia-text bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 border border-slate-200 dark:border-slate-700 sepia:border-sepia-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-colors" aria-label="Tách chương hàng loạt từ văn bản thô cho {{ $novel->title }}">
+                        <span aria-hidden="true">📥</span>
+                        <span>Tách Chương Hàng Loạt</span>
+                    </a>
+                    <a href="{{ route('author.novels.3d-assets.index', $novel->id) }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 sepia:text-sepia-text bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 border border-slate-200 dark:border-slate-700 sepia:border-sepia-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-colors" aria-label="Quản lý kho mô hình 3D cho {{ $novel->title }}">
+                        <span aria-hidden="true">🎨</span>
+                        <span>Kho Mô Hình 3D</span>
+                    </a>
+                </div>
+            </div>
+
+            @if($novel->chapters->isEmpty())
+                <div class="text-center py-12 px-4">
+                    <span class="text-4xl" aria-hidden="true">📝</span>
+                    <h3 class="text-base font-bold font-heading text-slate-900 dark:text-white sepia:text-sepia-text mt-3">Chưa có chương nào được viết</h3>
+                    <p class="text-slate-600 dark:text-slate-400 sepia:text-sepia-muted text-xs mt-1 max-w-md mx-auto leading-relaxed">
+                        Tác phẩm của bạn đã sẵn sàng! Hãy bắt đầu viết chương mở đầu bằng Zen Editor hoặc dán toàn bộ văn bản để hệ thống tự động bóc tách chương.
+                    </p>
+                    <div class="mt-5 flex items-center justify-center gap-3">
+                        <a href="{{ route('author.chapters.create', $novel->id) }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 sepia:bg-amber-800 sepia:hover:bg-amber-700 shadow-sm transition-colors">
+                            <span>+ Bắt Đầu Viết Chương 1</span>
+                        </a>
+                        <a href="{{ route('author.novels.bulk-chapters.create', $novel->id) }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 sepia:text-sepia-text bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 transition-colors">
+                            <span>Tách Chương Hàng Loạt</span>
+                        </a>
+                    </div>
+                </div>
+            @else
+                <div class="mt-6 overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 sepia:border-sepia-border">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 sepia:text-sepia-text">
+                        <thead class="bg-slate-50 dark:bg-slate-950 sepia:bg-sepia-100 border-b border-slate-200 dark:border-slate-800 sepia:border-sepia-border text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 sepia:text-sepia-muted">
+                            <tr>
+                                <th scope="col" class="px-4 py-3.5 font-semibold text-center w-24">Số chương</th>
+                                <th scope="col" class="px-4 py-3.5 font-semibold">Tiêu đề chương</th>
+                                <th scope="col" class="px-4 py-3.5 font-semibold text-center w-28">Số từ</th>
+                                <th scope="col" class="px-4 py-3.5 font-semibold text-center w-32">Trạng thái</th>
+                                <th scope="col" class="px-4 py-3.5 font-semibold text-right w-44">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800 sepia:divide-sepia-border/60 bg-white dark:bg-slate-900 sepia:bg-sepia-card">
+                            @foreach($novel->chapters as $chapter)
+                                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 sepia:hover:bg-sepia-100/40 transition-colors">
+                                    <td class="px-4 py-3 text-center font-mono font-bold tabular-nums text-indigo-700 dark:text-indigo-400 sepia:text-amber-900">
+                                        #{{ number_format($chapter->chapter_number, 0) }}
+                                    </td>
+                                    <td class="px-4 py-3 font-medium">
+                                        <div class="font-bold text-slate-900 dark:text-white sepia:text-sepia-text">
+                                            {{ $chapter->title }}
+                                        </div>
+                                        <div class="text-[11px] text-slate-500 font-mono mt-0.5">
+                                            /{{ $chapter->slug }}
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-center font-mono tabular-nums text-xs">
+                                        {{ number_format($chapter->word_count) }} chữ
+                                    </td>
+                                    <td class="px-4 py-3 text-center">
+                                        @if($chapter->status === 'published')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 sepia:text-emerald-800 border border-emerald-500/25">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true"></span>
+                                                Xuất bản
+                                            </span>
+                                        @elseif($chapter->status === 'pending_approval')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-sky-500/10 text-sky-700 dark:text-sky-400 sepia:text-sky-800 border border-sky-500/25">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-sky-500" aria-hidden="true"></span>
+                                                Chờ duyệt
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 sepia:text-amber-900 border border-amber-500/25">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+                                                Bản nháp
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-right">
+                                        <div class="inline-flex items-center gap-1.5 justify-end">
+                                            <a href="{{ route('author.chapters.edit', [$novel->id, $chapter->id]) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-700 dark:text-indigo-400 sepia:text-amber-900 bg-indigo-50 dark:bg-indigo-950/50 sepia:bg-amber-900/15 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 sepia:hover:bg-amber-900/30 border border-indigo-200 dark:border-indigo-800 sepia:border-amber-800/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-colors" aria-label="Sửa bản thảo {{ $chapter->title }}">
+                                                <span aria-hidden="true">✏️</span>
+                                                <span>Sửa</span>
+                                            </a>
+                                            <a href="{{ route('author.chapters.projections.index', $chapter->id) }}" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 sepia:text-sepia-muted bg-slate-100 dark:bg-slate-800 sepia:bg-sepia-100 hover:bg-slate-200 dark:hover:bg-slate-700 sepia:hover:bg-sepia-200 border border-slate-200 dark:border-slate-700 sepia:border-sepia-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-colors" title="Hiệu ứng 3D" aria-label="Gắn hiệu ứng 3D cho {{ $chapter->title }}">
+                                                <span aria-hidden="true">🎨</span>
+                                                <span>3D</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
+    @endif
 </div>
 @endsection

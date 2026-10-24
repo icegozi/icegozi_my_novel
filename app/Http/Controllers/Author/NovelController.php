@@ -79,6 +79,8 @@ class NovelController extends Controller
     {
         abort_if($truyen->author_id !== $request->user()->id, 403, 'Bạn không có quyền chỉnh sửa tác phẩm này.');
 
+        $truyen->load(['chapters' => fn($q) => $q->orderBy('chapter_number', 'asc')]);
+
         $genres = Genre::all();
         $novel = $truyen;
 

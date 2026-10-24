@@ -180,6 +180,20 @@ Route::middleware('auth')->group(function () {
             ->name('admin.kyc.reject');
     });
 
+    // Admin Author Management Desk (BRIEF-6 Module B)
+    Route::middleware('admin.mod')->prefix('/admin/tac-gia')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'index'])
+            ->name('admin.authors.index');
+        Route::get('/{author}', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'show'])
+            ->name('admin.authors.show');
+        Route::get('/{author}/chinh-sua', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'edit'])
+            ->name('admin.authors.edit');
+        Route::put('/{author}', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'update'])
+            ->name('admin.authors.update');
+        Route::post('/{author}/trang-thai', [\App\Http\Controllers\Admin\AuthorManagementController::class, 'changeStatus'])
+            ->name('admin.authors.status');
+    });
+
     // Admin Audit Trail Explorer (ND 147/2024 Cybersecurity Compliance)
     Route::middleware('admin.mod')->prefix('/admin/nhat-ky-an-ninh')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\AuditLogExplorerController::class, 'index'])

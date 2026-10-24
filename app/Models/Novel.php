@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Novel extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'author_id',
@@ -19,6 +20,10 @@ class Novel extends Model
         'synopsis',
         'cover_image',
         'status',
+        'meta_title',
+        'meta_description',
+        'canonical_url',
+        'og_image',
         'age_rating',
         'copyright_type',
         'copyright_license_notes',
@@ -80,5 +85,10 @@ class Novel extends Model
     public function assets3d(): HasMany
     {
         return $this->hasMany(Novel3dAsset::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'novel_tag');
     }
 }

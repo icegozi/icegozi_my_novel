@@ -79,8 +79,12 @@ class ChapterReaderController extends Controller
      */
     public function updatePreferences(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
+        if ($request->input('theme') === 'dark') {
+            $request->merge(['theme' => 'sepia']);
+        }
+
         $validated = $request->validate([
-            'theme' => ['required', 'in:dark,sepia,light'],
+            'theme' => ['required', 'in:sepia,light'],
             'font_size' => ['required', 'in:sm,base,lg,xl'],
             'mode' => ['nullable', 'in:3d,zen'],
         ]);

@@ -38,19 +38,28 @@ class UserProfileController extends Controller
     {
         $user = Auth::user();
         $preferences = session('reader_preferences', [
-            'theme' => 'dark',
+            'theme' => 'sepia',
             'font_size' => 'base',
             'font_family' => 'serif',
             'mode' => '3d'
         ]);
+
+        if (($preferences['theme'] ?? '') === 'dark') {
+            $preferences['theme'] = 'sepia';
+            session(['reader_preferences' => $preferences]);
+        }
 
         return view('reader.user.settings', compact('user', 'preferences'));
     }
 
     public function updateSettings(Request $request)
     {
+        if ($request->input('theme') === 'dark') {
+            $request->merge(['theme' => 'sepia']);
+        }
+
         $validated = $request->validate([
-            'theme' => ['required', 'in:dark,sepia,light'],
+            'theme' => ['required', 'in:sepia,light'],
             'font_size' => ['required', 'in:sm,base,lg,xl'],
             'font_family' => ['nullable', 'in:serif,sans'],
         ]);
